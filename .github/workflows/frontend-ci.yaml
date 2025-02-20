@@ -19,9 +19,11 @@ jobs:
         working-directory: ./frontend
 
     steps:
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Set up Node.js (using Node 20 as per your request)
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -29,17 +31,21 @@ jobs:
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
 
+      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # Lint the code
       - name: Lint
         run: npm run lint
 
+      # Build the frontend
       - name: Build frontend
         run: npm run build
 
+      # Upload build artifacts
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: frontend-build
-          path: frontend/dist
+          path: ./frontend/dist
