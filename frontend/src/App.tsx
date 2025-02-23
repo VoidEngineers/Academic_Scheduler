@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  Box,
+  Button,
+  Center,
+  Code,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Logo } from '@/components/logo';
+import { ColorModeButton } from '@/components/ui/color-mode';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Center minH="dvh">
+      <Box pos="absolute" top="4" right="4">
+        <ColorModeButton />
+      </Box>
+      <VStack gap="5">
+        <Logo height="12" mb="5" />
+        <Heading size="4xl">Welcome to Chakra UI v3</Heading>
+        <Text>Use this template to play around or report issues</Text>
+        <HStack>
+          <Tooltip
+            showArrow
+            content="This is the tooltip content"
+            contentProps={{ css: { '--tooltip-bg': 'colors.red.500' } }}
+          >
+            <Button variant="outline" size="sm">
+              Hover me
+            </Button>
+          </Tooltip>
+        </HStack>
+        <Code variant="surface">npm i @chakra-ui/react</Code>
+      </VStack>
+    </Center>
+  );
 }
 
-export default App
+export default App;
