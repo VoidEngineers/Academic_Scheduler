@@ -37,7 +37,8 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run:  npm install -D @emotion/react @emotion/styled @mui/material @mui/styles @types/react @types/react-dom
+          npm ci
 
       # Lint the code
       - name: Lint
