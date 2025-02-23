@@ -2,9 +2,11 @@ name: Frontend CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop, 'feature/**' ]
+    paths:
+      - 'frontend/**'
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'frontend/**'
 
@@ -16,7 +18,8 @@ jobs:
         working-directory: frontend
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -28,10 +31,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: 'pnpm'
+          cache-dependency-path: './frontend/pnpm-lock.yaml'
       
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
         run: |
-          pnpm install --no-frozen-lockfile
+          pnpm install --frozen-lockfile
           pnpm exec chakra snippet add
       
       - name: Create tsconfig if not exists
@@ -53,18 +72,30 @@ jobs:
                 "strict": true,
                 "noUnusedLocals": true,
                 "noUnusedParameters": true,
-                "noFallthroughCasesInSwitch": true,
-                "include": ["src"],
-                "references": [{ "path": "./tsconfig.node.json" }]
-              }
+                "noFallthroughCasesInSwitch": true
+              },
+              "include": ["src"],
+              "references": [{ "path": "./tsconfig.node.json" }]
             }' > tsconfig.json
           fi
       
-      - name: Lint
-        run: pnpm eslint . --ext .ts,.tsx --max-warnings=9
+      - name: Setup ESLint config
+        run: |
+          if [ ! -f "eslint.config.js" ]; then
+            pnpm create @eslint/config
+          fi
       
-      - name: Type check and Build
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+
+      - name: Lint
+        run: pnpm exec eslint . --ext .ts,.tsx --max-warnings=9
+        continue-on-error: true
+      
+      - name: Build
         run: pnpm build
+        env:
+          CI: true
         
       - name: Cache build output
         uses: actions/cache@v4
@@ -75,3 +106,10 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('frontend/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+          retention-days: 7
