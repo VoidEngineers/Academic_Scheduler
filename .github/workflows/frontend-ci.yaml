@@ -17,17 +17,16 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
+          run_install: false # Prevent automatic install attempt
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'pnpm'
       
       - name: Install dependencies
         run: |
-          pnpm install
-          # Specific handling for Chakra UI postinstall
+          pnpm install --no-frozen-lockfile # Allows generating a new lockfile if missing
           pnpm exec chakra snippet add
       
       - name: Lint
