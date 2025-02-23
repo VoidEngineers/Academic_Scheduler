@@ -2,65 +2,65 @@ name: Frontend CI/CD
 
 on:
   push:
-    branches:
-      - main
-      - develop
-      - 'feature/**'
-    paths:
-      - 'frontend/**'
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [ main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     
-    defaults:
-      run:
-        working-directory: ./frontend
-
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: './frontend/package-lock.json'
-
+      
       - name: Install dependencies
-        run: |
-          npm ci
-          npm run postinstall
-
-      - name: Run type check
-        run: npx tsc --noEmit
-
-      - name: Run linting
+        run: npm ci
+      
+      - name: Type check
+        run: npm run tsc
+      
+      - name: Lint
         run: npm run lint
-
-      - name: Build application
+      
+      - name: Build
         run: npm run build
-        env:
-          CI: true
-
-      - name: Cache build
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./frontend/dist
-            ./frontend/node_modules/.vite
-          key: ${{ runner.os }}-vite-build-${{ hashFiles('frontend/**/*.{ts,tsx}') }}
-          restore-keys: |
-            ${{ runner.os }}-vite-build-
-
+      
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-dist
-          path: frontend/dist
-          retention-days: 7
+          name: dist
+          path: dist/
+          
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      # Add your deployment step here. Common options include:
+      # - GitHub Pages
+      # - AWS S3/CloudFront
+      # - Netlify
+      # - Vercel
+      # Example for GitHub Pages:
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
