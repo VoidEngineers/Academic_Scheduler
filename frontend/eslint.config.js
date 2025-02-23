@@ -1,16 +1,15 @@
-import { defineConfig } from 'eslint-define-config';
-import js from '@eslint/js';
-import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from '@typescript-eslint/eslint-plugin';
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from '@typescript-eslint/eslint-plugin'
 
-export default defineConfig({
+export default {
   ignores: ['dist'],
   extends: [
     js.configs.recommended,
-    ...tseslint.configs.recommended,
-    'plugin:react-hooks/recommended'
+    'plugin:@typescript-eslint/recommended',  // Correctly extend the TypeScript recommended config
+    'plugin:react-hooks/recommended',
   ],
   files: ['**/*.{ts,tsx}'],
   languageOptions: {
@@ -18,18 +17,18 @@ export default defineConfig({
     sourceType: 'module',
     globals: {
       ...globals.browser,
-      es2020: true
+      es2020: true,
     },
     parser: tseslint.parser,
     parserOptions: {
       project: ['./tsconfig.json'],
-      tsconfigRootDir: process.cwd()
-    }
+      tsconfigRootDir: process.cwd(),
+    },
   },
   plugins: {
     'react-hooks': reactHooks,
     'react-refresh': reactRefresh,
-    '@typescript-eslint': tseslint
+    '@typescript-eslint': tseslint,
   },
   rules: {
     ...reactHooks.configs.recommended.rules,
@@ -37,11 +36,11 @@ export default defineConfig({
     '@typescript-eslint/no-empty-interface': 'warn',
     'react-refresh/only-export-components': [
       'warn',
-      { allowConstantExport: true }
-    ]
+      { allowConstantExport: true },
+    ],
   },
   env: {
     browser: true,
-    es2020: true
-  }
-});
+    es2020: true,
+  },
+}
