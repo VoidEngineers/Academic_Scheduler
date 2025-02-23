@@ -1,17 +1,18 @@
-name: Frontend CI/CD
+name: Frontend CI
 
 on:
   push:
     branches:
       - main
-      - 'feature/*'
+      - develop
+      - 'feature/**'
   pull_request:
     branches:
       - main
-      - 'feature/*'
+      - develop
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     
     defaults:
@@ -19,33 +20,41 @@ jobs:
         working-directory: ./frontend
 
     steps:
-      # Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Set up Node.js (using Node 20 as per your request)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Lint the code
-      - name: Lint
+      - name: TypeScript Check
+        run: npx tsc --noEmit
+
+      - name: Run ESLint
         run: npm run lint
 
-      # Build the frontend
-      - name: Build frontend
+      - name: Build application
         run: npm run build
+        env:
+          CI: true
 
-      # Upload build artifacts (updated to v4)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-build
+          name: build-files
           path: ./frontend/dist
+          retention-days: 7
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
