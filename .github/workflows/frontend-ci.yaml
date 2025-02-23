@@ -13,23 +13,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
+          cache: 'pnpm'
       
       - name: Install dependencies
         run: |
-          npm ci
+          pnpm install
           # Specific handling for Chakra UI postinstall
-          npx chakra snippet add
+          pnpm exec chakra snippet add
       
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
       
       - name: Type check and Build
-        run: npm run build
+        run: pnpm build
         
       - name: Cache build output
         uses: actions/cache@v4
@@ -37,6 +42,6 @@ jobs:
           path: |
             dist
             .vite
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-
