@@ -1,0 +1,22 @@
+# version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: test
+    volumes:
+      - ~/pgdata:/var/lib/postgresql/data # Persistent data directory
+
+  # frontend:
+  #   image: nginx:latest
+  #   container_name: frontend
+
+volumes:
+  pgdata:
