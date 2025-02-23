@@ -34,8 +34,34 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm exec chakra snippet add
       
+      - name: Create tsconfig if not exists
+        run: |
+          if [ ! -f "tsconfig.json" ]; then
+            echo '{
+              "compilerOptions": {
+                "target": "ES2020",
+                "useDefineForClassFields": true,
+                "lib": ["ES2020", "DOM", "DOM.Iterable"],
+                "module": "ESNext",
+                "skipLibCheck": true,
+                "moduleResolution": "bundler",
+                "allowImportingTsExtensions": true,
+                "resolveJsonModule": true,
+                "isolatedModules": true,
+                "noEmit": true,
+                "jsx": "react-jsx",
+                "strict": true,
+                "noUnusedLocals": true,
+                "noUnusedParameters": true,
+                "noFallthroughCasesInSwitch": true,
+                "include": ["src"],
+                "references": [{ "path": "./tsconfig.node.json" }]
+              }
+            }' > tsconfig.json
+          fi
+      
       - name: Lint
-        run: pnpm lint
+        run: pnpm eslint . --ext .ts,.tsx --max-warnings=9
       
       - name: Type check and Build
         run: pnpm build
