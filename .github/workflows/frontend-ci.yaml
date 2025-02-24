@@ -30,50 +30,77 @@ jobs:
           node-version: '20.x'
           cache: 'pnpm'
           cache-dependency-path: './frontend/pnpm-lock.yaml'
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       
       - name: Install dependencies
         run: |
-          pnpm install --no-frozen-lockfile
+          pnpm install --frozen-lockfile
           pnpm exec chakra snippet add
-      
-      - name: Create tsconfig if not exists
+
+      - name: Setup ESLint config
         run: |
-           if [ ! -f ".eslintrc.js" ]; then
-            echo 'module.exports = {
-              root: true,
-              extends: [
-                "eslint:recommended",
-                "plugin:@typescript-eslint/recommended",
-                "plugin:react-hooks/recommended"
-              ],
-              parser: "@typescript-eslint/parser",
-              plugins: ["@typescript-eslint", "react-refresh"],
+          cat > eslint.config.js << 'EOL'
+          import js from '@eslint/js'
+          import globals from 'globals'
+          import reactHooks from 'eslint-plugin-react-hooks'
+          import reactRefresh from 'eslint-plugin-react-refresh'
+          import tseslint from '@typescript-eslint/eslint-plugin'
+
+          export default [
+            {
+              files: ['**/*.{ts,tsx}'],
+              ignores: ['dist/**'],
+              languageOptions: {
+                parser: tseslint.parser,
+                parserOptions: {
+                  project: ['./tsconfig.json']
+                },
+                globals: {
+                  ...globals.browser
+                }
+              },
+              plugins: {
+                '@typescript-eslint': tseslint,
+                'react-hooks': reactHooks,
+                'react-refresh': reactRefresh
+              },
               rules: {
-                "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-                "@typescript-eslint/no-empty-interface": "warn"
+                ...js.configs.recommended.rules,
+                ...reactHooks.configs.recommended.rules,
+                '@typescript-eslint/no-empty-interface': 'warn',
+                'react-refresh/only-export-components': ['warn', { allowConstantExport: true }]
               }
-            }' > .eslintrc.js
-            fi
-      
+            }
+          ]
+          EOL
+
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+        
       - name: Lint
-        run: |
-         pnpm exec eslint . \
-            --ext .ts,.tsx \
-            --max-warnings=9 \
-            --format stylish \
-            || echo "Linting completed with warnings"
-      
-      - name: Type check and Build
+        run: pnpm exec eslint . --ext .ts,.tsx
+        continue-on-error: true
+
+      - name: Build
         run: pnpm build
         env:
           CI: true
-        
-      - name: Cache build output
-        uses: actions/cache@v4
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          path: |
-            frontend/dist
-            frontend/.vite
-          key: ${{ runner.os }}-build-${{ hashFiles('frontend/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+          name: frontend-dist
+          path: frontend/dist
+          retention-days: 7
