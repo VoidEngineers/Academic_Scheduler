@@ -36,37 +36,66 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm exec chakra snippet add
       
-      - name: Create tsconfig if not exists
+      - name: Create config files
         run: |
-           if [ ! -f ".eslintrc.js" ]; then
-            echo 'module.exports = {
-              root: true,
-              extends: [
-                "eslint:recommended",
-                "plugin:@typescript-eslint/recommended",
-                "plugin:react-hooks/recommended"
-              ],
-              parser: "@typescript-eslint/parser",
-              plugins: ["@typescript-eslint", "react-refresh"],
-              rules: {
-                "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-                "@typescript-eslint/no-empty-interface": "warn"
-              }
-            }' > .eslintrc.js
-            fi
+          # Create tsconfig.json if it doesn't exist
+          if [ ! -f "tsconfig.json" ]; then
+            echo '{
+              "compilerOptions": {
+                "target": "ES2020",
+                "useDefineForClassFields": true,
+                "lib": ["ES2020", "DOM", "DOM.Iterable"],
+                "module": "ESNext",
+                "skipLibCheck": true,
+                "moduleResolution": "bundler",
+                "allowImportingTsExtensions": true,
+                "resolveJsonModule": true,
+                "isolatedModules": true,
+                "noEmit": true,
+                "jsx": "react-jsx",
+                "strict": true,
+                "noUnusedLocals": true,
+                "noUnusedParameters": true,
+                "noFallthroughCasesInSwitch": true
+              },
+              "include": ["src"],
+              "references": [{ "path": "./tsconfig.node.json" }]
+            }' > tsconfig.json
+          fi
+
+          # Create .eslintrc.cjs
+          echo 'module.exports = {
+            root: true,
+            extends: [
+              "eslint:recommended",
+              "plugin:@typescript-eslint/recommended",
+              "plugin:react-hooks/recommended"
+            ],
+            parser: "@typescript-eslint/parser",
+            plugins: ["@typescript-eslint", "react-refresh"],
+            rules: {
+              "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+              "@typescript-eslint/no-empty-interface": "warn"
+            }
+          }' > .eslintrc.cjs
+      
+      - name: Type check
+        run: pnpm tsc --noEmit
+        continue-on-error: true
       
       - name: Lint
         run: |
-         pnpm exec eslint . \
+          pnpm exec eslint . \
             --ext .ts,.tsx \
             --max-warnings=9 \
             --format stylish \
             || echo "Linting completed with warnings"
       
-      - name: Type check and Build
+      - name: Build
         run: pnpm build
         env:
           CI: true
+          NODE_ENV: production
         
       - name: Cache build output
         uses: actions/cache@v4
