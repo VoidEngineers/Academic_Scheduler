@@ -14,13 +14,14 @@ Development Tools
 pnpm: Fast and efficient package manager to manage project dependencies.
 GitHub Actions: Automate workflows for tasks like linting, testing, and deployment.
 Installation
+
 1. Clone the repository
-bash
-Copy
-git clone https://github.com/your-username/academic-scheduler.git
-cd academic-scheduler
+   bash
+   Copy
+   git clone https://github.com/your-username/academic-scheduler.git
+   cd academic-scheduler
 2. Set up the Backend (Spring Boot with PostgreSQL)
-Clone or Download the Spring Boot Backend:
+   Clone or Download the Spring Boot Backend:
 
 Follow the Spring Boot setup guide if you don't have the backend repository.
 Install PostgreSQL: Make sure you have PostgreSQL installed on your machine. You can follow the PostgreSQL installation guide if it's not installed.
@@ -46,7 +47,7 @@ Copy
 Your backend server should now be running on http://localhost:8080.
 
 3. Set up the Frontend
-Install dependencies: Use pnpm to install the frontend dependencies:
+   Install dependencies: Use pnpm to install the frontend dependencies:
 
 bash
 Copy
@@ -59,7 +60,7 @@ pnpm dev
 The app should now be running on http://localhost:3000 and will be able to interact with the backend.
 
 4. Environment Configuration
-Set up .env (if needed): If your project requires environment variables (e.g., API keys), create a .env file and configure the variables:
+   Set up .env (if needed): If your project requires environment variables (e.g., API keys), create a .env file and configure the variables:
 
 Example .env file for the frontend:
 
