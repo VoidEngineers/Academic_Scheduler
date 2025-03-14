@@ -31,9 +31,25 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: './frontend/pnpm-lock.yaml'
       
+      # Fix: Add pnpm store cache step
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      # Fix: Use frozen lockfile for consistent builds
       - name: Install dependencies
         run: |
-          pnpm install --no-frozen-lockfile
+          pnpm install --frozen-lockfile
           pnpm exec chakra snippet add
       
       - name: Create config files
@@ -96,13 +112,11 @@ jobs:
         env:
           CI: true
           NODE_ENV: production
-        
-      - name: Cache build output
-        uses: actions/cache@v4
+      
+      # Fix: Replace cache with artifact upload for build output
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          path: |
-            frontend/dist
-            frontend/.vite
-          key: ${{ runner.os }}-build-${{ hashFiles('frontend/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+          name: frontend-dist
+          path: ./frontend/dist
+          retention-days: 7
