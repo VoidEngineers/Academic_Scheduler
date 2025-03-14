@@ -55,7 +55,7 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     environment:
-      name: Production
+      name: production
     if: ${{ needs.docker.result == 'success' }}  # Ensure deployment only happens if the Docker job succeeded
 
     steps:
