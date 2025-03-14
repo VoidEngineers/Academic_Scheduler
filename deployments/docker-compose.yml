@@ -18,5 +18,17 @@ services:
   #   image: nginx:latest
   #   container_name: frontend
 
+  conflictmanager:
+    image: conflictmanagement:latest
+    container_name: conflictmanagement
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: conflictmanagement
+      FLASK_ENV: development
+    volumes:
+      - ./conflictmanagement:/app
+
 volumes:
   pgdata:
