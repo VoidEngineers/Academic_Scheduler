@@ -24,7 +24,7 @@
   "devDependencies": {
     "@chakra-ui/cli": "latest",
     "@eslint/js": "^9.10.0",
-    "@types/react": "^18.3.6",
+    "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.21.0",
