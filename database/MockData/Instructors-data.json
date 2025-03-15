@@ -1,0 +1,35 @@
+[
+  {
+    "userId": "I001",
+    "userEmail": "instructor001@example.com",
+    "assignedCourses": [
+      { "courseId": "C1", "courseCode": "CS101" },
+      { "courseId": "C3", "courseCode": "CS103" }
+    ],
+    "lic": true,
+    "workingHours": "9 AM - 5 PM",
+    "specializedArea": "Computer Science",
+    "description": "Experienced in algorithms and data structures."
+  },
+  {
+    "userId": "I002",
+    "userEmail": "instructor002@example.com",
+    "assignedCourses": [{ "courseId": "C2", "courseCode": "CS102" }],
+    "lic": true,
+    "workingHours": "10 AM - 6 PM",
+    "specializedArea": "Machine Learning",
+    "description": "Expert in AI and ML models."
+  },
+  {
+    "userId": "I003",
+    "userEmail": "instructor003@example.com",
+    "assignedCourses": [
+      { "courseId": "C4", "courseCode": "CS104" },
+      { "courseId": "C5", "courseCode": "CS105" }
+    ],
+    "lic": false,
+    "workingHours": "8 AM - 4 PM",
+    "specializedArea": "Web Development",
+    "description": "Skilled in full-stack development."
+  }
+]

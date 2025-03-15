@@ -1,0 +1,38 @@
+[
+  {
+    "tableId": "T001",
+    "tableName": "Morning Session - C1",
+    "courseId": "C1",
+    "instructorId": "I001",
+    "lic": "I001",
+    "meetingURL": "https://meet.google.com/abc-xyz-123",
+    "startTime": 1741876922,
+    "endTime": 1741887722,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S001", "userEmail": "student001@example.com" },
+      { "userId": "S002", "userEmail": "student002@example.com" },
+      { "userId": "S003", "userEmail": "student003@example.com" },
+      { "userId": "S100", "userEmail": "student100@example.com" }
+    ]
+  },
+  {
+    "tableId": "T002",
+    "tableName": "Afternoon Session - C2",
+    "courseId": "C2",
+    "instructorId": "I002",
+    "lic": "I002",
+    "meetingURL": "https://meet.google.com/def-xyz-456",
+    "startTime": 1741888922,
+    "endTime": 1741899722,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S101", "userEmail": "student101@example.com" },
+      { "userId": "S102", "userEmail": "student102@example.com" },
+      { "userId": "S103", "userEmail": "student103@example.com" },
+      { "userId": "S200", "userEmail": "student200@example.com" }
+    ]
+  }
+]

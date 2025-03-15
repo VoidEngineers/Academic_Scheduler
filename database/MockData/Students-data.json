@@ -1,0 +1,22 @@
+[
+  {
+    "userId": "S001",
+    "userEmail": "student001@example.com",
+    "enrolledCourses": ["C1", "C3"]
+  },
+  {
+    "userId": "S002",
+    "userEmail": "student002@example.com",
+    "enrolledCourses": ["C1"]
+  },
+  {
+    "userId": "S003",
+    "userEmail": "student003@example.com",
+    "enrolledCourses": ["C2", "C4"]
+  },
+  {
+    "userId": "S1000",
+    "userEmail": "student1000@example.com",
+    "enrolledCourses": ["C10"]
+  }
+]
