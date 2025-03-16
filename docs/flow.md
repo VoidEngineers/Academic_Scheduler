@@ -18,6 +18,10 @@
 
 1.
 
+```plaintext
+use the ./Instructors-data.json and ./Student-data.json for fill the neccessary data in the table and in here the outer array is a day array which has the timetables per day and there are 5 days per week and for one online lecture we have one 3hrs and generate data set for a week. and for one course there should be a instructor and 100 students and the same time we can conduct 2 or 3 lectures paralallely and there are no limitaions but consider the instructors availavility you can assign a instructor to the timetable
+```
+
 ## Conflict Manager service Flow
 
 1.
