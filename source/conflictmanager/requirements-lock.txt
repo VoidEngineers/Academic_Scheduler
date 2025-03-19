@@ -57,3 +57,5 @@ urllib3==2.2.2
     #   requests
 werkzeug==3.0.4
     # via flask
+networkx==3.4.2
+

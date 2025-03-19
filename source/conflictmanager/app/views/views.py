@@ -4,11 +4,18 @@ from app import app
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
 
-from app.services.testService import test_service # type: ignore
+from app.services.testService import test_service 
+from app.services.conflictDetectService import conflict_detect_service_with_mock_data
 
-@app.route('/')
-def home():
-    return jsonify({"message": "Welcome to the Conflict Manager API"}), 200
+@app.post('/conflictmanager')
+def conflictmanager():
+    test, status_code = conflict_detect_service_with_mock_data()
+    if status_code == 200:
+        return test, 200
+    elif status_code == 404:
+        return test, 404
+    else:
+        return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/test')
 def test():
