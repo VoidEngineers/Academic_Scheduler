@@ -1,87 +1,88 @@
 import React from 'react';
 import {
-  Icon,
+  Box,
+  Stack,
+  Link,
   Popover,
   PopoverTrigger,
-  Stack,
+  PopoverContent,
+  Text,
   useColorModeValue
 } from '@chakra-ui/react';
-import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
 import { NavItem } from './types';
-
-// Import styled components
 import {
-  NavItemBox,
-  NavItemLink,
-  SubNavPopover,
-  SubNavStack,
-  SubNavLink,
-  SubNavContent,
-  SubNavLabel,
-  SubNavDescription,
-  SubNavIconContainer,
-  NavItemsContainer
-} from '../../styles/desktopNavStyles';
+  NavItemsContainer,
+  NavLinkContainer,
+  NavLinkText,
+  DropdownLink
+} from '../../styles/navBarStyle';
 
 interface DesktopNavProps {
   navItems: NavItem[];
 }
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  
-  return (
-    <SubNavLink to={href || '#'}>
-      <SubNavStack>
-        <SubNavContent>
-          <SubNavLabel>
-            {label}
-          </SubNavLabel>
-          <SubNavDescription>{subLabel}</SubNavDescription>
-        </SubNavContent>
-        <SubNavIconContainer>
-          <Icon color={'purple.400'} w={5} h={5} as={ChevronRightIcon} />
-        </SubNavIconContainer>
-      </SubNavStack>
-    </SubNavLink>
-  );
-};
-
 const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
+  const popoverBorderColor = useColorModeValue('gray.200', 'gray.600');
+  const popoverHoverBgColor = useColorModeValue('gray.100', 'gray.700');
+  const primaryColor = useColorModeValue('purple.600', 'purple.200');
 
   return (
     <NavItemsContainer>
       {navItems.map((navItem) => (
-        <NavItemBox key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
+        <Box key={navItem.label}>
+          <Popover trigger={'hover'} placement={'bottom-start'} gutter={8}>
             <PopoverTrigger>
-              <NavItemLink
-                href={navItem.href ?? '#'}
-                color={linkColor}
-                _hover={{
-                  color: linkHoverColor,
-                }}
-                as={navItem.href ? RouterLink : undefined}
-                to={navItem.href || undefined}>
-                {navItem.label}
-              </NavItemLink>
+              <NavLinkContainer>
+                <Link
+                  as={RouterLink}
+                  to={navItem.href ?? '#'}
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <NavLinkText primaryColor={primaryColor}>
+                    {navItem.label}
+                  </NavLinkText>
+                </Link>
+              </NavLinkContainer>
             </PopoverTrigger>
 
             {navItem.children && (
-              <SubNavPopover
-                bg={popoverContentBgColor}>
+              <PopoverContent
+                border={1}
+                boxShadow={'md'}
+                bg={popoverContentBgColor}
+                p={4}
+                borderColor={popoverBorderColor}
+                rounded={'xl'}
+                minW={'sm'}>
                 <Stack>
-                  {navItem.children.map((child: NavItem) => (
-                    <DesktopSubNav key={child.label} {...child} />
+                  {navItem.children.map((child) => (
+                    <DropdownLink
+                      key={child.label}
+                      bgHoverColor={popoverHoverBgColor}>
+                      <Link
+                        as={RouterLink}
+                        to={child.href ?? '#'}
+                        role={'group'}
+                        display={'block'}
+                        p={2}
+                        rounded={'md'}
+                        _hover={{ textDecoration: 'none' }}>
+                        <Text
+                          transition={'all .3s ease'}
+                          _groupHover={{ color: primaryColor }}
+                          fontWeight={500}>
+                          {child.label}
+                        </Text>
+                      </Link>
+                    </DropdownLink>
                   ))}
                 </Stack>
-              </SubNavPopover>
+              </PopoverContent>
             )}
           </Popover>
-        </NavItemBox>
+        </Box>
       ))}
     </NavItemsContainer>
   );
