@@ -1,15 +1,17 @@
-import { Route, Routes } from 'react-router-dom'
-import OnBoarding from './pages/onBoarding/onBoarding'
+import { Route, Routes } from "react-router-dom";
+import NotFound from "./404";
+import MainLayout from "./layouts/mainLayout/mainLayout";
 
 function App() {
-
   return (
-    <>
-     <Routes>
-     <Route path="/" element={<OnBoarding />} />
-     </Routes>
-    </>
-  )
+    <MainLayout>
+      <>
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </>
+    </MainLayout>
+  );
 }
 
-export default App
+export default App;
