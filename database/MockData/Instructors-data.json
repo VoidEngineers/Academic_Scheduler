@@ -1,0 +1,92 @@
+[
+  {
+    "userId": "I001",
+    "userEmail": "instructor001@example.com",
+    "assignedCourses": ["C1", "C3"],
+    "lic": true,
+    "workingHours": "9 AM - 5 PM",
+    "specializedArea": "Computer Science",
+    "description": "Experienced in algorithms and data structures."
+  },
+  {
+    "userId": "I002",
+    "userEmail": "instructor002@example.com",
+    "assignedCourses": ["C2"],
+    "lic": true,
+    "workingHours": "10 AM - 6 PM",
+    "specializedArea": "Machine Learning",
+    "description": "Expert in AI and ML models."
+  },
+  {
+    "userId": "I003",
+    "userEmail": "instructor003@example.com",
+    "assignedCourses": ["C4", "C5"],
+    "lic": false,
+    "workingHours": "8 AM - 4 PM",
+    "specializedArea": "Web Development",
+    "description": "Skilled in full-stack development."
+  },
+  {
+    "userId": "I004",
+    "userEmail": "instructor004@example.com",
+    "assignedCourses": ["C1", "C2"],
+    "lic": true,
+    "workingHours": "9 AM - 5 PM",
+    "specializedArea": "Data Science",
+    "description": "Experienced in data analysis and visualization."
+  },
+  {
+    "userId": "I005",
+    "userEmail": "instructor005@example.com",
+    "assignedCourses": ["C3", "C4"],
+    "lic": true,
+    "workingHours": "10 AM - 6 PM",
+    "specializedArea": "Cyber Security",
+    "description": "Expert in network security and cryptography."
+  },
+  {
+    "userId": "I006",
+    "userEmail": "instructor006@example.com",
+    "assignedCourses": ["C5", "C1"],
+    "lic": false,
+    "workingHours": "8 AM - 4 PM",
+    "specializedArea": "Software Engineering",
+    "description": "Skilled in software design and architecture."
+  },
+  {
+    "userId": "I007",
+    "userEmail": "instructor007@example.com",
+    "assignedCourses": ["C2", "C3"],
+    "lic": true,
+    "workingHours": "9 AM - 5 PM",
+    "specializedArea": "Artificial Intelligence",
+    "description": "Experienced in neural networks and deep learning."
+  },
+  {
+    "userId": "I008",
+    "userEmail": "instructor008@example.com",
+    "assignedCourses": ["C4", "C5"],
+    "lic": true,
+    "workingHours": "10 AM - 6 PM",
+    "specializedArea": "Database Management",
+    "description": "Expert in SQL and NoSQL databases."
+  },
+  {
+    "userId": "I009",
+    "userEmail": "instructor009@example.com",
+    "assignedCourses": ["C1", "C2"],
+    "lic": false,
+    "workingHours": "8 AM - 4 PM",
+    "specializedArea": "Cloud Computing",
+    "description": "Skilled in AWS and Azure services."
+  },
+  {
+    "userId": "I010",
+    "userEmail": "instructor010@example.com",
+    "assignedCourses": ["C3", "C4"],
+    "lic": true,
+    "workingHours": "9 AM - 5 PM",
+    "specializedArea": "Mobile Development",
+    "description": "Experienced in Android and iOS development."
+  }
+]

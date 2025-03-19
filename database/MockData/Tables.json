@@ -1,0 +1,429 @@
+[
+  {
+    "tableId": "T001",
+    "tableName": "Morning Session - C1",
+    "courseId": "C1",
+    "instructorId": "I001",
+    "lic": "I001",
+    "meetingURL": "https://meet.google.com/abc-xyz-123",
+    "startTime": 1742697600,
+    "endTime": 1742708400,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S001", "userEmail": "student001@example.com" },
+      { "userId": "S002", "userEmail": "student002@example.com" },
+      { "userId": "S003", "userEmail": "student003@example.com" },
+      { "userId": "S100", "userEmail": "student100@example.com" }
+    ]
+  },
+  {
+    "tableId": "T002",
+    "tableName": "Afternoon Session - C2",
+    "courseId": "C2",
+    "instructorId": "I002",
+    "lic": "I002",
+    "meetingURL": "https://meet.google.com/def-xyz-456",
+    "startTime": 1742708400,
+    "endTime": 1742719200,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S101", "userEmail": "student101@example.com" },
+      { "userId": "S102", "userEmail": "student102@example.com" },
+      { "userId": "S103", "userEmail": "student103@example.com" },
+      { "userId": "S200", "userEmail": "student200@example.com" }
+    ]
+  },
+  {
+    "tableId": "T003",
+    "tableName": "Evening Session - C3",
+    "courseId": "C3",
+    "instructorId": "I003",
+    "lic": "I003",
+    "meetingURL": "https://meet.google.com/ghi-xyz-789",
+    "startTime": 1742719200,
+    "endTime": 1742730000,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S201", "userEmail": "student201@example.com" },
+      { "userId": "S202", "userEmail": "student202@example.com" },
+      { "userId": "S300", "userEmail": "student300@example.com" }
+    ]
+  },
+  {
+    "tableId": "T004",
+    "tableName": "Night Session - C4",
+    "courseId": "C4",
+    "instructorId": "I004",
+    "lic": "I004",
+    "meetingURL": "https://meet.google.com/jkl-xyz-012",
+    "startTime": 1742697600,
+    "endTime": 1742708400,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S301", "userEmail": "student301@example.com" },
+      { "userId": "S302", "userEmail": "student302@example.com" },
+      { "userId": "S400", "userEmail": "student400@example.com" }
+    ]
+  },
+  {
+    "tableId": "T005",
+    "tableName": "Late Night Session - C5",
+    "courseId": "C5",
+    "instructorId": "I005",
+    "lic": "I005",
+    "meetingURL": "https://meet.google.com/mno-xyz-345",
+    "startTime": 1742708400,
+    "endTime": 1742719200,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S401", "userEmail": "student401@example.com" },
+      { "userId": "S402", "userEmail": "student402@example.com" },
+      { "userId": "S500", "userEmail": "student500@example.com" }
+    ]
+  },
+  {
+    "tableId": "T006",
+    "tableName": "Morning Session - C1",
+    "courseId": "C1",
+    "instructorId": "I001",
+    "lic": "I001",
+    "meetingURL": "https://meet.google.com/abc-xyz-123",
+    "startTime": 1742697600,
+    "endTime": 1742708400,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S001", "userEmail": "student001@example.com" },
+      { "userId": "S002", "userEmail": "student002@example.com" },
+      { "userId": "S100", "userEmail": "student100@example.com" }
+    ]
+  },
+  {
+    "tableId": "T007",
+    "tableName": "Afternoon Session - C2",
+    "courseId": "C2",
+    "instructorId": "I002",
+    "lic": "I002",
+    "meetingURL": "https://meet.google.com/def-xyz-456",
+    "startTime": 1742784000,
+    "endTime": 1742794800,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S101", "userEmail": "student101@example.com" },
+      { "userId": "S102", "userEmail": "student102@example.com" },
+      { "userId": "S200", "userEmail": "student200@example.com" }
+    ]
+  },
+  {
+    "tableId": "T008",
+    "tableName": "Evening Session - C3",
+    "courseId": "C3",
+    "instructorId": "I003",
+    "lic": "I003",
+    "meetingURL": "https://meet.google.com/ghi-xyz-789",
+    "startTime": 1742794800,
+    "endTime": 1742805600,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S201", "userEmail": "student201@example.com" },
+      { "userId": "S202", "userEmail": "student202@example.com" },
+      { "userId": "S300", "userEmail": "student300@example.com" }
+    ]
+  },
+  {
+    "tableId": "T009",
+    "tableName": "Night Session - C4",
+    "courseId": "C4",
+    "instructorId": "I004",
+    "lic": "I004",
+    "meetingURL": "https://meet.google.com/jkl-xyz-012",
+    "startTime": 1742805600,
+    "endTime": 1742816400,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S301", "userEmail": "student301@example.com" },
+      { "userId": "S302", "userEmail": "student302@example.com" },
+      { "userId": "S400", "userEmail": "student400@example.com" }
+    ]
+  },
+  {
+    "tableId": "T010",
+    "tableName": "Late Night Session - C5",
+    "courseId": "C5",
+    "instructorId": "I005",
+    "lic": "I005",
+    "meetingURL": "https://meet.google.com/mno-xyz-345",
+    "startTime": 1742784000,
+    "endTime": 1742794800,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S401", "userEmail": "student401@example.com" },
+      { "userId": "S402", "userEmail": "student402@example.com" },
+      { "userId": "S500", "userEmail": "student500@example.com" }
+    ]
+  },
+  {
+    "tableId": "T011",
+    "tableName": "Morning Session - C1",
+    "courseId": "C1",
+    "instructorId": "I001",
+    "lic": "I001",
+    "meetingURL": "https://meet.google.com/abc-xyz-123",
+    "startTime": 1742870400,
+    "endTime": 1742881200,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S001", "userEmail": "student001@example.com" },
+      { "userId": "S002", "userEmail": "student002@example.com" },
+      { "userId": "S100", "userEmail": "student100@example.com" }
+    ]
+  },
+  {
+    "tableId": "T012",
+    "tableName": "Afternoon Session - C2",
+    "courseId": "C2",
+    "instructorId": "I002",
+    "lic": "I002",
+    "meetingURL": "https://meet.google.com/def-xyz-456",
+    "startTime": 1742881200,
+    "endTime": 1742892000,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S101", "userEmail": "student101@example.com" },
+      { "userId": "S102", "userEmail": "student102@example.com" },
+      { "userId": "S200", "userEmail": "student200@example.com" }
+    ]
+  },
+  {
+    "tableId": "T013",
+    "tableName": "Evening Session - C3",
+    "courseId": "C3",
+    "instructorId": "I003",
+    "lic": "I003",
+    "meetingURL": "https://meet.google.com/ghi-xyz-789",
+    "startTime": 1742892000,
+    "endTime": 1742902800,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S201", "userEmail": "student201@example.com" },
+      { "userId": "S202", "userEmail": "student202@example.com" },
+      { "userId": "S300", "userEmail": "student300@example.com" }
+    ]
+  },
+  {
+    "tableId": "T014",
+    "tableName": "Night Session - C4",
+    "courseId": "C4",
+    "instructorId": "I004",
+    "lic": "I004",
+    "meetingURL": "https://meet.google.com/jkl-xyz-012",
+    "startTime": 1742870400,
+    "endTime": 1742881200,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S301", "userEmail": "student301@example.com" },
+      { "userId": "S302", "userEmail": "student302@example.com" },
+      { "userId": "S400", "userEmail": "student400@example.com" }
+    ]
+  },
+  {
+    "tableId": "T015",
+    "tableName": "Late Night Session - C5",
+    "courseId": "C5",
+    "instructorId": "I005",
+    "lic": "I005",
+    "meetingURL": "https://meet.google.com/mno-xyz-345",
+    "startTime": 1742956800,
+    "endTime": 1742967600,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S401", "userEmail": "student401@example.com" },
+      { "userId": "S402", "userEmail": "student402@example.com" },
+      { "userId": "S500", "userEmail": "student500@example.com" }
+    ]
+  },
+  {
+    "tableId": "T016",
+    "tableName": "Morning Session - C1",
+    "courseId": "C1",
+    "instructorId": "I001",
+    "lic": "I001",
+    "meetingURL": "https://meet.google.com/abc-xyz-123",
+    "startTime": 1743043200,
+    "endTime": 1743054000,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S001", "userEmail": "student001@example.com" },
+      { "userId": "S002", "userEmail": "student002@example.com" },
+      { "userId": "S100", "userEmail": "student100@example.com" }
+    ]
+  },
+  {
+    "tableId": "T017",
+    "tableName": "Afternoon Session - C2",
+    "courseId": "C2",
+    "instructorId": "I002",
+    "lic": "I002",
+    "meetingURL": "https://meet.google.com/def-xyz-456",
+    "startTime": 1743054000,
+    "endTime": 1743064800,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S101", "userEmail": "student101@example.com" },
+      { "userId": "S102", "userEmail": "student102@example.com" },
+      { "userId": "S200", "userEmail": "student200@example.com" }
+    ]
+  },
+  {
+    "tableId": "T018",
+    "tableName": "Evening Session - C3",
+    "courseId": "C3",
+    "instructorId": "I003",
+    "lic": "I003",
+    "meetingURL": "https://meet.google.com/ghi-xyz-789",
+    "startTime": 1743064800,
+    "endTime": 1743075600,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S201", "userEmail": "student201@example.com" },
+      { "userId": "S202", "userEmail": "student202@example.com" },
+      { "userId": "S300", "userEmail": "student300@example.com" }
+    ]
+  },
+  {
+    "tableId": "T019",
+    "tableName": "Night Session - C4",
+    "courseId": "C4",
+    "instructorId": "I004",
+    "lic": "I004",
+    "meetingURL": "https://meet.google.com/jkl-xyz-012",
+    "startTime": 1743043200,
+    "endTime": 1743054000,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S301", "userEmail": "student301@example.com" },
+      { "userId": "S302", "userEmail": "student302@example.com" },
+      { "userId": "S400", "userEmail": "student400@example.com" }
+    ]
+  },
+  {
+    "tableId": "T020",
+    "tableName": "Late Night Session - C5",
+    "courseId": "C5",
+    "instructorId": "I005",
+    "lic": "I005",
+    "meetingURL": "https://meet.google.com/mno-xyz-345",
+    "startTime": 1743054000,
+    "endTime": 1743064800,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S401", "userEmail": "student401@example.com" },
+      { "userId": "S402", "userEmail": "student402@example.com" },
+      { "userId": "S500", "userEmail": "student500@example.com" }
+    ]
+  },
+  {
+    "tableId": "T021",
+    "tableName": "Morning Session - C1",
+    "courseId": "C1",
+    "instructorId": "I001",
+    "lic": "I001",
+    "meetingURL": "https://meet.google.com/abc-xyz-123",
+    "startTime": 1743129600,
+    "endTime": 1743140400,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S001", "userEmail": "student001@example.com" },
+      { "userId": "S002", "userEmail": "student002@example.com" },
+      { "userId": "S100", "userEmail": "student100@example.com" }
+    ]
+  },
+  {
+    "tableId": "T022",
+    "tableName": "Afternoon Session - C2",
+    "courseId": "C2",
+    "instructorId": "I002",
+    "lic": "I002",
+    "meetingURL": "https://meet.google.com/def-xyz-456",
+    "startTime": 1743140400,
+    "endTime": 1743151200,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S101", "userEmail": "student101@example.com" },
+      { "userId": "S102", "userEmail": "student102@example.com" },
+      { "userId": "S200", "userEmail": "student200@example.com" }
+    ]
+  },
+  {
+    "tableId": "T023",
+    "tableName": "Evening Session - C3",
+    "courseId": "C3",
+    "instructorId": "I003",
+    "lic": "I003",
+    "meetingURL": "https://meet.google.com/ghi-xyz-789",
+    "startTime": 1743151200,
+    "endTime": 1743162000,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S201", "userEmail": "student201@example.com" },
+      { "userId": "S202", "userEmail": "student202@example.com" },
+      { "userId": "S300", "userEmail": "student300@example.com" }
+    ]
+  },
+  {
+    "tableId": "T024",
+    "tableName": "Night Session - C4",
+    "courseId": "C4",
+    "instructorId": "I004",
+    "lic": "I004",
+    "meetingURL": "https://meet.google.com/jkl-xyz-012",
+    "startTime": 1743129600,
+    "endTime": 1743140400,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S301", "userEmail": "student301@example.com" },
+      { "userId": "S302", "userEmail": "student302@example.com" },
+      { "userId": "S400", "userEmail": "student400@example.com" }
+    ]
+  },
+  {
+    "tableId": "T025",
+    "tableName": "Late Night Session - C5",
+    "courseId": "C5",
+    "instructorId": "I005",
+    "lic": "I005",
+    "meetingURL": "https://meet.google.com/mno-xyz-345",
+    "startTime": 1743140400,
+    "endTime": 1743151200,
+    "duration": "3 hr",
+    "capacity": 100,
+    "students": [
+      { "userId": "S401", "userEmail": "student401@example.com" },
+      { "userId": "S402", "userEmail": "student402@example.com" },
+      { "userId": "S500", "userEmail": "student500@example.com" }
+    ]
+  }
+]
