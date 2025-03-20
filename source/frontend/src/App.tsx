@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 import OnBoarding from './pages/onBoarding/onBoarding'
-
-
-
+import Navbar from './components/navbar/navbar'
+import Footer from './components/footer/footer'
+// import Error404 from '../src/Error404'
 // line 6 ve
 import { LectureScheduler } from './pages/LectureScheduler'
 import ScheduleView from './pages/ScheduleView'
@@ -56,7 +56,7 @@ function App() {
 
   return (
     <>
-    {/* <Header/> */}
+    <Navbar/>
      <Routes>
      <Route path="/" element={<OnBoarding />} />
 
@@ -113,7 +113,7 @@ function App() {
 
 {/* line 114 */}
      </Routes>
-     {/* <footer/> */}
+     <Footer/>
     </>
   )
 }
