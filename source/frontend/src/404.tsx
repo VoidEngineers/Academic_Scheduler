@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useColorModeValue } from '@chakra-ui/react';
-import MainLayout from './layouts/mainLayout/mainLayout';
 import {
   NotFoundContainer,
   ErrorCode,
@@ -25,7 +24,6 @@ const NotFound: React.FC = () => {
   };
   
   return (
-    <MainLayout>
       <NotFoundContainer>
         <IllustrationContainer>
           <svg
@@ -84,7 +82,6 @@ const NotFound: React.FC = () => {
           </BackButton>
         </ButtonContainer>
       </NotFoundContainer>
-    </MainLayout>
   );
 };
 
