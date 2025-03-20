@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import {
   Step,
   StepDescription as ChakraStepDescription,
@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { FaUser, FaBook, FaCalendarAlt } from 'react-icons/fa';
-import MainLayout from '../../layouts/mainLayout/mainLayout';
+// Removed MainLayout import as we no longer need it
 import {
   OnboardingContainer,
   ContentContainer,
@@ -43,8 +43,8 @@ const steps = [
 ];
 
 const OnBoarding: React.FC = () => {
-  const [isLoggedIn] = useState(true); // Normally from auth context
-  const [userName] = useState('New User');
+  // const [isLoggedIn] = useState(true); // Normally from auth context
+  // const [userName] = useState('New User');
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
@@ -163,52 +163,51 @@ const OnBoarding: React.FC = () => {
     }
   };
 
+  // Removed MainLayout wrapper
   return (
-    <MainLayout isLoggedIn={isLoggedIn} userName={userName}>
-      <OnboardingContainer bgColor={bgColor}>
-        <ContentContainer>
-          <StepsContainer>
-            <Stepper index={activeStep} width="100%" colorScheme="purple">
-              {steps.map((step, index) => (
-                <Step key={index}>
-                  <StepIndicator>
-                    <StepStatus 
-                      complete={<StepIcon />}
-                      incomplete={<StepNumber />}
-                      active={<StepNumber />}
-                    />
-                  </StepIndicator>
-                  <Box flexShrink={0}>
-                    <StepTitle>{step.title}</StepTitle>
-                    <ChakraStepDescription>{step.description}</ChakraStepDescription>
-                  </Box>
-                  <StepSeparator />
-                </Step>
-              ))}
-            </Stepper>
-            
-            <ContentBox>
-              {renderStepContent()}
-            </ContentBox>
-            
-            <NavigationContainer>
-              <BackButton 
-                isDisabled={activeStep === 0} 
-                onClick={handlePrevStep}
-              >
-                Back
-              </BackButton>
-              <NextButton 
-                onClick={handleNextStep}
-                rightIcon={activeStep < steps.length - 1 ? <ArrowForwardIcon /> : undefined}
-              >
-                {activeStep < steps.length - 1 ? 'Next' : 'Complete'}
-              </NextButton>
-            </NavigationContainer>
-          </StepsContainer>
-        </ContentContainer>
-      </OnboardingContainer>
-    </MainLayout>
+    <OnboardingContainer bgColor={bgColor}>
+      <ContentContainer>
+        <StepsContainer>
+          <Stepper index={activeStep} width="100%" colorScheme="purple">
+            {steps.map((step, index) => (
+              <Step key={index}>
+                <StepIndicator>
+                  <StepStatus 
+                    complete={<StepIcon />}
+                    incomplete={<StepNumber />}
+                    active={<StepNumber />}
+                  />
+                </StepIndicator>
+                <Box flexShrink={0}>
+                  <StepTitle>{step.title}</StepTitle>
+                  <ChakraStepDescription>{step.description}</ChakraStepDescription>
+                </Box>
+                <StepSeparator />
+              </Step>
+            ))}
+          </Stepper>
+          
+          <ContentBox>
+            {renderStepContent()}
+          </ContentBox>
+          
+          <NavigationContainer>
+            <BackButton 
+              isDisabled={activeStep === 0} 
+              onClick={handlePrevStep}
+            >
+              Back
+            </BackButton>
+            <NextButton 
+              onClick={handleNextStep}
+              rightIcon={activeStep < steps.length - 1 ? <ArrowForwardIcon /> : undefined}
+            >
+              {activeStep < steps.length - 1 ? 'Next' : 'Complete'}
+            </NextButton>
+          </NavigationContainer>
+        </StepsContainer>
+      </ContentContainer>
+    </OnboardingContainer>
   );
 };
 
