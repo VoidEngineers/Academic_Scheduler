@@ -1,24 +1,24 @@
 package com.Acedemic.Scheduler.schedulemanagement;
 
 public class Student {
-    private String studentId;
-    private String name;
+    private String userId;
+    private String userEmail;
 
     public Student() {}
 
-    public String getStudentId() {
-        return studentId;
+    public String getuserId() {
+        return userId;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setuserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getuserEmail() {
+        return userEmail;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setuserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 } 
