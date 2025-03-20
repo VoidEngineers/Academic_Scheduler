@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, HStack, Link } from '@chakra-ui/react';
 
 export const MainContainer = styled(Box)`
   min-height: 100vh;
@@ -58,5 +58,24 @@ export const FooterLink = styled(Box)<{ primaryColor: string }>`
   
   &:hover {
     text-decoration: underline;
+  }
+`;
+
+export const SocialIconsContainer = styled(HStack)`
+  spacing: 4;
+`;
+
+export const SocialIcon = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  transition: all 0.2s;
+  
+  &:hover {
+    transform: translateY(-2px);
+    opacity: 0.8;
   }
 `;

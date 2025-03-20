@@ -41,8 +41,8 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { isOpen, onToggle } = useDisclosure();
   
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const textColor = useColorModeValue('gray.600', 'white');
+  const bgColor = useColorModeValue('purple.500', 'gray');
+  const textColor = useColorModeValue('gray.800', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const primaryColor = useColorModeValue('purple.600', 'purple.200');
 
