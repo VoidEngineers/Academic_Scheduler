@@ -1,11 +1,8 @@
-import { Route, Routes } from "react-router-dom";
-// import OnBoarding from "./pages/onBoarding/onBoarding";
-import NotFound from "./404";
-import Navbar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
-
-
-
+import { Route, Routes } from 'react-router-dom'
+import OnBoarding from './pages/onBoarding/onBoarding'
+import Navbar from './components/navbar/navbar'
+import Footer from './components/footer/footer'
+// import Error404 from '../src/Error404'
 // line 6 ve
 import { LectureScheduler } from './pages/LectureScheduler'
 import ScheduleView from './pages/ScheduleView'
@@ -56,17 +53,10 @@ import ScheduleView from './pages/ScheduleView'
 
 
 function App() {
+
   return (
     <>
-
-      <Navbar />
-      <Routes>
-        {/* <Route path="/" element={<OnBoarding />} /> */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer/>
-
-    {/* <Header/> */}
+    <Navbar/>
      <Routes>
      <Route path="/" element={<OnBoarding />} />
 
@@ -123,10 +113,9 @@ function App() {
 
 {/* line 114 */}
      </Routes>
-     {/* <footer/> */}
-
+     <Footer/>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
