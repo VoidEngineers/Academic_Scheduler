@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173") // Allow frontend access
 @RequestMapping("/schedules")
 public class ScheduleController {
 

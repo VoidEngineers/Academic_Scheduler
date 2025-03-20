@@ -8,6 +8,7 @@ import java.util.List;
 public class Schedule {
     
 @Id
+    private String scheduleId;
     private String tableId; //removed teh @Id annotation to get the generated id from mongo
     private String tableName;
     private String courseId;
@@ -38,6 +39,14 @@ public class Schedule {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public String getCourseId() {
