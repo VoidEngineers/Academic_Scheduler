@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import "../styles/LectureScheduler.css";
 
 interface Student {
@@ -23,6 +24,8 @@ export const LectureScheduler = () => {
     lic: '',
     meetingURL: ''
   });
+
+  const navigate = useNavigate();
 
   // Calculate end time whenever start time changes
   useEffect(() => {
@@ -131,18 +134,20 @@ export const LectureScheduler = () => {
         lic: '',
         meetingURL: ''
       });
+
+      // Redirect to /view-schedule page
+      navigate("/view-schedule");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Failed to schedule lecture:", error);
       alert(`Failed to schedule lecture: ${errorMessage}`);
+      navigate("/view-schedule");
     }
   };
-  
-  
 
   return (
     <div className="lecture-scheduler">
-      <Text fontSize='50px' color='white' textAlign='center'>
+      <Text fontSize='50px' color='black' textAlign='center'>
         Schedule New Lecture
       </Text>
       <form onSubmit={handleSubmit}>
