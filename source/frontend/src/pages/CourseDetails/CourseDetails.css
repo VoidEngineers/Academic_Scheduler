@@ -1,0 +1,259 @@
+.course-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  .course-header {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .course-title-section h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .course-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .course-code,
+  .course-category {
+    background: #f8f9fa;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .instructor-info {
+    margin-top: 1.5rem;
+  }
+  
+  .instructor-info h3 {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+  }
+  
+  .instructor-info p {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  .course-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+  
+  .main-content section {
+    margin-bottom: 2.5rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .main-content h2 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  .course-description p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #495057;
+  }
+  
+  .what-youll-learn ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .what-youll-learn li {
+    padding: 0.75rem 0;
+    padding-left: 2rem;
+    position: relative;
+    color: #495057;
+  }
+  
+  .what-youll-learn li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  .feature-icon {
+    font-size: 1.5rem;
+  }
+  
+  .feature-text {
+    font-size: 1rem;
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .course-sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+  
+  .course-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .course-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .preview-button {
+    width: 100%;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: none;
+    border-top: 1px solid #eee;
+    color: #495057;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .preview-button:hover {
+    background: #e9ecef;
+  }
+  
+  .course-actions {
+    padding: 1.5rem;
+  }
+  
+  .enroll-button {
+    width: 100%;
+    padding: 1rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 1.5rem;
+  }
+  
+  .enroll-button:hover {
+    background: #0056b3;
+  }
+  
+  .course-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  .stat-value {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 992px) {
+    .course-content {
+      grid-template-columns: 1fr;
+    }
+  
+    .course-sidebar {
+      position: static;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .course-details-container {
+      padding: 1rem;
+    }
+  
+    .course-title-section h1 {
+      font-size: 2rem;
+    }
+  
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .course-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+  
+  .course-video {
+    margin-bottom: 2rem;
+  }
+  
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  } 

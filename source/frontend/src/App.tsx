@@ -8,9 +8,12 @@ import { LectureScheduler } from "./pages/LectureScheduler";
 import ScheduleView from "./pages/ScheduleView";
 import { UserProfile } from "./pages/user/UserProfile";
 import ProfilePage from "./pages/user/ProfilePage";
-import { EnrolledCourses } from "./pages/user/enrolledCourses";
+import { EnrolledCourses } from "./pages/user/EnrolledCourses";
 
 // line 18 g
+import CourseForm from "./pages/CourseForm/CourseForm";
+import CourseList from "./pages/CourseList/CourseList";
+import CourseDetails from "./pages/CourseDetails/CourseDetails";
 
 //line 30 r
 
@@ -36,6 +39,15 @@ function App() {
         <Route path='/my-profile' element={<ProfilePage />} />
         <Route path='/enrolled-courses' element={<EnrolledCourses />} />
         <Route path='/admin' element={<ScheduleView />} />
+
+        {/* line 76 g */}
+        <Route path='/admin/courses/form' element={<CourseForm />} />
+        <Route path='/admin/courses/list' element={<CourseList />} />
+        <Route path='/courses/:courseId' element={<CourseDetails />} />
+
+        {/* line 88 r */}
+
+        {/* line 100 vi */}
 
         {/* line 114 */}
       </Routes>
