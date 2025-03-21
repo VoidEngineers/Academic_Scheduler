@@ -16,9 +16,9 @@ import ScheduleView from './pages/ScheduleView'
 
 
 // line 18 g
-
-
-
+import CourseForm from './pages/CourseForm/CourseForm';
+import CourseList from './pages/CourseList/CourseList';
+import CourseDetails from './pages/CourseDetails/CourseDetails';
 
 
 
@@ -74,9 +74,9 @@ function App() {
 
 
        {/* line 76 g */}
-     
-     
-     
+       <Route path="/admin/courses/form" element={<CourseForm />} />
+        <Route path="/admin/courses/list" element={<CourseList />} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
      
      
      
