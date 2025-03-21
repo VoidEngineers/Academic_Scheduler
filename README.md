@@ -7,14 +7,14 @@ A comprehensive scheduling system for academic institutions, featuring course ma
 This project is organized as a monorepo with the following components:
 
 - **frontend**: React application with TypeScript and Vite
-- **backend**: Node.js API server
-- **infrastructure**: Terraform configuration for cloud deployment
+- **backend**: Java with springboot
+- **infrastructure**: Terraform configuration for cloud deployment and nginx configuration
 
 ## Tech Stack
 
 ### Frontend
 
-- **Framework**: React 18
+- **Framework**: React 19
 - **Language**: TypeScript
 - **Build Tool**: Vite
 - **Package Manager**: pnpm
@@ -23,10 +23,9 @@ This project is organized as a monorepo with the following components:
 
 ### Backend
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: PostgreSQL
-- **ORM**: Prisma
+- **Runtime**: Java
+- **Framework**: Springboot
+- **Database**: MongoDB
 
 ### Infrastructure
 
@@ -34,6 +33,7 @@ This project is organized as a monorepo with the following components:
 - **Cloud Provider**: AWS
 - **CI/CD**: GitHub Actions, GitLabs
 - **Containerization**: Docker
+- **WebServing**: Nginx
 
 ## Getting Started
 
