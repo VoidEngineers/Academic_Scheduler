@@ -79,6 +79,18 @@ const ScheduleView: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleDeleteClick = (scheduleId: number, courseId: number) => {
+    setSchedules(schedules.map(schedule => {
+      if (schedule.id === scheduleId) {
+        return {
+          ...schedule,
+          courses: schedule.courses.filter(course => course.id !== courseId),
+        };
+      }
+      return schedule;
+    }));
+  };
+
   const handleCloseDialog = () => {
     setSelectedSchedule(null);
     setEditingCourse(null);
@@ -106,9 +118,9 @@ const ScheduleView: React.FC = () => {
   };
 
   return (
-    <Box minH="100vh" bg="black">
+    <Box minH="100vh" bg="white">
     <div className="schedule-container">
-       <Text fontSize='50px' color='white' textAlign='center'>
+       <Text fontSize='50px' color='black' textAlign='center'>
        Schedule Management
       </Text>
       
@@ -155,7 +167,7 @@ const ScheduleView: React.FC = () => {
                     <td>
                       <button
                         className="delete-button"
-                        onClick={() => handleEditClick(schedule, course)}
+                        onClick={() => handleDeleteClick(schedule.id, course.id)}
                       >
                         Delete
                       </button>
@@ -248,4 +260,4 @@ const ScheduleView: React.FC = () => {
   );
 };
 
-export default ScheduleView; 
+export default ScheduleView;
