@@ -5,6 +5,7 @@ const Admin: React.FC = () => {
   return (
     <div>
       <Dashboard />
+      
     </div>
   );
 };
