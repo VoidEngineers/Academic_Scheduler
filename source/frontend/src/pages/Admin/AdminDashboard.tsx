@@ -39,11 +39,14 @@ import {
   Button,
   useDisclosure
 } from '@chakra-ui/react';
-import { HamburgerIcon, SettingsIcon, CalendarIcon, StarIcon, InfoIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, SettingsIcon, CalendarIcon, StarIcon, InfoIcon, } from '@chakra-ui/icons';
+import { FaUser, FaBookOpen } from "react-icons/fa";
+import { MdReportProblem } from "react-icons/md";
 import EnrollmentWidget from '../../components/widgets/EnrollmetWidget';
 import CourseDistributionWidget from '../../components/widgets/CourseDistributeWidget';
 import AttendanceWidget from '../../components/widgets/AttendanceWidget';
 import PerformanceWidget from '../../components/widgets/PerformanceWidget';
+import { useNavigate } from "react-router-dom";
 
 const Admin: React.FC = () => {
   // Drawer controls
@@ -63,7 +66,7 @@ const Admin: React.FC = () => {
   const drawerBg = useColorModeValue('white', 'gray.800');
   const menuActiveBg = useColorModeValue('blue.50', 'blue.900');
   const menuHoverBg = useColorModeValue('gray.100', 'gray.700');
-
+  const navigate = useNavigate();
   return (
     <Box py={5} bg={bgColor} minH="100vh">
       {/* Left Drawer Menu */}
@@ -87,8 +90,31 @@ const Admin: React.FC = () => {
                 bg={menuActiveBg} 
                 py={6} 
                 borderRadius={0}
+                onClick={() => navigate("/admin")}
               >
                 Dashboard
+              </Button>
+              <Button 
+                leftIcon={<FaUser />} 
+                justifyContent="flex-start" 
+                variant="ghost" 
+                _hover={{ bg: menuHoverBg }} 
+                py={6} 
+                borderRadius={0}
+                onClick={() => navigate("/#")}
+              >
+                User Management
+              </Button>
+              <Button 
+                leftIcon={<FaBookOpen />} 
+                justifyContent="flex-start" 
+                variant="ghost" 
+                _hover={{ bg: menuHoverBg }} 
+                py={6} 
+                borderRadius={0}
+                onClick={() => navigate("/admin/courses/form")}
+              >
+                Course Management
               </Button>
               <Button 
                 leftIcon={<CalendarIcon />} 
@@ -97,8 +123,19 @@ const Admin: React.FC = () => {
                 _hover={{ bg: menuHoverBg }} 
                 py={6} 
                 borderRadius={0}
+                onClick={() => navigate("/admin/schedule")}
               >
                 Schedule Management
+              </Button>
+              <Button 
+                leftIcon={<MdReportProblem />} 
+                justifyContent="flex-start" 
+                variant="ghost" 
+                _hover={{ bg: menuHoverBg }} 
+                py={6} 
+                borderRadius={0}
+              >
+                Conflict Management
               </Button>
               <Button 
                 leftIcon={<SettingsIcon />} 

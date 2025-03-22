@@ -1,14 +1,18 @@
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import OnBoarding from "./pages/onBoarding/onBoarding";
 import Navbar from "./components/navbar/navbar";
 import Footer from "./components/footer/footer";
-import Admin from "./pages/admin/Admin";
+//import Admin from "./pages/Admin/Admin";
 import Error404 from "../src/Error404";
-// line 6 ve
-import Admin from "./pages/Admin/AdminDashboard";
 
+
+// line 10 ve
+import Admin from "./pages/Admin/AdminDashboard";
+import AdminNav from "../src/pages/Admin/AdminNav";
 import { LectureScheduler } from "./pages/LectureScheduler";
 import ScheduleView from "./pages/ScheduleView";
+import AdminLogin from './pages/auth/AdminLogin';
 
 
 
@@ -16,8 +20,7 @@ import ScheduleView from "./pages/ScheduleView";
 
 
 
-
-// line 18 g
+// line 23 g
 import CourseForm from "./pages/CourseForm/CourseForm";
 import CourseList from "./pages/CourseList/CourseList";
 import CourseDetails from "./pages/CourseDetails/CourseDetails";
@@ -31,7 +34,7 @@ import Calendar from "./pages/schdules/Calander";
 
 
 
-//line 30 r
+//line 37 r
 
 
 
@@ -43,7 +46,7 @@ import Calendar from "./pages/schdules/Calander";
 
 
 
-//line 42 vi
+//line 49 vi
 import ProfilePage from "./pages/user/ProfilePage";
 import { EnrolledCourses } from "./pages/user/EnrolledCourses";
 import { UserProfile } from "./pages/user/UserProfile";
@@ -59,6 +62,11 @@ import { UserProfile } from "./pages/user/UserProfile";
 
 
 function App() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Manage the drawer state
+
+  // Handlers to open and close the sidebar
+  const handleOpenSidebar = () => setIsDrawerOpen(true);
+  const handleCloseSidebar = () => setIsDrawerOpen(false);
   return (
     <>
       <Navbar />
@@ -66,26 +74,80 @@ function App() {
         <Route path='/' element={<OnBoarding />} />
         <Route path='/home' element={<Home />} />
 
-        {/* line 64 ve */}
-        <Route path='/schedule' element={<LectureScheduler />} />
-        <Route path='/view-schedule' element={<ScheduleView />} />
+        {/* line 77 ve */}
+        <Route path='/admin/schedule' element={
+            <>
+              <AdminNav
+                isOpen={isDrawerOpen} 
+                onOpen={handleOpenSidebar} 
+                onClose={handleCloseSidebar} 
+                drawerBg="#f9f9f9" 
+                menuActiveBg="#e2e8f0" 
+                menuHoverBg="#edf2f7" 
+                cardBg="#ffffff" 
+                headerBorderColor="#4FD1C5" 
+              />
+              <LectureScheduler />
+            </>
+          }  />
+        <Route path='/admin/view-schedule'element={
+            <>
+              <AdminNav
+                isOpen={isDrawerOpen} 
+                onOpen={handleOpenSidebar} 
+                onClose={handleCloseSidebar} 
+                drawerBg="#f9f9f9" 
+                menuActiveBg="#e2e8f0" 
+                menuHoverBg="#edf2f7" 
+                cardBg="#ffffff" 
+                headerBorderColor="#4FD1C5" 
+              />
+              <ScheduleView />
+            </>
+          } />
         <Route path='/Admin' element={<Admin />} />
         {/* <Route path="/lecturer-chart" element={<LecturerChart />} /> */}
+        <Route path="/admin-login" element={<AdminLogin />} />
 
 
 
 
 
 
-        {/* line 64 ve */}
-        <Route path='/schedule' element={<LectureScheduler />} />
-        <Route path='/view-schedule' element={<ScheduleView />} />
-        <Route path='/Admin' element={<Admin />} />
-        {/* <Route path="/lecturer-chart" element={<LecturerChart />} /> */}
 
-        {/* line 76 g */}
-        <Route path='/admin/courses/form' element={<CourseForm />} />
-        <Route path='/admin/courses/list' element={<CourseList />} />
+
+
+        {/* line 120 g */}
+        <Route path='/admin/courses/form'element={
+            <>
+              <AdminNav
+                isOpen={isDrawerOpen} 
+                onOpen={handleOpenSidebar} 
+                onClose={handleCloseSidebar} 
+                drawerBg="#f9f9f9" 
+                menuActiveBg="#e2e8f0" 
+                menuHoverBg="#edf2f7" 
+                cardBg="#ffffff" 
+                headerBorderColor="#4FD1C5" 
+              />
+              <CourseForm />
+            </>
+          } />
+        <Route path='/admin/courses/list' element={
+            <>
+              <AdminNav
+                isOpen={isDrawerOpen} 
+                onOpen={handleOpenSidebar} 
+                onClose={handleCloseSidebar} 
+                drawerBg="#f9f9f9" 
+                menuActiveBg="#e2e8f0" 
+                menuHoverBg="#edf2f7" 
+                cardBg="#ffffff" 
+                headerBorderColor="#4FD1C5" 
+              />
+              <CourseList />
+            </>
+          } />
         <Route path='/courses/:courseId' element={<CourseDetails />} />
 
 
@@ -94,7 +156,7 @@ function App() {
 
 
 
-        {/* line 88 r */}
+        {/* line 159 r */}
 
 
 
@@ -106,7 +168,16 @@ function App() {
 
 
 
-        {/* line 100 vi */}
+
+
+
+
+
+
+
+
+
+        {/* line 180 vi */}
         <Route path='/user-profile' element={<UserProfile />} />
         <Route path='/my-profile' element={<ProfilePage />} />
         <Route path='/enrolled-courses' element={<EnrolledCourses />} />
@@ -121,7 +192,23 @@ function App() {
 
 
 
-        {/* line 114 */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {/* line 211 */}
         <Route path='*' element={<Error404 />} />
       </Routes>
       <Footer />
