@@ -1,17 +1,9 @@
-import { Route, Routes } from 'react-router-dom'
-import OnBoarding from './pages/onBoarding/onBoarding'
-import Navbar from './components/navbar/navbar'
-import Footer from './components/footer/footer'
-import Admin from './pages/Admin/Admin';
-// import GlobalStyle from './styles/globalStyles';
-// import LecturerChart from './components/charts/lecturerChart/lecturerChart';
-=======
 import { Route, Routes } from "react-router-dom";
 import OnBoarding from "./pages/onBoarding/onBoarding";
 import Navbar from "./components/navbar/navbar";
 import Footer from "./components/footer/footer";
->>>>>>> main
-// import Error404 from '../src/Error404'
+import Admin from "./pages/admin/Admin";
+import Error404 from "../src/Error404";
 // line 6 ve
 import { LectureScheduler } from "./pages/LectureScheduler";
 import ScheduleView from "./pages/ScheduleView";
@@ -23,6 +15,7 @@ import { EnrolledCourses } from "./pages/user/EnrolledCourses";
 import CourseForm from "./pages/CourseForm/CourseForm";
 import CourseList from "./pages/CourseList/CourseList";
 import CourseDetails from "./pages/CourseDetails/CourseDetails";
+import Home from "./pages/home/Home";
 
 //line 30 r
 
@@ -34,20 +27,19 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<OnBoarding />} />
+        <Route path='/home' element={<Home />} />
 
         {/* line 64 ve */}
         <Route path='/schedule' element={<LectureScheduler />} />
         <Route path='/view-schedule' element={<ScheduleView />} />
 
-
-      {/* line 64 ve */}
-     <Route path="/schedule" element={<LectureScheduler />} />
-     <Route path="/view-schedule" element={<ScheduleView />} />
-     <Route path="/Admin" element={<Admin />} />
-     {/* <Route path="/lecturer-chart" element={<LecturerChart />} /> */}
+        {/* line 64 ve */}
+        <Route path='/schedule' element={<LectureScheduler />} />
+        <Route path='/view-schedule' element={<ScheduleView />} />
+        <Route path='/Admin' element={<Admin />} />
+        {/* <Route path="/lecturer-chart" element={<LecturerChart />} /> */}
 
         {/* line 76 g */}
-
 
         {/* line 88 r */}
 
@@ -67,6 +59,7 @@ function App() {
         {/* line 100 vi */}
 
         {/* line 114 */}
+        <Route path='*' element={<Error404 />} />
       </Routes>
       <Footer />
     </>
