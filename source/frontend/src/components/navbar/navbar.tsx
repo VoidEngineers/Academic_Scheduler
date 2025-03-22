@@ -1,14 +1,21 @@
-import React from 'react';
+import React from "react";
 import {
   Collapse,
   useColorModeValue,
-  useDisclosure
-} from '@chakra-ui/react';
+  useDisclosure,
+  Box,
+  Flex,
+  IconButton,
+  Stack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import {
   HamburgerIcon,
-  CloseIcon
-} from '@chakra-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
+  CloseIcon,
+  SearchIcon,
+  BellIcon,
+} from "@chakra-ui/icons";
+import { Link as RouterLink } from "react-router-dom";
 
 // Import styled components
 import {
@@ -19,18 +26,20 @@ import {
   LogoContainer,
   LogoText,
   DesktopNavContainer,
-  RightSection
-} from '../../styles/navBarStyle';
+  RightSection,
+  SearchButton,
+  NotificationButton,
+} from "../../styles/navBarStyle";
 
 // Import subcomponents
-import DesktopNav from './deskopNav';
-import MobileNav from './mobileNav';
-import SearchBar from '../../components/serachBar/searchBar';
-import UserMenu from './userMenu';
+import DesktopNav from "./deskopNav";
+import MobileNav from "./mobileNav";
+import SearchBar from "../../components/serachBar/searchBar";
+import UserMenu from "./userMenu";
 
 // Import types and data
-import { NavbarProps } from './types';
-import { NAV_ITEMS } from './navData';
+import { NavbarProps } from "./types";
+import { NAV_ITEMS } from "./navData";
 
 const Navbar: React.FC<NavbarProps> = ({
   logo = "Academic Scheduler",
@@ -40,33 +49,34 @@ const Navbar: React.FC<NavbarProps> = ({
   userAvatar = "",
 }) => {
   const { isOpen, onToggle } = useDisclosure();
-  
-  const bgColor = useColorModeValue('purple.500', 'gray');
-  const textColor = useColorModeValue('gray.800', 'white');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
-  const primaryColor = useColorModeValue('purple.600', 'purple.200');
+  const isDesktop = useBreakpointValue({ base: false, md: true });
+
+  const bgColor = "#533a7b";
+  const textColor = "white";
+  const borderColor = "rgba(255, 255, 255, 0.1)";
+  const primaryColor = "white";
+  const hoverBgColor = "rgba(255, 255, 255, 0.1)";
 
   return (
     <NavbarContainer>
       <NavbarFlex
         bgColor={bgColor}
         textColor={textColor}
-        borderColor={borderColor}>
+        borderColor={borderColor}
+      >
         <MobileMenuFlex>
           <NavToggleButton
             onClick={onToggle}
             icon={
               isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
             }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
+            variant={"ghost"}
+            aria-label={"Toggle Navigation"}
           />
         </MobileMenuFlex>
+
         <LogoContainer>
-          <LogoText
-            as={RouterLink}
-            to="/"
-            primaryColor={primaryColor}>
+          <LogoText as={RouterLink} to='/' primaryColor={primaryColor}>
             {logo}
           </LogoText>
 
@@ -76,12 +86,36 @@ const Navbar: React.FC<NavbarProps> = ({
         </LogoContainer>
 
         <RightSection>
-          <SearchBar />
-          <UserMenu 
+          {isDesktop && (
+            <>
+              <SearchButton
+                aria-label='Search'
+                icon={<SearchIcon />}
+                variant='ghost'
+                colorScheme='whiteAlpha'
+                size='md'
+                onClick={() => {
+                  /* Add search functionality */
+                }}
+              />
+              <NotificationButton
+                aria-label='Notifications'
+                icon={<BellIcon />}
+                variant='ghost'
+                colorScheme='whiteAlpha'
+                size='md'
+                onClick={() => {
+                  /* Add notification functionality */
+                }}
+              />
+            </>
+          )}
+          <UserMenu
             isLoggedIn={isLoggedIn}
             userName={userName}
             userAvatar={userAvatar}
             primaryColor={primaryColor}
+            hoverBgColor={hoverBgColor}
           />
         </RightSection>
       </NavbarFlex>
