@@ -16,6 +16,7 @@ import CourseForm from "./pages/CourseForm/CourseForm";
 import CourseList from "./pages/CourseList/CourseList";
 import CourseDetails from "./pages/CourseDetails/CourseDetails";
 import Home from "./pages/home/Home";
+import Calendar from "./pages/schdules/Calander";
 
 //line 30 r
 
@@ -48,6 +49,7 @@ function App() {
         <Route path='/my-profile' element={<ProfilePage />} />
         <Route path='/enrolled-courses' element={<EnrolledCourses />} />
         <Route path='/admin' element={<ScheduleView />} />
+        <Route path='/calendar' element={<Calendar />} />
 
         {/* line 76 g */}
         <Route path='/admin/courses/form' element={<CourseForm />} />
