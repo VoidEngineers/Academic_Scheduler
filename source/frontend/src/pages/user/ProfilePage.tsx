@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Box, Flex } from "@chakra-ui/react";
 import UserProfileCard from "./UserProfileCard";
-import { Sidebar } from "../../components/sidebar/Sidebar";
+import { Sidebar } from "../../components/sideBar/Sidebar";
 
 const ProfilePage: React.FC = () => {
   // Sample user data - in a real application, this would come from your backend
