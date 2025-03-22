@@ -1,5 +1,5 @@
 import React from 'react';
-import './CourseForm.css';
+import './UpdateCourseForm.css';
 
 interface Course {
   courseId: string;

@@ -145,8 +145,15 @@ export const LectureScheduler = () => {
     }
   };
 
+  const handleManageSchedules = () => {
+    navigate("/admin/view-schedule");
+  };
+
   return (
     <div className="lecture-scheduler">
+       <button onClick={handleManageSchedules} className="manage-schedules-button">
+        Manage Schedules
+      </button>
       <Text fontSize='50px' color='black' textAlign='center'>
         Schedule New Lecture
       </Text>
@@ -381,6 +388,5 @@ export const LectureScheduler = () => {
         </button>
       </form>
     </div>
-
   );
 };

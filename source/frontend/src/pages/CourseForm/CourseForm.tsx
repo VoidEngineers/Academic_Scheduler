@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Text } from "@chakra-ui/react";
 import './CourseForm.css';
 
 interface FormErrors {
@@ -116,7 +117,8 @@ const CourseForm: React.FC = () => {
 
   return (
     <div className="course-form-container">
-      <h2>Add New Course</h2>
+      <Text fontSize='50px' color='black' textAlign='center'>Add New Course
+      </Text>
       <form className="course-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="courseId">Course ID:</label>

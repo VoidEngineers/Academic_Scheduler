@@ -69,13 +69,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   return (
     <>
-      <SignInButton
+      {/* <SignInButton
         as={RouterLink}
         to='/login'
         hoverBgColor={finalHoverBgColor}
       >
         Sign In
-      </SignInButton>
+      </SignInButton> */}
       <SignUpButton
         as={RouterLink}
         to='/register'
