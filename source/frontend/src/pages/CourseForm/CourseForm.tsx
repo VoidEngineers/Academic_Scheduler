@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CourseForm.css';
+import { Text } from "@chakra-ui/react";
 
 interface FormErrors {
   courseId?: string;
@@ -27,6 +28,9 @@ const CourseForm: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
+  // Category options
+  const categoryOptions = ['IT', 'Sinhala', 'Science', 'English'];
+
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case 'courseId':
@@ -47,7 +51,6 @@ const CourseForm: React.FC = () => {
 
       case 'category':
         if (!value) return 'Category is required';
-        if (value.length < 2) return 'Category must be at least 2 characters';
         return '';
 
       case 'courseDescription':
@@ -61,7 +64,6 @@ const CourseForm: React.FC = () => {
         return '';
 
       case 'videoUrl':
-        // No validation for video URL
         return '';
 
       default:
@@ -69,7 +71,7 @@ const CourseForm: React.FC = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
@@ -79,7 +81,7 @@ const CourseForm: React.FC = () => {
     }
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
     const error = validateField(name, formData[name as keyof typeof formData]);
@@ -89,7 +91,6 @@ const CourseForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate all fields
     const newErrors: FormErrors = {};
     Object.keys(formData).forEach(key => {
       const error = validateField(key, formData[key as keyof typeof formData]);
@@ -97,149 +98,162 @@ const CourseForm: React.FC = () => {
     });
 
     if (Object.keys(newErrors).length === 0) {
-      // Form is valid, proceed with submission
       console.log('Form submitted:', formData);
-      // Add your submission logic here
-      
-      // Navigate to course list page after successful submission
       navigate('/admin/courses/list');
     } else {
       setErrors(newErrors);
-      // Mark all fields as touched
-      const allTouched = Object.keys(formData).reduce((acc, key) => ({
-        ...acc,
-        [key]: true
-      }), {});
-      setTouched(allTouched);
+      setTouched(
+        Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+      );
     }
   };
 
+  // Input field definitions
+  const inputFields = [
+    { label: 'Course ID', name: 'courseId', type: 'text' },
+    { label: 'Course Name', name: 'courseName', type: 'text' },
+    { label: 'Course Code', name: 'courseCode', type: 'text', placeholder: 'e.g., CS101' },
+    { label: 'Video URL', name: 'videoUrl', type: 'url', placeholder: 'Enter video URL' },
+    { label: 'LIC', name: 'lic', type: 'text' }
+  ];
+
+  // Create pairs of fields for two-column layout
+  const fieldPairs = [];
+  for (let i = 0; i < inputFields.length; i += 2) {
+    fieldPairs.push(inputFields.slice(i, i + 2));
+  }
+
   return (
-    <div className="course-form-container">
-      <h2>Add New Course</h2>
-      <form className="course-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="courseId">Course ID:</label>
-          <input
-            type="text"
-            id="courseId"
-            name="courseId"
-            value={formData.courseId}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={touched.courseId && errors.courseId ? 'error' : ''}
-            required
-          />
-          {touched.courseId && errors.courseId && (
-            <span className="error-message">{errors.courseId}</span>
-          )}
-        </div>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      flexDirection: 'column'
+    }}>
+      <Text fontSize='30px' color='black' textAlign='center'>Add New Course</Text>
+      <form 
+        onSubmit={handleSubmit} 
+        style={{
+          width: '50%',
+          backgroundColor: '#f9f9f9',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '20px'
+        }}
+      >
+        {/* Render field pairs in rows */}
+        {fieldPairs.map((pair, index) => (
+          <div key={index} style={{ 
+            width: '100%', 
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '15px',
+            marginBottom: '10px'
+          }}>
+            {pair.map(({ label, name, type, placeholder }) => (
+              <div key={name} style={{ flex: 1 }}>
+                <label htmlFor={name} style={{ display: 'block', marginBottom: '5px' }}>{label}:</label>
+                <input
+                  type={type}
+                  id={name}
+                  name={name}
+                  value={formData[name as keyof typeof formData]}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder={placeholder}
+                  style={{
+                    width: '100%',
+                    padding: '8px',
+                    border: `1px solid ${errors[name as keyof FormErrors] ? 'red' : '#ccc'}`,
+                    borderRadius: '5px'
+                  }}
+                  required
+                />
+                {touched[name] && errors[name as keyof FormErrors] && (
+                  <span style={{ color: 'red', fontSize: '12px' }}>{errors[name as keyof FormErrors]}</span>
+                )}
+              </div>
+            ))}
+            {/* If we have an odd number of fields, add an empty div to maintain layout */}
+            {pair.length === 1 && <div style={{ flex: 1 }}></div>}
+          </div>
+        ))}
 
-        <div className="form-group">
-          <label htmlFor="courseName">Course Name:</label>
-          <input
-            type="text"
-            id="courseName"
-            name="courseName"
-            value={formData.courseName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={touched.courseName && errors.courseName ? 'error' : ''}
-            required
-          />
-          {touched.courseName && errors.courseName && (
-            <span className="error-message">{errors.courseName}</span>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="courseCode">Course Code:</label>
-          <input
-            type="text"
-            id="courseCode"
-            name="courseCode"
-            value={formData.courseCode}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={touched.courseCode && errors.courseCode ? 'error' : ''}
-            placeholder="e.g., CS101"
-            required
-          />
-          {touched.courseCode && errors.courseCode && (
-            <span className="error-message">{errors.courseCode}</span>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="category">Category:</label>
-          <input
-            type="text"
+        {/* Category dropdown in its own row */}
+        <div style={{ width: '100%', marginBottom: '10px' }}>
+          <label htmlFor="category" style={{ display: 'block', marginBottom: '5px' }}>Category:</label>
+          <select
             id="category"
             name="category"
             value={formData.category}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={touched.category && errors.category ? 'error' : ''}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: `1px solid ${errors.category ? 'red' : '#ccc'}`,
+              borderRadius: '5px',
+              backgroundColor: 'white'
+            }}
             required
-          />
+          >
+            <option value="" disabled>Select a category</option>
+            {categoryOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
           {touched.category && errors.category && (
-            <span className="error-message">{errors.category}</span>
+            <span style={{ color: 'red', fontSize: '12px' }}>{errors.category}</span>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="courseDescription">Description:</label>
+        {/* Description textarea */}
+        <div style={{ width: '100%', marginBottom: '10px' }}>
+          <label htmlFor="courseDescription" style={{ display: 'block', marginBottom: '5px' }}>Description:</label>
           <textarea
             id="courseDescription"
             name="courseDescription"
             value={formData.courseDescription}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={touched.courseDescription && errors.courseDescription ? 'error' : ''}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: `1px solid ${errors.courseDescription ? 'red' : '#ccc'}`,
+              borderRadius: '5px',
+              minHeight: '80px'
+            }}
             required
           />
           {touched.courseDescription && errors.courseDescription && (
-            <span className="error-message">{errors.courseDescription}</span>
+            <span style={{ color: 'red', fontSize: '12px' }}>{errors.courseDescription}</span>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="videoUrl">Video URL:</label>
-          <input
-            type="url"
-            id="videoUrl"
-            name="videoUrl"
-            value={formData.videoUrl}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={touched.videoUrl && errors.videoUrl ? 'error' : ''}
-            placeholder="Enter video URL"
-          />
-          {touched.videoUrl && errors.videoUrl && (
-            <span className="error-message">{errors.videoUrl}</span>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="lic">LIC:</label>
-          <input
-            type="text"
-            id="lic"
-            name="lic"
-            value={formData.lic}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={touched.lic && errors.lic ? 'error' : ''}
-          />
-          {touched.lic && errors.lic && (
-            <span className="error-message">{errors.lic}</span>
-          )}
-        </div>
-
-        <button type="submit" className="submit-button">Add Course</button>
+        <button 
+          type="submit" 
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#007BFF',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginTop: '10px'
+          }}
+        >
+          Add Course
+        </button>
       </form>
     </div>
   );
 };
 
-export default CourseForm; 
+export default CourseForm;
