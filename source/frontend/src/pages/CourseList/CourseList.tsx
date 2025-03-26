@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './CourseList.css';
-import UpdateCourseForm from '../CourseForm/UpdateCourseForm';
+import UpdateCourseForm from '../CourseUpdate/UpdateCourseForm';
 
 interface Course {
   courseId: string;
