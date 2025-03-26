@@ -13,7 +13,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FiBook, FiBookOpen, FiAward } from "react-icons/fi";
-import { Sidebar } from "../../components/sidebar/Sidebar";
+import { Sidebar } from "../../components/sideBar/Sidebar";
 import { CourseCard } from "../../components/courses/CourseCard";
 
 export const UserProfile: React.FC = () => {

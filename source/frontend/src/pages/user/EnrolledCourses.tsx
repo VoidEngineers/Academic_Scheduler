@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { CourseCard } from "../../components/courses/CourseCard";
-import { Sidebar } from "../../components/sidebar/Sidebar";
+import { Sidebar } from "../../components/sideBar/Sidebar";
 
 export const EnrolledCourses: React.FC = () => {
   const [sortBy, setSortBy] = useState("recently");
