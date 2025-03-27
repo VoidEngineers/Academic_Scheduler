@@ -136,7 +136,7 @@ export const LectureScheduler = () => {
       });
 
       // Redirect to /view-schedule page
-      navigate("/view-schedule");
+      navigate("/admin/view-schedule");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Failed to schedule lecture:", error);
@@ -148,6 +148,8 @@ export const LectureScheduler = () => {
   const handleManageSchedules = () => {
     navigate("/admin/view-schedule");
   };
+
+  
 
   return (
     <div className="lecture-scheduler">
