@@ -35,7 +35,7 @@ import Calendar from "./pages/schdules/Calander";
 
 
 //line 37 r
-
+import UserManagement from "./pages/userManagement/user";
 
 
 
@@ -148,7 +148,7 @@ function App() {
               <CourseList />
             </>
           } />
-        <Route path='/courses/:courseId' element={<CourseDetails />} />
+        <Route path='/courses/:courseId' element={<UserManagement />} />
 
 
 
@@ -157,6 +157,22 @@ function App() {
 
 
         {/* line 159 r */}
+        <Route path='/admin/user' element={
+            <>
+              <AdminNav
+                isOpen={isDrawerOpen} 
+                onOpen={handleOpenSidebar} 
+                onClose={handleCloseSidebar} 
+                drawerBg="#f9f9f9" 
+                menuActiveBg="#e2e8f0" 
+                menuHoverBg="#edf2f7" 
+                cardBg="#ffffff" 
+                headerBorderColor="#4FD1C5" 
+              />
+              <UserManagement />
+            </>
+          }  />
+
 
 
 

@@ -11,7 +11,6 @@ import {
   Stack,
   Flex,
   Icon,
-  Link,
   HStack,
 } from "@chakra-ui/react";
 import { ChevronRightIcon, StarIcon } from "@chakra-ui/icons";

@@ -76,7 +76,7 @@ const AdminNav: React.FC<AdminNavProps> = ({
                 _hover={{ bg: menuHoverBg }}
                 py={6}
                 borderRadius={0}
-                onClick={() => navigate("/admin/users")}
+                onClick={() => navigate("/admin/user")}
               >
                 User Management
               </Button>
