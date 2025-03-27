@@ -1,4 +1,5 @@
 // import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   Step,
   StepDescription as ChakraStepDescription,
@@ -56,7 +57,7 @@ const OnBoarding: React.FC = () => {
 
   const handleNextStep = () => setActiveStep(activeStep + 1);
   const handlePrevStep = () => setActiveStep(activeStep - 1);
-  
+  const navigate = useNavigate();
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
@@ -155,6 +156,8 @@ const OnBoarding: React.FC = () => {
             <NextButton 
               size="lg" 
               rightIcon={<ArrowForwardIcon />}
+              onClick={() => navigate("/home")} // Navigate to /home
+      
             >
               Go to Dashboard
             </NextButton>
