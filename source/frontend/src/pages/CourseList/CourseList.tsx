@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CourseList.css';
 import UpdateCourseForm from '../CourseUpdate/UpdateCourseForm';
 
@@ -11,45 +11,42 @@ interface Course {
   lic: string;
 }
 
+interface Course {
+  courseId: string;
+  courseName: string;
+  courseCode: string;
+  category: string;
+  courseDescription: string;  
+}
+
+
 const CourseList: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
 
   // Dummy data
-  const [courses, setCourses] = useState<Course[]>([
-    {
-      courseId: "C001",
-      courseName: "Introduction to Programming",
-      courseCode: "CS101",
-      category: "Computer Science",
-      courseDescription: "Basic programming concepts and problem-solving techniques",
-      lic: "Mr.Prasanna"
-    },
-    {
-      courseId: "C002",
-      courseName: "Data Structures",
-      courseCode: "CS201",
-      category: "Computer Science",
-      courseDescription: "Study of fundamental data structures and algorithms",
-      lic: "Mr.Sanka"
-    },
-    {
-      courseId: "C003",
-      courseName: "Web Development",
-      courseCode: "CS301",
-      category: "Computer Science",
-      courseDescription: "Modern web development with React and Node.js",
-      lic: "Mr.Kasun"
-    },
-    {
-      courseId: "C004",
-      courseName: "Database Systems",
-      courseCode: "CS401",
-      category: "Computer Science",
-      courseDescription: "Database design and SQL programming",
-      lic: "Mr.Geeth"
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+const fetchCourses = async () => {
+  try {
+    const response = await fetch('http://localhost:8083/api/courses', {
+      credentials: 'include'
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch courses');
     }
-  ]);
+    const data = await response.json();
+    setCourses(data);
+  }
+  catch (error) {
+    console.error('Error fetching courses:', error);
+  }
+}
 
   const handleEdit = (course: Course) => {
     setSelectedCourse(course);
@@ -61,12 +58,24 @@ const CourseList: React.FC = () => {
     setSelectedCourse(null);
   };
 
-  const handleDelete = (courseId: string) => {
+  const handleDelete = async(courseId: string) => {
     const courseToDelete = courses.find(course => course.courseId === courseId);
     if (courseToDelete && window.confirm(`Are you sure you want to delete "${courseToDelete.courseName}"?`)) {
       // Filter out the deleted course
+    
+    try {
+      const response = await fetch(`http://localhost:8083/api/courses/delete/${courseId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete course');
+      }
       setCourses(courses.filter(course => course.courseId !== courseId));
+    }catch (error) {
+      console.error('Error deleting course:', error);
     }
+  }
   };
 
   return (

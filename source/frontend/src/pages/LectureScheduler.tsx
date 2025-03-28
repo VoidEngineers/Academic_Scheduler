@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Text } from "@chakra-ui/react";
+import { Text, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import "../styles/LectureScheduler.css";
 
@@ -8,10 +8,20 @@ interface Student {
   userEmail: string;
 }
 
+interface Course {
+  courseId: string;
+  courseName: string;
+  courseCode: string;
+  courseDescription: string;
+}
+
 export const LectureScheduler = () => {
   const [students, setStudents] = useState<Student[]>([
     { userId: "", userEmail: "" },
   ]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState("");
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("12:00");
@@ -26,6 +36,10 @@ export const LectureScheduler = () => {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
   // Calculate end time whenever start time changes
   useEffect(() => {
@@ -44,6 +58,35 @@ export const LectureScheduler = () => {
     { value: "thursday", label: "Thursday" },
     { value: "friday", label: "Friday" },
   ];
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:8083/api/courses', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch courses');
+      }
+      const data = await response.json();
+      console.log(data);
+      setCourses(data);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch courses',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   const handleAddStudent = () => {
     if (students.length < 100) {
@@ -64,6 +107,20 @@ export const LectureScheduler = () => {
     value: string
   ) => {
     const newStudents = [...students];
+    
+    if (field === "userEmail") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailRegex.test(value) && value !== "") {
+        toast({
+          title: 'Invalid Email',
+          description: 'Please enter a valid email address',
+          status: 'warning',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    }
+    
     newStudents[index] = { ...newStudents[index], [field]: value };
     setStudents(newStudents);
   };
@@ -136,12 +193,11 @@ export const LectureScheduler = () => {
       });
 
       // Redirect to /view-schedule page
-      navigate("/admin/view-schedule");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Failed to schedule lecture:", error);
       alert(`Failed to schedule lecture: ${errorMessage}`);
-      navigate("/view-schedule");
+      navigate("/admin/view-schedule");
     }
   };
 
@@ -149,14 +205,12 @@ export const LectureScheduler = () => {
     navigate("/admin/view-schedule");
   };
 
-  
-
   return (
     <div className="lecture-scheduler">
        <button onClick={handleManageSchedules} className="manage-schedules-button">
         Manage Schedules
       </button>
-      <Text fontSize='50px' color='black' textAlign='center'>
+      <Text fontSize='4xl' color='black' textAlign='center'>
         Schedule New Lecture
       </Text>
       <form onSubmit={handleSubmit}>
@@ -214,9 +268,11 @@ export const LectureScheduler = () => {
                     required
                   >
                     <option value="">Select course</option>
-                    <option value="course1">Course 1</option>
-                    <option value="course2">Course 2</option>
-                    <option value="course3">Course 3</option>
+                    {courses.map((course) => (
+                      <option key={course.courseId} value={course.courseId}>
+                        {course.courseName}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">

@@ -88,7 +88,7 @@ const CourseForm: React.FC = () => {
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const newErrors: FormErrors = {};
@@ -98,8 +98,29 @@ const CourseForm: React.FC = () => {
     });
 
     if (Object.keys(newErrors).length === 0) {
-      console.log('Form submitted:', formData);
-      navigate('/admin/courses/list');
+      try {
+        const response = await fetch('http://localhost:8083/api/courses/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Error: ${response.status} - ${JSON.stringify(errorData)}`);
+        }
+
+        alert('Course added successfully!');
+        navigate('/admin/courses/list');
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to add course';
+        console.error('Failed to add course:', error);
+        alert(errorMessage);
+      }
     } else {
       setErrors(newErrors);
       setTouched(
