@@ -1,261 +1,316 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/ScheduleView.css';
-import { Text, Box } from "@chakra-ui/react";
-// Dummy data for demonstration
-const dummySchedules = [
-  {
-    id: 1,
-    name: 'Fall 2024 Schedule',
-    courses: [
-      { 
-        id: 1, 
-        scheduleId: 'SCH001',
-        courseId: 'CS101',
-        instructorId: 'INS001',
-        name: 'Computer Science 101', 
-        time: '9:00 AM - 10:30 AM', 
-        days: 'Mon, Wed',
-        meetingUrl: 'https://meet.google.com/abc-defg-hij'
-      },
-      { 
-        id: 2, 
-        scheduleId: 'SCH002',
-        courseId: 'MATH201',
-        instructorId: 'INS002',
-        name: 'Mathematics 201', 
-        time: '11:00 AM - 12:30 PM', 
-        days: 'Tue, Thu',
-        meetingUrl: 'https://meet.google.com/xyz-uvwx-yz'
-      },
-      { 
-        id: 3, 
-        scheduleId: 'SCH003',
-        courseId: 'PHY101',
-        instructorId: 'INS003',
-        name: 'Physics 101', 
-        time: '2:00 PM - 3:30 PM', 
-        days: 'Mon, Wed, Fri',
-        meetingUrl: 'https://meet.google.com/def-ghij-klm'
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Spring 2024 Schedule',
-    courses: [
-      { 
-        id: 4, 
-        scheduleId: 'SCH004',
-        courseId: 'CHEM101',
-        instructorId: 'INS004',
-        name: 'Chemistry 101', 
-        time: '10:00 AM - 11:30 AM', 
-        days: 'Mon, Wed',
-        meetingUrl: 'https://meet.google.com/ghi-jklm-nop'
-      },
-      { 
-        id: 5, 
-        scheduleId: 'SCH005',
-        courseId: 'BIO201',
-        instructorId: 'INS005',
-        name: 'Biology 201', 
-        time: '1:00 PM - 2:30 PM', 
-        days: 'Tue, Thu',
-        meetingUrl: 'https://meet.google.com/jkl-mnop-qrs'
-      },
-    ],
-  },
-];
+import { useNavigate } from "react-router-dom";
+import { 
+  Text, 
+  Box, 
+  useToast,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  FormControl,
+  FormLabel,
+  Input,
+  useDisclosure,
+  VStack
+} from "@chakra-ui/react";
+
+interface Student {
+  userId: string;
+  userEmail: string;
+}
+
+interface Schedule {
+  scheduleId: string;
+  tableId: string;
+  tableName: string;
+  courseId: string;
+  instructorId: string;
+  lic: string;
+  meetingURL: string;
+  startTime: number;
+  endTime: number;
+  duration: string;
+  capacity: number;
+  students: Student[];
+}
+
+interface Course {
+  courseId: string;
+  courseName: string;
+  courseCode: string;
+  courseDescription: string;
+}
 
 const ScheduleView: React.FC = () => {
-  const [schedules, setSchedules] = useState(dummySchedules);
-  const [selectedSchedule, setSelectedSchedule] = useState<typeof dummySchedules[0] | null>(null);
-  const [editingCourse, setEditingCourse] = useState<typeof dummySchedules[0]['courses'][0] | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [editingSchedule, setEditingSchedule] = useState<Schedule | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleEditClick = (schedule: typeof dummySchedules[0], course: typeof dummySchedules[0]['courses'][0]) => {
-    setSelectedSchedule(schedule);
-    setEditingCourse(course);
-    setIsModalOpen(true);
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  const fetchSchedules = async () => {
+    try {
+      const response = await fetch('http://localhost:8082/schedules/all', {
+        credentials: 'include'
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch schedules');
+      }
+      const data = await response.json();
+      setSchedules(data);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch schedules',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleDeleteClick = (scheduleId: number, courseId: number) => {
-    setSchedules(schedules.map(schedule => {
-      if (schedule.id === scheduleId) {
-        return {
-          ...schedule,
-          courses: schedule.courses.filter(course => course.id !== courseId),
-        };
+  const handleEditClick = (schedule: Schedule) => {
+    setEditingSchedule({ ...schedule });
+    onOpen();
+  };
+
+  const handleDeleteClick = async (scheduleId: string) => {
+    if (window.confirm(`Are you sure you want to delete the schedule "${scheduleId}"?`)) {
+
+    try {
+      console.log('idddddddddd',scheduleId);
+      const response = await fetch(`http://localhost:8082/schedules/delete/${scheduleId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete schedule');
       }
-      return schedule;
-    }));
+
+      setSchedules(schedules.filter(schedule => schedule.tableId !== scheduleId));
+      toast({
+        title: 'Success',
+        description: 'Schedule deleted successfully',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete schedule',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
   };
 
   const handleCloseDialog = () => {
-    setSelectedSchedule(null);
-    setEditingCourse(null);
-    setIsModalOpen(false);
+    setEditingSchedule(null);
+    onClose();
   };
 
-  const handleSaveChanges = () => {
-    if (selectedSchedule && editingCourse) {
-      setSchedules(schedules.map(schedule => {
-        if (schedule.id === selectedSchedule.id) {
-          return {
-            ...schedule,
-            courses: schedule.courses.map(course => {
-              if (course.id === editingCourse.id) {
-                return editingCourse;
-              }
-              return course;
-            }),
-          };
+  const handleSaveChanges = async () => {
+    console.log(editingSchedule?.scheduleId);
+    if (editingSchedule) {
+      try {
+        const response = await fetch(`http://localhost:8082/schedules/update/${editingSchedule.scheduleId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify(editingSchedule),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update schedule');
         }
-        return schedule;
-      }));
+
+        const updatedSchedule = await response.json();
+        setSchedules(schedules.map(schedule => 
+          schedule.scheduleId === updatedSchedule.scheduleId ? updatedSchedule : schedule
+        ));
+        
+        toast({
+          title: 'Success',
+          description: 'Schedule updated successfully',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        handleCloseDialog();
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to update schedule',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     }
-    handleCloseDialog();
+  };
+
+  const formatTime = (timestamp: number) => {
+    return new Date(timestamp).toLocaleTimeString();
+  };
+
+  if (isLoading) {
+    return (
+      <Box minH="100vh" bg="white" display="flex" justifyContent="center" alignItems="center">
+        <Text fontSize="xl">Loading schedules...</Text>
+      </Box>
+    );
+  }
+
+  const handleAddSchedules = () => {
+    navigate("/admin/schedule");
   };
 
   return (
-    <Box minH="100vh" bg="white">
-    <div className="schedule-container">
-       <Text fontSize='50px' color='black' textAlign='center'>
-       Schedule Management
+    <Box minH="100vh" bg="white" p={4}>
+      <button onClick={handleAddSchedules} className="manage-schedules-button">
+        Schedule New Lecture
+      </button>
+      <Text fontSize="4xl" color="black" textAlign="center" mb={8}>
+        Schedule Management
       </Text>
-      
       {schedules.map((schedule) => (
-        <div key={schedule.id} className="schedule-card">
-          <h2 className="schedule-name">{schedule.name}</h2>
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Schedule ID</th>
-                  <th>Course ID</th>
-                  <th>Instructor ID</th>
-                  <th>Course Name</th>
-                  <th>Time</th>
-                  <th>Days</th>
-                  <th>Meeting URL</th>
-                  <th>Actions</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {schedule.courses.map((course) => (
-                  <tr key={course.id}>
-                    <td className="id-cell">{course.scheduleId}</td>
-                    <td className="id-cell">{course.courseId}</td>
-                    <td className="id-cell">{course.instructorId}</td>
-                    <td>{course.name}</td>
-                    <td>{course.time}</td>
-                    <td>{course.days}</td>
-                    <td>
-                      <a href={course.meetingUrl} target="_blank" rel="noopener noreferrer" className="meeting-link">
-                        Join Meeting
-                      </a>
-                    </td>
-                    <td>
-                      <button
-                        className="edit-button"
-                        onClick={() => handleEditClick(schedule, course)}
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="delete-button"
-                        onClick={() => handleDeleteClick(schedule.id, course.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <Box key={schedule.tableId} mb={8} p={4} borderWidth="1px" borderRadius="lg">
+          <Text fontSize="2xl" mb={4}>{schedule.tableName}</Text>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Schedule ID</Th>
+                <Th>Course ID</Th>
+                <Th>Instructor ID</Th>
+                <Th>Time</Th>
+                <Th>Duration</Th>
+                <Th>Capacity</Th>
+                <Th>Meeting URL</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>{schedule.scheduleId}</Td>
+                <Td>{schedule.courseId}</Td>
+                <Td>{schedule.instructorId}</Td>
+                <Td>{formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}</Td>
+                <Td>{schedule.duration}</Td>
+                <Td>{schedule.capacity}</Td>
+                <Td>
+                  <Button
+                    as="a"
+                    href={schedule.meetingURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    colorScheme="blue"
+                    size="sm"
+                  >
+                    Join Meeting
+                  </Button>
+                </Td>
+                <Td>
+                  <Button
+                    colorScheme="blue"
+                    size="sm"
+                    mr={2}
+                    onClick={() => handleEditClick(schedule)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    size="sm"
+                    onClick={() => handleDeleteClick(schedule.scheduleId)}
+                  >
+                    Delete
+                  </Button>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </Box>
       ))}
 
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3 className="modal-title">Edit Course</h3>
-            {editingCourse && (
-              <div className="modal-body">
-                <div className="form-group">
-                  <label>Schedule ID</label>
-                  <input
-                    type="text"
-                    value={editingCourse.scheduleId}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, scheduleId: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Course ID</label>
-                  <input
-                    type="text"
-                    value={editingCourse.courseId}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, courseId: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Instructor ID</label>
-                  <input
-                    type="text"
-                    value={editingCourse.instructorId}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, instructorId: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Course Name</label>
-                  <input
-                    type="text"
-                    value={editingCourse.name}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, name: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Time</label>
-                  <input
-                    type="text"
-                    value={editingCourse.time}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, time: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Days</label>
-                  <input
-                    type="text"
-                    value={editingCourse.days}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, days: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Meeting URL</label>
-                  <input
-                    type="url"
-                    value={editingCourse.meetingUrl}
-                    onChange={(e) => setEditingCourse({ ...editingCourse, meetingUrl: e.target.value })}
-                  />
-                </div>
-              </div>
-            )}
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={handleCloseDialog}>
-                Cancel
-              </button>
-              <button className="save-button" onClick={handleSaveChanges}>
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <Modal isOpen={isOpen} onClose={handleCloseDialog}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Schedule</ModalHeader>
+          <ModalBody>
+            <VStack spacing={4}>
+              <FormControl>
+                <FormLabel>Table Name</FormLabel>
+                <Input
+                  value={editingSchedule?.tableName || ''}
+                  onChange={(e) => setEditingSchedule(prev => prev ? {...prev, tableName: e.target.value} : null)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Course ID</FormLabel>
+                <Input
+                  value={editingSchedule?.courseId || ''}
+                  onChange={(e) => setEditingSchedule(prev => prev ? {...prev, courseId: e.target.value} : null)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Instructor ID</FormLabel>
+                <Input
+                  value={editingSchedule?.instructorId || ''}
+                  onChange={(e) => setEditingSchedule(prev => prev ? {...prev, instructorId: e.target.value} : null)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Meeting URL</FormLabel>
+                <Input
+                  type="url"
+                  value={editingSchedule?.meetingURL || ''}
+                  onChange={(e) => setEditingSchedule(prev => prev ? {...prev, meetingURL: e.target.value} : null)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Capacity</FormLabel>
+                <Input
+                  type="number"
+                  value={editingSchedule?.capacity || 0}
+                  onChange={(e) => setEditingSchedule(prev => prev ? {...prev, capacity: parseInt(e.target.value)} : null)}
+                />
+              </FormControl>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={handleCloseDialog}>
+              Cancel
+            </Button>
+            <Button colorScheme="blue" onClick={handleSaveChanges}>
+              Save Changes
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
