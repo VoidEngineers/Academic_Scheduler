@@ -3,7 +3,6 @@ import { Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import {
   UserManagementContainer,
-  BackButton,
   ErrorMessage,
   ControlsContainer,
   SearchContainer,
@@ -53,7 +52,7 @@ export const UserManagement = () => {
     { id: "5", name: "Michael Wilson", email: "michael@example.com", role: "lecturer", department: "Physics", status: "Suspended" }
   ]);
   
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -68,8 +67,6 @@ export const UserManagement = () => {
     confirmPassword: ""
   });
   const [error, setError] = useState("");
-  
-  const navigate = useNavigate();
 
   // Roles for dropdown filter
   const roles = ["All Roles", "Student", "Lecturer", "Admin"];

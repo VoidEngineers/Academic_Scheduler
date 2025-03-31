@@ -10,7 +10,7 @@ import {
   HomeButton,
   BackButton,
   IllustrationContainer
-} from './styles/404Style';
+} from './styles/404style';
 
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
