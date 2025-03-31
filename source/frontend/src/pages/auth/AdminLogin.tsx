@@ -37,9 +37,10 @@ const AdminLogin = () => {
       });
       navigate('/admin'); // Redirect to /admin after successful login
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Please check your credentials and try again.';
       toast({
         title: 'Login Failed',
-        description: 'Please check your credentials and try again.',
+        description: errorMessage,
         status: 'error',
         duration: 3000,
         isClosable: true,

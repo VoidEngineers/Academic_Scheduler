@@ -1,5 +1,5 @@
 import React from 'react';
-import Dashboard from '../../components/charts/dashboard';
+import Dashboard from '../../components/dashboard/dashboard';
 import { 
   Box,  
   Heading, 
@@ -101,7 +101,7 @@ const Admin: React.FC = () => {
                 _hover={{ bg: menuHoverBg }} 
                 py={6} 
                 borderRadius={0}
-                onClick={() => navigate("/#")}
+                onClick={() => navigate("/admin/user")}
               >
                 User Management
               </Button>
