@@ -75,6 +75,7 @@ export const LectureScheduler = () => {
       console.log(data);
       setCourses(data);
     } catch (error) {
+      console.error('Failed to fetch courses:', error);
       toast({
         title: 'Error',
         description: 'Failed to fetch courses',
@@ -207,9 +208,13 @@ export const LectureScheduler = () => {
 
   return (
     <div className="lecture-scheduler">
-       <button onClick={handleManageSchedules} className="manage-schedules-button">
-        Manage Schedules
-      </button>
+      {isLoading ? (
+        <Text fontSize='xl' textAlign='center'>Loading courses...</Text>
+      ) : (
+        <>
+          <button onClick={handleManageSchedules} className="manage-schedules-button">
+            Manage Schedules
+          </button>
       <Text fontSize='4xl' color='black' textAlign='center'>
         Schedule New Lecture
       </Text>
@@ -373,13 +378,15 @@ export const LectureScheduler = () => {
                       ? '12:00 PM'
                       : `${endTime.split(':')[0]}:00 AM`}`}
                     readOnly 
+                    title="End time of the lecture"
+                    aria-label="End time"
                   />
-                </div>
-              </div>
               <div className="form-row">
                 <div className="form-group">
                   <label>Duration</label>
-                  <input type="text" value="3 hours" readOnly />
+                  <input type="text" value="3 hours" readOnly title="Duration of the lecture" aria-label="Duration" />
+                </div>
+              </div>
                 </div>
               </div>
             </div>
@@ -440,11 +447,9 @@ export const LectureScheduler = () => {
             </div>
           </div>
         </div>
-
-        <button type="submit" className="submit-button">
-          Schedule Lecture
-        </button>
       </form>
+        </>
+      )}
     </div>
   );
 };

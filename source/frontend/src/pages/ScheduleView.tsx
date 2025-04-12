@@ -45,13 +45,6 @@ interface Schedule {
   students: Student[];
 }
 
-interface Course {
-  courseId: string;
-  courseName: string;
-  courseCode: string;
-  courseDescription: string;
-}
-
 const ScheduleView: React.FC = () => {
   const navigate = useNavigate();
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -74,7 +67,7 @@ const ScheduleView: React.FC = () => {
       }
       const data = await response.json();
       setSchedules(data);
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to fetch schedules',
@@ -114,7 +107,7 @@ const ScheduleView: React.FC = () => {
         duration: 3000,
         isClosable: true,
       });
-    } catch (error) {
+    } catch (_) {
       toast({
         title: 'Error',
         description: 'Failed to delete schedule',

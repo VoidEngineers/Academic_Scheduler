@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Flex, Text, IconButton, Stack, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, IconButton, Stack } from "@chakra-ui/react";
 
 export const NavbarContainer = styled(Box)`
   width: 100%;
