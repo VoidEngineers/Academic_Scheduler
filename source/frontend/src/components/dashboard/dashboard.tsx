@@ -7,7 +7,7 @@ import { ContentContainer } from '../../styles/onBoardingStyle';
 
 const Dashboard: React.FC = () => {
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <ContentContainer>
         <Container>
           <Title>Admin Dashboard</Title>

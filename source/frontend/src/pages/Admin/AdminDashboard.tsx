@@ -1,5 +1,5 @@
 import React from 'react';
-import Dashboard from '../../components/charts/dashboard';
+import Dashboard from '../../components/dashboard/dashboard';
 import { 
   Box,  
   Heading, 
@@ -42,10 +42,10 @@ import {
 import { HamburgerIcon, SettingsIcon, CalendarIcon, StarIcon, InfoIcon, } from '@chakra-ui/icons';
 import { FaUser, FaBookOpen } from "react-icons/fa";
 import { MdReportProblem } from "react-icons/md";
-import EnrollmentWidget from '../../components/widgets/EnrollmetWidget';
-import CourseDistributionWidget from '../../components/widgets/CourseDistributeWidget';
-import AttendanceWidget from '../../components/widgets/AttendanceWidget';
-import PerformanceWidget from '../../components/widgets/PerformanceWidget';
+import EnrollmentWidget from '../../widgets/EnrollmetWidget';
+import CourseDistributionWidget from '../../widgets/CourseDistributeWidget';
+import AttendanceWidget from '../../widgets/AttendanceWidget';
+import PerformanceWidget from '../../widgets/PerformanceWidget';
 import { useNavigate } from "react-router-dom";
 
 const Admin: React.FC = () => {
@@ -101,7 +101,7 @@ const Admin: React.FC = () => {
                 _hover={{ bg: menuHoverBg }} 
                 py={6} 
                 borderRadius={0}
-                onClick={() => navigate("/#")}
+                onClick={() => navigate("/admin/user")}
               >
                 User Management
               </Button>

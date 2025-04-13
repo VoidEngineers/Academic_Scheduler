@@ -13,7 +13,6 @@ import {
 import {
   HamburgerIcon,
   CloseIcon,
-  ChevronDownIcon
 } from '@chakra-ui/icons';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 

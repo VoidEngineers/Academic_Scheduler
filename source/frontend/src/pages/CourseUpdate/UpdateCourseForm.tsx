@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './UpdateCourseForm.css';
+import { form } from 'framer-motion/client';
 
 interface Course {
   courseId: string;
@@ -16,6 +17,42 @@ interface UpdateCourseFormProps {
 }
 
 const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) => {
+  const [formData, setFormData] = useState<Course>(course);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8083/api/courses/update/${course.courseId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update course');
+      }
+
+      alert('Course updated successfully!');
+      onClose();
+      window.location.reload(); // Refresh to show updated data
+    } catch (error) {
+      console.error('Error updating course:', error);
+      alert('Failed to update course');
+    }
+  };
+
   return (
     <div className="course-form-container">
       <div className="form-header">
@@ -29,8 +66,7 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
             type="text"
             id="courseId"
             name="courseId"
-            defaultValue={course.courseId}
-            required
+            value={formData.courseId}
             disabled
           />
         </div>
@@ -41,7 +77,8 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
             type="text"
             id="courseName"
             name="courseName"
-            defaultValue={course.courseName}
+            value={formData.courseName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -52,7 +89,8 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
             type="text"
             id="courseCode"
             name="courseCode"
-            defaultValue={course.courseCode}
+            value={formData.courseCode}
+            onChange={handleChange}
             placeholder="e.g., IT123, SE123"
             required
           />
@@ -64,7 +102,8 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
             type="text"
             id="category"
             name="category"
-            defaultValue={course.category}
+            value={formData.category}
+            onChange={handleChange}
             required
           />
         </div>
@@ -74,7 +113,8 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
           <textarea
             id="courseDescription"
             name="courseDescription"
-            defaultValue={course.courseDescription}
+            value={formData.courseDescription}
+            onChange={handleChange}
             required
           />
         </div>
@@ -85,12 +125,13 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
             type="text"
             id="lic"
             name="lic"
-            defaultValue={course.lic}
+            value={formData.lic}
+            onChange={handleChange}
           />
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-button">Update Course</button>
+          <button type="submit" className="submit-button" onClick={handleSubmit}>Update Course</button>
           <button type="button" className="cancel-button" onClick={onClose}>Cancel</button>
         </div>
       </form>
