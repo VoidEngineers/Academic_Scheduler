@@ -1,18 +1,18 @@
 # version: '3.8'
 
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres-db
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     restart: always
     ports:
-      - "5432:5432"
+      - "27017:27017"
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: test
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: test
     volumes:
-      - ~/pgdata:/var/lib/postgresql/data # Persistent data directory
+      - mongo_data:/data/db # Persistent data directory
 
   nginx:
     image : nginx:alpine
@@ -39,4 +39,4 @@ services:
       - ./conflictmanagement:/app
 
 volumes:
-  pgdata:
+  mongo_data:
