@@ -11,7 +11,7 @@ const ScheduleView = lazy(() => import('../pages/ScheduleView'));
 const AdminLogin = lazy(() => import('../pages/auth/AdminLogin'));
 const CourseForm = lazy(() => import('../pages/CourseForm/CourseForm'));
 const CourseList = lazy(() => import('../pages/CourseList/CourseList'));
-const CourseDetails = lazy(() => import('../pages/CourseDetails/CourseDetails'));
+// const CourseDetails = lazy(() => import('../pages/CourseDetails/CourseDetails'));
 const Calendar = lazy(() => import('../pages/schdules/Calander'));
 const UserManagement = lazy(() => import('../pages/userManagement/user'));
 const ProfilePage = lazy(() => import('../pages/user/ProfilePage'));
@@ -77,7 +77,7 @@ const routes: RouteWithAdminNav[] = [
   },
   {
     path: '/courses/:courseId',
-    element: <CourseDetails />
+    // element: <CourseDetails />
   },
   // User management
   {
