@@ -1,53 +1,64 @@
-# Academic Scheduler
+Academic Scheduler
+A comprehensive scheduling platform tailored for academic institutions. It streamlines course management, timetable generation, and resource allocation to optimize administrative workflows and enhance user experience.
 
-A comprehensive scheduling system for academic institutions, featuring course management, timetable generation, and resource allocation.
+Project Structure
+This project follows a modular monorepo architecture, consisting of:
 
-## Project Structure
+frontend – React 19 application built with TypeScript and Vite
 
-This project is organized as a monorepo with the following components:
+backend – Spring Boot application in Java with MongoDB integration
 
-- **frontend**: React application with TypeScript and Vite
-- **backend**: Java with springboot
-- **infrastructure**: Terraform configuration for cloud deployment and nginx configuration
+infrastructure – Terraform configurations for AWS deployment and NGINX setup
 
-## Tech Stack
+Tech Stack
+Frontend
+Framework: React 19
 
-### Frontend
+Language: TypeScript
 
-- **Framework**: React 19
-- **Language**: TypeScript
-- **Build Tool**: Vite
-- **Package Manager**: pnpm
-- **UI Library**: Chakra UI
-- **Styling**: Emotion
+Build Tool: Vite
 
-### Backend
+Package Manager: pnpm
 
-- **Runtime**: Java
-- **Framework**: Springboot
-- **Database**: MongoDB
+UI Library: Chakra UI
 
-### Infrastructure
+Styling: Emotion
 
-- **IaC**: Terraform
-- **Cloud Provider**: AWS
-- **CI/CD**: GitHub Actions, GitLabs
-- **Containerization**: Docker
-- **WebServing**: Nginx
+Backend
+Language: Java
 
-## Getting Started
+Framework: Spring Boot
 
-### Prerequisites
+Database: MongoDB
 
-- [Node.js](https://nodejs.org/) v20 or later
-- [pnpm](https://pnpm.io/installation) v8 or later
-- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
-- [Terraform](https://developer.hashicorp.com/terraform/downloads) (for deployment)
+Infrastructure
+Infrastructure as Code (IaC): Terraform
 
-### Frontend Development
+Cloud Provider: AWS
 
-```bash
-# Navigate to frontend directory
+CI/CD: GitHub Actions, GitLab CI
+
+Containerization: Docker
+
+Web Server: NGINX
+
+Getting Started
+Prerequisites
+Ensure the following tools are installed:
+
+Node.js v20 or higher
+
+pnpm v8 or higher
+
+Docker and Docker Compose
+
+Terraform
+
+Frontend Setup
+bash
+Copy
+Edit
+# Navigate to the frontend directory
 cd frontend
 
 # Install dependencies
@@ -55,4 +66,34 @@ pnpm install
 
 # Start development server
 pnpm run dev
-```
+Backend Setup
+bash
+Copy
+Edit
+# Navigate to the backend directory
+cd backend
+
+# Run the Spring Boot application (via your IDE or terminal)
+./mvnw spring-boot:run
+Or use Docker Compose for local environment setup.
+
+Infrastructure Deployment (AWS)
+bash
+Copy
+Edit
+# Navigate to the infrastructure directory
+cd infrastructure
+
+# Initialize and apply Terraform configuration
+terraform init
+terraform apply
+Note: Ensure AWS credentials are configured in your environment.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contributing
+Contributions are welcome. Please follow the conventional commit format and submit pull requests to the appropriate branch.
+
+Contact
+For support or feature requests, please contact the maintainer or open an issue.
