@@ -1,4 +1,4 @@
-# version: '3.8'
+version: '3.9'
 
 services:
   mongodb:
@@ -15,28 +15,30 @@ services:
       - mongo_data:/data/db # Persistent data directory
 
   nginx:
-    image : nginx:alpine
-    container_name : frontend  #nginx webserver
-    restart : always
-    ports : 
+    image: nginx:alpine
+    container_name: frontend  #nginx webserver
+    restart: always
+    ports: 
       - "80:80"
-    volumes :
+    volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/dist:/usr/share/nginx/html
-    depends_on : 
+    depends_on: 
       - conflictmanager
 
   conflictmanager:
-    image: conflictmanagement:latest
+    build:
+      context: ../backend/conflictmanagement
+      dockerfile: Dockerfile
     container_name: conflictmanagement
     restart: always
     ports:
       - "5000:5000"
     environment:
       FLASK_APP: conflictmanagement
-      FLASK_ENV: development
-    volumes:
-      - ./conflictmanagement:/app
+      FLASK_ENV: production  # 'development' is deprecated
+    depends_on:
+      - mongodb
 
 volumes:
   mongo_data:
