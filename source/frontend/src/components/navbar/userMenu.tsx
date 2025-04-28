@@ -12,7 +12,6 @@ import {
   NotificationButton,
   AvatarButton,
   StyledMenuList,
-  SignInButton,
   SignUpButton,
 } from "../../styles/useMenuStyles";
 
