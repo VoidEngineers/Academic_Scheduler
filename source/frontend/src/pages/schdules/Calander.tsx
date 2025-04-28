@@ -3,7 +3,8 @@ import { Box, Container } from "@chakra-ui/react";
 
 const Calendar: React.FC = () => {
   // Replace this URL with your Google Calendar embed URL
-  const calendarUrl = "YOUR_GOOGLE_CALENDAR_EMBED_URL";
+  const calendarUrl =
+    "https://calendar.google.com/calendar/embed?src=chathx.vik%40gmail.com&ctz=Asia%2FColombo";
 
   return (
     <Container maxW='container.lg'>
