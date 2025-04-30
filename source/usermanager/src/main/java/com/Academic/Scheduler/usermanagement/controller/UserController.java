@@ -49,7 +49,7 @@ public class UserController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
         Optional<User> userData = userService.getUserById(id);
         
         if (userData.isPresent()) {
@@ -60,7 +60,7 @@ public class UserController {
     }
     
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         Optional<User> userData = userService.getUserByEmail(email);
         
         if (userData.isPresent()) {
@@ -71,7 +71,7 @@ public class UserController {
     }
     
     @GetMapping("/role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable("role") String role) {
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
         List<User> users = userService.getUsersByRole(role);
         
         if (users.isEmpty()) {
@@ -82,7 +82,7 @@ public class UserController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
         User updatedUser = userService.updateUser(id, user);
         
         if (updatedUser != null) {
@@ -93,7 +93,7 @@ public class UserController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") String id) {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable String id) {
         try {
             boolean result = userService.deleteUser(id);
             
@@ -108,8 +108,8 @@ public class UserController {
     }
     
     @PostMapping("/{id}/courses/{courseId}")
-    public ResponseEntity<User> addCourseToUser(@PathVariable("id") String id, 
-                                                @PathVariable("courseId") String courseId) {
+    public ResponseEntity<User> addCourseToUser(@PathVariable String id, 
+                                                @PathVariable String courseId) {
         User updatedUser = userService.addCourseToUser(id, courseId);
         
         if (updatedUser != null) {
@@ -120,8 +120,8 @@ public class UserController {
     }
     
     @DeleteMapping("/{id}/courses/{courseId}")
-    public ResponseEntity<User> removeCourseFromUser(@PathVariable("id") String id, 
-                                                     @PathVariable("courseId") String courseId) {
+    public ResponseEntity<User> removeCourseFromUser(@PathVariable String id, 
+                                                     @PathVariable String courseId) {
         User updatedUser = userService.removeCourseFromUser(id, courseId);
         
         if (updatedUser != null) {
