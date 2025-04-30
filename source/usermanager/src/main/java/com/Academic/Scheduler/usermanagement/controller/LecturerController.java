@@ -29,7 +29,7 @@ public class LecturerController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Lecturer> getLecturerById(@PathVariable("id") String id) {
+    public ResponseEntity<Lecturer> getLecturerById(@PathVariable String id) {
         Optional<Lecturer> lecturerData = lecturerService.getLecturerById(id);
         
         if (lecturerData.isPresent()) {
@@ -40,7 +40,7 @@ public class LecturerController {
     }
     
     @GetMapping("/email/{email}")
-    public ResponseEntity<Lecturer> getLecturerByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<Lecturer> getLecturerByEmail(@PathVariable String email) {
         Optional<Lecturer> lecturerData = lecturerService.getLecturerByEmail(email);
         
         if (lecturerData.isPresent()) {
@@ -51,7 +51,7 @@ public class LecturerController {
     }
     
     @GetMapping("/lic/{status}")
-    public ResponseEntity<List<Lecturer>> getLecturersByLicStatus(@PathVariable("status") boolean status) {
+    public ResponseEntity<List<Lecturer>> getLecturersByLicStatus(@PathVariable boolean status) {
         List<Lecturer> lecturers = lecturerService.getLecturersByLic(status);
         
         if (lecturers.isEmpty()) {
@@ -62,7 +62,7 @@ public class LecturerController {
     }
     
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<List<Lecturer>> getLecturersByCourse(@PathVariable("courseId") String courseId) {
+    public ResponseEntity<List<Lecturer>> getLecturersByCourse(@PathVariable String courseId) {
         List<Lecturer> lecturers = lecturerService.getLecturersByCourse(courseId);
         
         if (lecturers.isEmpty()) {
@@ -73,7 +73,7 @@ public class LecturerController {
     }
     
     @GetMapping("/specialization/{area}")
-    public ResponseEntity<List<Lecturer>> getLecturersBySpecialization(@PathVariable("area") String area) {
+    public ResponseEntity<List<Lecturer>> getLecturersBySpecialization(@PathVariable String area) {
         List<Lecturer> lecturers = lecturerService.getLecturersBySpecialization(area);
         
         if (lecturers.isEmpty()) {
@@ -84,7 +84,7 @@ public class LecturerController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Lecturer> updateLecturer(@PathVariable("id") String id, @RequestBody Lecturer lecturer) {
+    public ResponseEntity<Lecturer> updateLecturer(@PathVariable String id, @RequestBody Lecturer lecturer) {
         Lecturer updatedLecturer = lecturerService.updateLecturer(id, lecturer);
         
         if (updatedLecturer != null) {
@@ -95,7 +95,7 @@ public class LecturerController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteLecturer(@PathVariable("id") String id) {
+    public ResponseEntity<HttpStatus> deleteLecturer(@PathVariable String id) {
         try {
             boolean result = lecturerService.deleteLecturer(id);
             
@@ -110,8 +110,8 @@ public class LecturerController {
     }
     
     @PostMapping("/{id}/courses/{courseId}")
-    public ResponseEntity<Lecturer> addCourseToLecturer(@PathVariable("id") String id, 
-                                                        @PathVariable("courseId") String courseId) {
+    public ResponseEntity<Lecturer> addCourseToLecturer(@PathVariable String id, 
+                                                        @PathVariable String courseId) {
         Optional<Lecturer> lecturerData = lecturerService.getLecturerById(id);
         
         if (lecturerData.isPresent()) {
@@ -132,8 +132,8 @@ public class LecturerController {
     }
     
     @DeleteMapping("/{id}/courses/{courseId}")
-    public ResponseEntity<Lecturer> removeCourseFromLecturer(@PathVariable("id") String id, 
-                                                             @PathVariable("courseId") String courseId) {
+    public ResponseEntity<Lecturer> removeCourseFromLecturer(@PathVariable String id, 
+                                                             @PathVariable String courseId) {
         Optional<Lecturer> lecturerData = lecturerService.getLecturerById(id);
         
         if (lecturerData.isPresent()) {
@@ -151,8 +151,8 @@ public class LecturerController {
     }
     
     @PatchMapping("/{id}/lic/{status}")
-    public ResponseEntity<Lecturer> updateLicStatus(@PathVariable("id") String id, 
-                                                    @PathVariable("status") boolean status) {
+    public ResponseEntity<Lecturer> updateLicStatus(@PathVariable String id, 
+                                                    @PathVariable boolean status) {
         Optional<Lecturer> lecturerData = lecturerService.getLecturerById(id);
         
         if (lecturerData.isPresent()) {
