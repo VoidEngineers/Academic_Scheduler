@@ -144,6 +144,10 @@ const CourseForm: React.FC = () => {
     fieldPairs.push(inputFields.slice(i, i + 2));
   }
 
+    const handleAddSchedules = () => {
+    navigate("/admin/courses/list");
+  };
+
   return (
     <div style={{
       display: 'flex',
@@ -152,6 +156,14 @@ const CourseForm: React.FC = () => {
       height: '100vh',
       flexDirection: 'column'
     }}>
+<button
+  onClick={handleAddSchedules}
+  className="manage-schedules-button"
+  style={{ alignItems: 'center', marginLeft:'-900px' }}
+>
+  Manage Courses 
+</button>
+
       <Text fontSize='30px' color='black' textAlign='center'>Add New Course</Text>
       <form 
         onSubmit={handleSubmit} 
