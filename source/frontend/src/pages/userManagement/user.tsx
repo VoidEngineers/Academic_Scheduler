@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import { UserList } from '../../components/user/UserList';
-import { UserControls } from '../../components/user/userControls';
+import { UserControls } from '../../components/user/UserControls';
 import { useUserManagement } from '../../hooks/useUserManagement';
 import { UserFormModal } from '../../components/user/UserFormModal';
-import { DeleteConfirmModal } from '../../components/user/DeleteConfimModal';
+import { DeleteConfirmModal } from '../../components/user/DeleteConfimModal'; 
 
 const UserManagement: React.FC = () => {
   const {
@@ -47,7 +47,7 @@ const UserManagement: React.FC = () => {
           user={currentUser}
           isOpen={modalStates.isFormOpen}
           onClose={handlers.onFormClose}
-          onSubmit={handlers.onFormSubmit}
+          onSubmit={(values) => handlers.onFormSubmit(values as any)} // * remove this any
         />
       )}
 

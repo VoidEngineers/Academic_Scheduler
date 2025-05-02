@@ -23,35 +23,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useForm, Controller } from 'react-hook-form';
+import type {User,UserFormValues} from '../../types/user';
 
-interface User {
-  id?: string;
-  userId?: string;
-  name: string;
-  userName?: string;
-  email: string;
-  userEmail?: string;
-  userRole: string;
-  countryCode?: string;
-  courses?: string[];
-  password?: string;
-}
-
-interface UserFormValues {
-  userId: string;
-  userName: string; 
-  userEmail: string; 
-  userRole: string;
-  countryCode: string;
-  courses: string[];
-  password?: string;
-}
-
-interface UserFormModalProps {
+type UserFormModalProps =  {
   user: User | null;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: UserFormValues) => void;
+  onSubmit: (values: UserFormValues) => void | Promise<void>;
   availableCourses?: { id: string; name: string }[];
 }
 
@@ -77,9 +55,9 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
   } = useForm<UserFormValues>({
     defaultValues: user
       ? {
-          userId: user.userId || user.id || '',
-          userName: user.name || user.userName || '',
-          userEmail: user.email || user.userEmail || '',
+          userId: user.id || user.id || '',
+          userName: user.name || user.name || '',
+          userEmail: user.email || user.email || '',
           userRole: user.userRole || '',
           countryCode: user.countryCode || '+94',
           courses: user.courses || [],
@@ -105,30 +83,32 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
   }, [watch]);
 
   // Reset form when modal opens/closes or user changes
-  useEffect(() => {
-    if (isOpen) {
-      const defaultValues = user
-        ? {
-            userId: user.userId || user.id || '',
-            name: user.name || user.userName || '',
-            email: user.email || user.userEmail || '',
-            userRole: user.userRole || '',
-            countryCode: user.countryCode || '+94',
-            courses: user.courses || [],
-          }
-        : {
-            userId: '',
-            name: '',
-            email: '',
-            userRole: '',
-            countryCode: '+94',
-            courses: [],
-          };
-      
-      reset(defaultValues);
-      setSelectedCourses(defaultValues.courses.filter((course): course is string => course !== undefined));
-    }
-  }, [isOpen, user, reset]);
+// Only showing the part that needs to be changed
+
+useEffect(() => {
+  if (isOpen) {
+    const defaultValues = user
+      ? {
+          userId: user.id || user.id || '',
+          userName: user.name || user.name || '', // FIXED: changed from 'name' to 'userName'
+          userEmail: user.email || user.email || '', // FIXED: changed from 'email' to 'userEmail'
+          userRole: user.userRole || '',
+          countryCode: user.countryCode || '+94',
+          courses: user.courses || [],
+        }
+      : {
+          userId: '',
+          userName: '', // FIXED: changed from 'name' to 'userName'
+          userEmail: '', // FIXED: changed from 'email' to 'userEmail'
+          userRole: '',
+          countryCode: '+94',
+          courses: [],
+        };
+    
+    reset(defaultValues);
+    setSelectedCourses(defaultValues.courses.filter((course): course is string => course !== undefined));
+  }
+}, [isOpen, user, reset]);
 
   const handleAddCourse = () => {
     if (courseInput && !selectedCourses.includes(courseInput)) {
@@ -146,7 +126,22 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
   };
 
   const onFormSubmit = (data: UserFormValues) => {
-    onSubmit(data);
+    console.log('Form data being submitted:', data);
+    
+    // transformer
+    const transformedData = {
+      ...data,
+      id: data.userId,           
+      name: data.userName,       
+      email: data.userEmail,     
+      userRole: data.userRole,   
+      countryCode: data.countryCode,
+      courses: data.courses,
+      password: data.password
+    };
+    
+    console.log('Transformed data:', transformedData);
+    onSubmit(transformedData);
   };
 
   return (
@@ -177,7 +172,7 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
                     required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters' },
                   })}
-                  placeholder="e.g., Ravin Bandara"
+                  placeholder="e.g., john doe"
                 />
                 <FormErrorMessage>{errors.userName?.message}</FormErrorMessage>
               </FormControl>
@@ -217,7 +212,6 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
                   {...register('userRole', { required: 'Role is required' })}
                 >
                   <option value="Student">Student</option>
-                  <option value="Lecturer">Lecturer</option>
                   <option value="Instructor">Instructor</option>
                   <option value="Admin">Admin</option>
                 </Select>

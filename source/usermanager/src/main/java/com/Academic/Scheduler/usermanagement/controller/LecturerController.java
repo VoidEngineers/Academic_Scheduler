@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.Academic.Scheduler.usermanagement.Entity.Lecturer;
 import com.Academic.Scheduler.usermanagement.service.LecturerService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +19,26 @@ public class LecturerController {
     @Autowired
     private LecturerService lecturerService;
     
-    @GetMapping
+
+    @PostMapping("/add")
+public ResponseEntity<?> createLecturer(@RequestBody Lecturer lecturer) {
+    try {
+        // Initialize empty lists if null
+        if (lecturer.getAssignedCourses() == null) {
+            lecturer.setAssignedCourses(new ArrayList<>());
+        }
+        if (lecturer.getSpecializations() == null) {
+            lecturer.setSpecializations(new ArrayList<>());
+        }
+        
+        Lecturer createdLecturer = lecturerService.saveLecturer(lecturer);
+        return new ResponseEntity<>(createdLecturer, HttpStatus.CREATED);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error creating lecturer: " + e.getMessage());
+    }
+}
+    @GetMapping("/all")
     public ResponseEntity<List<Lecturer>> getAllLecturers() {
         List<Lecturer> lecturers = lecturerService.getAllLecturers();
         

@@ -29,13 +29,25 @@ public class UserController {
         }
     }
 
-    // Get all users
+    // // Get all users - primary endpoint
+    // @GetMapping
+    // public ResponseEntity<List<User>> getUsers() {
+    //     List<User> users = userService.getAllUsers();
+    //     return new ResponseEntity<>(users, HttpStatus.OK);
+    // }
+
+    // Get all users - keeping for backward compatibility
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return users.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    
+    // Get users by role
+    @GetMapping("/role/{role}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
+        List<User> users = userService.getUsersByRole(role);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     // Get user by ID
