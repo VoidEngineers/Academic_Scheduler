@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -27,12 +28,19 @@ interface Schedule {
   imageUrl: string;
 }
 
-const SchedulePost: React.FC<{
+interface SchedulePostProps {
   schedule: Schedule;
   onLike: () => void;
   onDislike: () => void;
   onComment: (comment: string) => void;
-}> = ({ schedule, onLike, onDislike, onComment }) => {
+}
+
+const SchedulePost: React.FC<SchedulePostProps> = ({
+  schedule,
+  onLike,
+  onDislike,
+  onComment,
+}) => {
   return (
     <Box
       p={4}
@@ -160,6 +168,21 @@ const Schedules: React.FC = () => {
       imageUrl: "https://via.placeholder.com/400",
     },
   ]);
+
+  useEffect(() => {
+    const fetchSchedules = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/schedulevotingmanager/all-schedules/redis"
+        );
+        setSchedules(res.data);
+      } catch (err) {
+        console.error("Failed to fetch schedules:", err);
+      }
+    };
+
+    fetchSchedules();
+  }, []); // Empty dependency array to run only once on mount
 
   const handleLike = (id: number) => {
     setSchedules((prevSchedules) =>

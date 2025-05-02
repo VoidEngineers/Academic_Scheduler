@@ -11,12 +11,19 @@ import {
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
+interface ChakraCalendarProps {
+  selectedDate: Date | null;
+  onSelect: (date: Date) => void;
+  disabledDates?: Date[];
+  fromDate?: Date | null;
+}
+
 const ChakraCalendar = ({
   selectedDate,
   onSelect,
   disabledDates = [],
-  fromDate,
-}) => {
+  fromDate = null,
+}: ChakraCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(
     selectedDate
       ? new Date(selectedDate.getFullYear(), selectedDate.getMonth())
@@ -55,7 +62,7 @@ const ChakraCalendar = ({
 
   // Generate days array for rendering
   const days = useMemo(() => {
-    const result = [];
+    const result: (Date | null)[] = [];
     // Add empty cells for days before the first day
     for (let i = 0; i < firstDayWeekday; i++) {
       result.push(null);
@@ -87,21 +94,21 @@ const ChakraCalendar = ({
   };
 
   // Check if a date is disabled
-  const isDateDisabled = (date) => {
+  const isDateDisabled = (date: Date | null): boolean => {
     if (!date) return false;
     if (fromDate && date < fromDate) return true;
     return disabledDates.some((d) => d.toDateString() === date.toDateString());
   };
 
   // Check if a date is today
-  const isToday = (date) => {
+  const isToday = (date: Date | null): boolean => {
     if (!date) return false;
     const today = new Date();
     return date.toDateString() === today.toDateString();
   };
 
   // Check if a date is selected
-  const isSelected = (date) => {
+  const isSelected = (date: Date | null): boolean => {
     if (!date || !selectedDate) return false;
     return date.toDateString() === selectedDate.toDateString();
   };
