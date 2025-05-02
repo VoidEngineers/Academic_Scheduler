@@ -30,6 +30,12 @@ export const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+export const ErrorMessage_2 = styled.p`
+  color: #e53e3e;
+  font-size: 14px;
+  margin-top: 4px;
+`;
+
 export const ControlsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -281,3 +287,4 @@ export const CancelButton = styled.button`
     background-color: #e0e0e0;
   }
 `;
+
