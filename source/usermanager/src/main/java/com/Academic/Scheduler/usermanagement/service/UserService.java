@@ -36,11 +36,11 @@ public class UserService {
     }
     
     public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByUserEmail(email);
+        return userRepository.findByEmail(email);
     }
     
     public List<User> getUsersByRole(String role) {
-        return userRepository.findByUserRole(role);
+        return userRepository.findByUserId(role);
     }
     
     public User updateUser(String userId, User user) {
@@ -155,6 +155,6 @@ public class UserService {
     
     // Method to check if email exists
     public boolean emailExists(String email) {
-        return userRepository.findByUserEmail(email).isPresent();
+        return userRepository.findByEmail(email).isPresent();
     }
 }
