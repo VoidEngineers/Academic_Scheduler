@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import {
   UserManagementContainer,
   ErrorMessage,

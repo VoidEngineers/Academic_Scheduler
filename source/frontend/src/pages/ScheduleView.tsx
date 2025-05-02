@@ -17,7 +17,7 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
+  ModalHeader, 
   ModalBody,
   ModalFooter,
   FormControl,
@@ -45,13 +45,6 @@ interface Schedule {
   duration: string;
   capacity: number;
   students: Student[];
-}
-
-interface Course {
-  courseId: string;
-  courseName: string;
-  courseCode: string;
-  courseDescription: string;
 }
 
 const ScheduleView: React.FC = () => {
@@ -107,7 +100,7 @@ const ScheduleView: React.FC = () => {
       }
       const data = await response.json();
       setSchedules(data);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to fetch schedules",
@@ -163,6 +156,23 @@ const ScheduleView: React.FC = () => {
           isClosable: true,
         });
       }
+
+      setSchedules(schedules.filter(schedule => schedule.tableId !== scheduleId));
+      toast({
+        title: 'Success',
+        description: 'Schedule deleted successfully',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (_) {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete schedule',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 

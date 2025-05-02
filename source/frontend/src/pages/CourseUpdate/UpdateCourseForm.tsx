@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import './UpdateCourseForm.css';
-import { form } from 'framer-motion/client';
-
 interface Course {
   courseId: string;
   courseName: string;

@@ -1,0 +1,60 @@
+**Prompt:**  
+ 
+*\"Analyze the given JSON array of lecture sessions to detect conflicts. A conflict occurs when:  
+ 
+1. An **instructor** is assigned to **two or more overlapping lectures**.  
+2. A **student** is enrolled in **two or more overlapping lectures**.  
+3. The **same course** has multiple sessions scheduled at overlapping times.  
+ 
+Each session contains:  
+- `_id`: Unique session ID  
+- `startTime`: UNIX timestamp of when the lecture starts  
+- `endTime`: UNIX timestamp of when the lecture ends  
+- `instructorId`: Instructor’s unique ID  
+- `courseId`: Course identifier  
+- `students`: Array of student objects (`userId` field contains student ID)  
+- `tableId`: Unique timetable ID  
+ 
+**Expected JSON Output Format:**  
+ 
+If conflicts exist, return a JSON object with all conflicts grouped into categories:  
+ 
+```json
+{
+    \"conflicts\": [
+        {
+            \"type\": \"instructor\",
+            \"id\": \"I004\",
+            \"sessions\": [\"T004\", \"T009\"]
+        },
+        {
+            \"type\": \"student\",
+            \"id\": \"S301\",
+            \"sessions\": [\"T004\", \"T009\"]
+        },
+        {
+            \"type\": \"course\",
+            \"id\": \"C3\",
+            \"sessions\": [\"T003\", \"T008\"]
+        }
+    ]
+}
+```
+ 
+- `\"type\"`: Can be `\"instructor\"`, `\"student\"`, or `\"course\"`.  
+- `\"id\"`: Represents the conflicting **instructor ID, student ID, or course ID**.  
+- `\"sessions\"`: Contains the `tableId` values of conflicting lectures.  
+ 
+Ensure that:  
+- Time overlaps are correctly identified.  
+- Each conflict is listed only once.  
+- Multiple conflicts across categories are included.  
+ 
+Return the JSON **only if conflicts exist**; otherwise, return:  
+```json
+{ \"conflicts\": [] }
+```  
+ 
+Do not include unnecessary text, just return the JSON response.\"*  
+ 
+---

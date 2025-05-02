@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Box, Flex, IconButton, useMediaQuery, VStack } from "@chakra-ui/react";
+import { Box, Flex, IconButton, } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { motion, useAnimation, useMotionValue, PanInfo } from "framer-motion";
 
@@ -11,10 +11,7 @@ interface ChakraCarouselProps {
 const ChakraCarousel: React.FC<ChakraCarouselProps> = ({ children, gap }) => {
   const [trackWidth, setTrackWidth] = useState(0);
   const [trackPosition, setTrackPosition] = useState(0);
-  const [isMobile] = useMediaQuery("(max-width: 48em)");
-  const [snapPosition, setSnapPosition] = useState(0);
   const [dragging, setDragging] = useState(false);
-
   const x = useMotionValue(0);
   const controls = useAnimation();
 
@@ -44,7 +41,6 @@ const ChakraCarousel: React.FC<ChakraCarouselProps> = ({ children, gap }) => {
 
   const handleDragEnd = useCallback(
     (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      const offset = info.offset.x;
       const velocity = info.velocity.x;
 
       if (Math.abs(velocity) >= 1000) {
