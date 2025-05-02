@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   # postgres:
   #   image: postgres:latest
@@ -17,6 +15,20 @@ services:
   # frontend:
   #   image: nginx:latest
   #   container_name: frontend
+
+  frontend:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ../source/frontend
+    # Need to create a .env.docker-compose file in the source/zbxhostcollector directory to be used as an environment file equivalent to the .env file for production
+    # env_file: ../../source/frontend/.env
+    # Mount the aws cli configuration directory of host to the container to allow the container to access the AWS credentials
+    # volumes:
+    #   - ~/.aws/:/root/.aws:ro
+    # expose the port 5000 of the container to the port 5001 of the host
+    ports:
+      - "5173:5173"
 
   # conflictmanager:
   #   image: conflictmanagement:latest
@@ -96,6 +108,17 @@ services:
       - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - redis_network
+
 volumes:
   pgdata:
   sonarqube_conf:
@@ -105,4 +128,9 @@ volumes:
   sonarqube_temp:
   sonar_db:
   sonar_db_data:
+  redis_data:
   # mongo_data:
+
+networks:
+  redis_network:
+    driver: bridge
