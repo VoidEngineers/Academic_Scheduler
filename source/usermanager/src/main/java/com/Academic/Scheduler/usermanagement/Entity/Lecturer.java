@@ -13,6 +13,7 @@ public class Lecturer {
     @Indexed(unique = true)
     private String userEmail;
     private List<String> assignedCourses;
+    private List<String> specializations;
     private boolean lic;
     private String workingHours;
     private String specializedArea;
@@ -23,10 +24,12 @@ public class Lecturer {
 
     // Parameterized constructor
     public Lecturer(String userId, String userEmail, List<String> assignedCourses, 
-                   boolean lic, String workingHours, String specializedArea, String description) {
+                   List<String> specializations, boolean lic, String workingHours, 
+                   String specializedArea, String description) {
         this.userId = userId;
         this.userEmail = userEmail;
         this.assignedCourses = assignedCourses;
+        this.specializations = specializations;
         this.lic = lic;
         this.workingHours = workingHours;
         this.specializedArea = specializedArea;
@@ -56,6 +59,14 @@ public class Lecturer {
 
     public void setAssignedCourses(List<String> assignedCourses) {
         this.assignedCourses = assignedCourses;
+    }
+
+    public List<String> getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(List<String> specializations) {
+        this.specializations = specializations;
     }
 
     public boolean isLic() {
@@ -96,6 +107,7 @@ public class Lecturer {
                 "userId='" + userId + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", assignedCourses=" + assignedCourses +
+                ", specializations=" + specializations +
                 ", lic=" + lic +
                 ", workingHours='" + workingHours + '\'' +
                 ", specializedArea='" + specializedArea + '\'' +

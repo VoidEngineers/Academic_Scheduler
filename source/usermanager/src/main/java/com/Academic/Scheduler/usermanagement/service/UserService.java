@@ -36,9 +36,8 @@ public class UserService {
     }
     
     public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByUserEmail(email);
+        return userRepository.findById(email);
     }
-    
     public List<User> getUsersByRole(String role) {
         return userRepository.findByUserRole(role);
     }
@@ -54,8 +53,8 @@ public class UserService {
                 userToUpdate.setUserName(user.getUserName());
             }
             
-            if (user.getUserEmail() != null && !user.getUserEmail().isEmpty()) {
-                userToUpdate.setUserEmail(user.getUserEmail());
+            if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                userToUpdate.setEmail(user.getEmail());
             }
             
             if (user.getCountryCode() != null) {
@@ -140,7 +139,7 @@ public class UserService {
             
             Lecturer lecturer = new Lecturer();
             lecturer.setUserId(user.getUserId());
-            lecturer.setUserEmail(user.getUserEmail());
+            lecturer.setUserEmail(user.getEmail());
             lecturer.setAssignedCourses(new ArrayList<>());
             lecturer.setLic(false);
             lecturer.setWorkingHours("");
@@ -155,6 +154,6 @@ public class UserService {
     
     // Method to check if email exists
     public boolean emailExists(String email) {
-        return userRepository.findByUserEmail(email).isPresent();
+        return userRepository.findById(email).isPresent();
     }
 }
