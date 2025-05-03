@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { userService } from '../services/userService';
-import { User, UserFormValues } from '../types/user';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useToast } from '@chakra-ui/react';
+import { User, UserFormValues } from '../types/user';
+import { userService } from '../services/userService';
 
 export const useUserManagement = () => {
   // State for users and loading status
@@ -9,7 +9,7 @@ export const useUserManagement = () => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // State for current selection and operations
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userToDelete, setUserToDelete] = useState<string | null>(null);
@@ -17,35 +17,42 @@ export const useUserManagement = () => {
   // State for filters
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
-  
+
   // State for modals
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  
+
   const toast = useToast();
+  const fetchInProgress = useRef(false);
 
   // Fetch all users
   const fetchUsers = useCallback(async () => {
+    if (fetchInProgress.current) return;
+
+    fetchInProgress.current = true;
     setIsLoading(true);
+
     try {
-      console.log('Fetching users...');
       const data = await userService.getAll();
-      console.log('Users fetched:', data);
-      
-      if (Array.isArray(data)) {
-        setUsers(data);
-        setError(null);
-      } else {
-        console.error('Invalid data format received:', data);
-        setError('Invalid data format received from server');
-      }
-    } catch (err: any) {
+      console.log('Fetched users:', data); // Debug the API response
+      setUsers(data);
+      setFilteredUsers(data); // Initialize filtered users with all users
+      setError(null);
+    } catch (err) {
       console.error('Error fetching users:', err);
-      setError(`Failed to load users: ${err.message || 'Unknown error'}`);
+      setError('Failed to load users. Please try again.');
+      toast({
+        title: 'Error',
+        description: 'Failed to load users',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
+      fetchInProgress.current = false;
     }
-  }, []);
+  }, [toast]);
 
   // Load users on component mount
   useEffect(() => {
@@ -53,35 +60,51 @@ export const useUserManagement = () => {
   }, [fetchUsers]);
 
   // Filter users when filters or user list changes
-  useEffect(() => {
-    console.log('Filtering users. Total users:', users.length);
-    
-    const filtered = users.filter(user => {
-      // Skip invalid entries
-      if (!user || !user.name || !user.email || !user.userRole) {
-        console.warn('Skipping invalid user entry:', user);
-        return false;
-      }
+  // Filter users when filters or user list changes
+useEffect(() => {
+  if (!users || !Array.isArray(users)) {
+    setFilteredUsers([]);
+    return;
+  }
 
-      const matchesSearch =
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase());
+  // Start with all users
+  let result = [...users];
 
-      const matchesRole =
-        !selectedRole ||
-        selectedRole === 'All Roles' ||
-        user.userRole.toLowerCase() === selectedRole.toLowerCase();
-
-      return matchesSearch && matchesRole;
+  // Apply role filter first - this ensures role filtering works consistently
+  if (selectedRole) {
+    result = result.filter(user => {
+      // Handle possible null/undefined userRole and case insensitivity
+      if (!user || !user.userRole) return false;
+      return user.userRole.toUpperCase() === selectedRole.toUpperCase();
     });
+  }
 
-    console.log('Filtered users:', filtered.length);
-    setFilteredUsers(filtered);
-  }, [users, searchTerm, selectedRole]);
+  // Then apply search term filter (if there's a search term)
+  if (searchTerm) {
+    const lowerCaseSearch = searchTerm.toLowerCase();
+    result = result.filter(user => {
+      if (!user) return false;
+      
+      // Only check properties that exist
+      const nameMatch = user.name ? user.name.toLowerCase().includes(lowerCaseSearch) : false;
+      const emailMatch = user.email ? user.email.toLowerCase().includes(lowerCaseSearch) : false;
+      const idMatch = user.id ? user.id.toLowerCase().includes(lowerCaseSearch) : false;
 
-  // Handler for search input change
+      return nameMatch || emailMatch || idMatch;
+    });
+  }
+
+  setFilteredUsers(result);
+}, [users, searchTerm, selectedRole]);
+
+  // Handler for search input change - used for continuous filtering
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+  };
+
+  // Handler for explicit search button/Enter key - supports the UserControls search button
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
   };
 
   // Handler for role filter change
@@ -89,48 +112,41 @@ export const useUserManagement = () => {
     setSelectedRole(e.target.value);
   };
 
-  // Handler for adding a new user
+  // Modal handlers
   const handleAddClick = () => {
     setCurrentUser(null);
     setIsFormOpen(true);
   };
 
-  // Handler for editing a user
   const handleEditClick = (user: User) => {
     setCurrentUser(user);
     setIsFormOpen(true);
   };
 
-  // Handler for deleting a user
   const handleDeleteClick = (userId: string) => {
-    const user = users.find(u => u.id === userId);
-    if (user) {
-      setCurrentUser(user);
-    }
     setUserToDelete(userId);
     setIsDeleteOpen(true);
   };
 
-  // Close form modal
   const handleFormClose = () => {
     setIsFormOpen(false);
+    setCurrentUser(null);
   };
 
-  // Close delete modal
   const handleDeleteClose = () => {
     setIsDeleteOpen(false);
     setUserToDelete(null);
   };
 
-  // Handle form submission (create or update)
+  // Form submission handlers
   const handleFormSubmit = async (values: UserFormValues) => {
     try {
       if (currentUser) {
         // Update existing user
         await userService.update(currentUser.id, values);
         toast({
-          title: 'User updated',
-          description: `${values.userName} was successfully updated.`,
+          title: 'Success',
+          description: 'User updated successfully',
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -139,102 +155,99 @@ export const useUserManagement = () => {
         // Create new user
         await userService.create(values);
         toast({
-          title: 'User created',
-          description: `${values.userName} was successfully created.`,
+          title: 'Success',
+          description: 'User created successfully',
           status: 'success',
           duration: 3000,
           isClosable: true,
         });
       }
-      
-      setIsFormOpen(false);
-      fetchUsers(); // Refresh user list
-    } catch (err: any) {
+
+      // Refresh the user list
+      fetchUsers();
+      handleFormClose();
+    } catch (err) {
+      console.error('Error saving user:', err);
       toast({
         title: 'Error',
-        description: err.response?.data || 'Failed to save user',
+        description: `Failed to ${currentUser ? 'update' : 'create'} user`,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.error('Error saving user:', err);
     }
   };
 
-  // Delete a user
   const handleDeleteConfirm = async () => {
     if (!userToDelete) return;
-    
+
     try {
       await userService.delete(userToDelete);
       toast({
-        title: 'User deleted',
-        description: currentUser ? `${currentUser.name} was successfully deleted.` : 'User was successfully deleted.',
+        title: 'Success',
+        description: 'User deleted successfully',
         status: 'success',
         duration: 3000,
         isClosable: true,
       });
-      
-      setIsDeleteOpen(false);
-      setUserToDelete(null);
-      fetchUsers(); // Refresh user list
-    } catch (err: any) {
-      toast({
-        title: 'Error',
-        description: err.response?.data || 'Failed to delete user',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+
+      // Update local state to remove the deleted user
+      setUsers(users.filter(user => user.id !== userToDelete));
+      handleDeleteClose();
+    } catch (err) {
       console.error('Error deleting user:', err);
-    }
-  };
-
-  // Add a course to a user
-  const handleAddCourse = async (userId: string, courseId: string) => {
-    try {
-      await userService.addCourse(userId, courseId);
-      toast({
-        title: 'Course added',
-        description: 'Course has been successfully assigned to the user.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-      fetchUsers(); // Refresh user list
-    } catch (err: any) {
       toast({
         title: 'Error',
-        description: err.response?.data || 'Failed to add course',
+        description: 'Failed to delete user',
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.error('Error adding course:', err);
     }
   };
 
-  // Remove a course from a user
+  // Course handlers
+  const handleAddCourse = async (userId: string, courseId: string) => {
+    // Implement modal to select course first
+    console.log('Add course to user', userId, 'with course', courseId);
+  };
+
   const handleRemoveCourse = async (userId: string, courseId: string) => {
     try {
       await userService.removeCourse(userId, courseId);
+
+      // Update local state
+      setUsers(users.map(user => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            courses: Array.isArray(user.courses)
+              ? user.courses.filter((course: string | { id: string }) => {
+                const id = typeof course === 'string' ? course : course.id;
+                return id !== courseId;
+              })
+              : []
+          };
+        }
+        return user;
+      }));
+
       toast({
-        title: 'Course removed',
-        description: 'Course has been successfully removed from the user.',
+        title: 'Success',
+        description: 'Course removed from user',
         status: 'success',
         duration: 3000,
         isClosable: true,
       });
-      fetchUsers(); // Refresh user list
-    } catch (err: any) {
+    } catch (err) {
+      console.error('Error removing course:', err);
       toast({
         title: 'Error',
-        description: err.response?.data || 'Failed to remove course',
+        description: 'Failed to remove course',
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.error('Error removing course:', err);
     }
   };
 
@@ -253,13 +266,14 @@ export const useUserManagement = () => {
     },
     handlers: {
       onSearchChange: handleSearchChange,
+      onSearch: handleSearch, // Add the explicit search handler
       onRoleChange: handleRoleChange,
       onAddClick: handleAddClick,
       onEditClick: handleEditClick,
       onDeleteClick: handleDeleteClick,
       onFormClose: handleFormClose,
-      onFormSubmit: handleFormSubmit,
       onDeleteClose: handleDeleteClose,
+      onFormSubmit: handleFormSubmit,
       onDeleteConfirm: handleDeleteConfirm,
       onAddCourse: handleAddCourse,
       onRemoveCourse: handleRemoveCourse,

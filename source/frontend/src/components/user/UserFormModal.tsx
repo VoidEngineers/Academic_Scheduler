@@ -23,9 +23,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useForm, Controller } from 'react-hook-form';
-import type {User,UserFormValues} from '../../types/user';
+import type {User, UserFormValues} from '../../types/user';
 
-type UserFormModalProps =  {
+type UserFormModalProps = {
   user: User | null;
   isOpen: boolean;
   onClose: () => void;
@@ -55,12 +55,13 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
   } = useForm<UserFormValues>({
     defaultValues: user
       ? {
-          userId: user.id || user.id || '',
-          userName: user.name || user.name || '',
-          userEmail: user.email || user.email || '',
+          userId: user.id || '',
+          userName: user.name || '',
+          userEmail: user.email || '',
           userRole: user.userRole || '',
           countryCode: user.countryCode || '+94',
           courses: user.courses || [],
+          password: ''
         }
       : {
           userId: '',
@@ -69,6 +70,7 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
           userRole: '',
           countryCode: '+94',
           courses: [],
+          password: ''
         },
   });
 
@@ -76,39 +78,48 @@ export const UserFormModal: React.FC<UserFormModalProps> = ({
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === 'courses') {
-        setSelectedCourses((value.courses || []).filter((course): course is string => course !== undefined));
+        if (Array.isArray(value.courses)) {
+          setSelectedCourses(value.courses.filter((course): course is string => 
+            course !== undefined && typeof course === 'string'
+          ));
+        }
       }
     });
     return () => subscription.unsubscribe();
   }, [watch]);
 
   // Reset form when modal opens/closes or user changes
-// Only showing the part that needs to be changed
-
-useEffect(() => {
-  if (isOpen) {
-    const defaultValues = user
-      ? {
-          userId: user.id || user.id || '',
-          userName: user.name || user.name || '', // FIXED: changed from 'name' to 'userName'
-          userEmail: user.email || user.email || '', // FIXED: changed from 'email' to 'userEmail'
-          userRole: user.userRole || '',
-          countryCode: user.countryCode || '+94',
-          courses: user.courses || [],
-        }
-      : {
-          userId: '',
-          userName: '', // FIXED: changed from 'name' to 'userName'
-          userEmail: '', // FIXED: changed from 'email' to 'userEmail'
-          userRole: '',
-          countryCode: '+94',
-          courses: [],
-        };
-    
-    reset(defaultValues);
-    setSelectedCourses(defaultValues.courses.filter((course): course is string => course !== undefined));
-  }
-}, [isOpen, user, reset]);
+  useEffect(() => {
+    if (isOpen) {
+      const courseArray = user?.courses || [];
+      const stringCourses = courseArray.map(course => 
+        typeof course === 'string' ? course : (course as any).id
+      ).filter(Boolean);
+      
+      const defaultValues = user
+        ? {
+            userId: user.id || '',
+            userName: user.name || '',
+            userEmail: user.email || '',
+            userRole: user.userRole || '',
+            countryCode: user.countryCode || '+94',
+            courses: stringCourses,
+            password: ''
+          }
+        : {
+            userId: '',
+            userName: '',
+            userEmail: '',
+            userRole: '',
+            countryCode: '+94',
+            courses: [],
+            password: ''
+          };
+      
+      reset(defaultValues);
+      setSelectedCourses(stringCourses);
+    }
+  }, [isOpen, user, reset]);
 
   const handleAddCourse = () => {
     if (courseInput && !selectedCourses.includes(courseInput)) {
@@ -125,25 +136,6 @@ useEffect(() => {
     setValue('courses', newCourses);
   };
 
-  const onFormSubmit = (data: UserFormValues) => {
-    console.log('Form data being submitted:', data);
-    
-    // transformer
-    const transformedData = {
-      ...data,
-      id: data.userId,           
-      name: data.userName,       
-      email: data.userEmail,     
-      userRole: data.userRole,   
-      countryCode: data.countryCode,
-      courses: data.courses,
-      password: data.password
-    };
-    
-    console.log('Transformed data:', transformedData);
-    onSubmit(transformedData);
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
@@ -151,7 +143,7 @@ useEffect(() => {
         <ModalHeader>{isEditMode ? 'Edit User' : 'Add New User'}</ModalHeader>
         <ModalCloseButton />
         
-        <form onSubmit={handleSubmit(onFormSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
             <VStack spacing={4} align="stretch">
               <FormControl isInvalid={!!errors.userId} isRequired>
@@ -161,6 +153,7 @@ useEffect(() => {
                     required: 'User ID is required',
                   })}
                   placeholder="e.g., u11123"
+                  readOnly={isEditMode}
                 />
                 <FormErrorMessage>{errors.userId?.message}</FormErrorMessage>
               </FormControl>
@@ -172,7 +165,7 @@ useEffect(() => {
                     required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters' },
                   })}
-                  placeholder="e.g., john doe"
+                  placeholder="e.g., John Doe"
                 />
                 <FormErrorMessage>{errors.userName?.message}</FormErrorMessage>
               </FormControl>
@@ -211,9 +204,9 @@ useEffect(() => {
                   placeholder="Select role"
                   {...register('userRole', { required: 'Role is required' })}
                 >
-                  <option value="Student">Student</option>
-                  <option value="Instructor">Instructor</option>
-                  <option value="Admin">Admin</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="LECTURER">Lecturer</option>
+                  <option value="STUDENT">Student</option>
                 </Select>
                 <FormErrorMessage>{errors.userRole?.message}</FormErrorMessage>
               </FormControl>
@@ -266,12 +259,15 @@ useEffect(() => {
                   )}
                 </Box>
                 
-                {/* Hidden input for React Hook Form to track courses */}
                 <Controller
                   name="courses"
                   control={control}
                   render={({ field }) => (
-                    <input type="hidden" {...field} value={field.value?.join(',')} />
+                    <input 
+                      type="hidden" 
+                      {...field} 
+                      value={JSON.stringify(field.value || [])} 
+                    />
                   )}
                 />
               </FormControl>
