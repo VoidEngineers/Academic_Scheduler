@@ -11,8 +11,8 @@ interface Course {
   videoUrl?: string;  // Optional video URL
 }
 
-interface CourseDetailsProps {
-  course: Course;
+type CourseDetailsProps = {
+  course?: Course;
 }
 
 const CourseDetails: React.FC<CourseDetailsProps> = ({ course }) => {
