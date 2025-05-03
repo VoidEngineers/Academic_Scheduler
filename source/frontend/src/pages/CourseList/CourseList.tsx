@@ -51,9 +51,9 @@ const CourseList: React.FC = () => {
 
   const handleDelete = async (courseId: string) => {
     const courseToDelete = courses.find(course => course.courseId === courseId);
-    if (courseToDelete && window.confirm(Are you sure you want to delete "${courseToDelete.courseName}"?)) {
+    if (courseToDelete && window.confirm(`Are you sure you want to delete "${courseToDelete.courseName}"?`)) {
       try {
-        const response = await fetch(http://localhost:8082/api/courses/delete/${courseId}, {
+        const response = await fetch(`http://localhost:8082/api/courses/delete/${courseId}`, {
           method: 'DELETE',
           credentials: 'include'
         });
