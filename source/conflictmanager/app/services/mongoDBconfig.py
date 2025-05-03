@@ -1,4 +1,3 @@
-import bson
 from app import app 
 import os
 
