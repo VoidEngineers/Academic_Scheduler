@@ -207,91 +207,75 @@ const ChakraCalendar = ({
   };
 
   return (
-    <Container maxW='container.lg' py={4}>
-      <Box
-        bg='white'
-        p={4}
-        rounded='lg'
-        shadow='lg'
-        borderWidth='1px'
-        borderColor='gray.200'
-      >
-        {/* Header: Month/Year and Navigation */}
-        {schedule && (
-          <Box
-            mt={8}
-            p={4}
-            bg='white'
-            rounded='lg'
-            shadow='md'
-            borderWidth='1px'
-          >
-            <Text fontSize='2xl' fontWeight='bold' mb={2}>
-              {schedule.title}
-            </Text>
-            <Text fontSize='sm' color='gray.600' mb={4}>
-              {schedule.description}
-            </Text>
+    <Container maxW='container.lg' py={2}>
+      {/* Header: Month/Year and Navigation */}
+      {schedule && (
+        <Box mt={3} p={4} bg='white' rounded='lg' shadow='md' borderWidth='1px'>
+          <Text fontSize='2xl' fontWeight='bold' mb={2}>
+            Optimal schedule : {schedule.title}
+          </Text>
+          <Text fontSize='sm' color='gray.600' mb={4}>
+            {schedule.description}
+          </Text>
 
-            {schedule.imageUrl && (
-              <Box mb={4}>
-                <img
-                  src={schedule.imageUrl}
-                  alt='Schedule Visual'
-                  style={{ width: "100%", borderRadius: "8px" }}
-                />
+          {schedule.imageUrl && (
+            <Box mb={4}>
+              <img
+                src={schedule.imageUrl}
+                alt='Schedule Visual'
+                style={{ width: "100%", borderRadius: "8px" }}
+              />
+            </Box>
+          )}
+
+          <HStack spacing={4} mb={4}>
+            <Badge colorScheme='green'>Likes: {schedule.likes}</Badge>
+            <Badge colorScheme='red'>Dislikes: {schedule.dislikes}</Badge>
+            <Badge colorScheme='blue'>Votes: {schedule.votes}</Badge>
+          </HStack>
+
+          <Text fontWeight='semibold' mb={2}>
+            Sessions
+          </Text>
+          <VStack align='stretch' spacing={3}>
+            {schedule.sessions.map((session) => (
+              <Box
+                key={session._id}
+                p={3}
+                borderLeft='4px solid'
+                borderLeftColor={getSlotColor(session.assignedSlot)}
+                bg='gray.50'
+                borderRadius='md'
+              >
+                <Text fontWeight='bold' fontSize='sm'>
+                  {session.tableName} ({session.courseId})
+                </Text>
+                <Text fontSize='xs' color='gray.600'>
+                  Instructor: {session.instructorId}
+                </Text>
+                <Text fontSize='xs' color='gray.600'>
+                  {formatTime(session.startTime)} -{" "}
+                  {formatTime(session.endTime)}
+                </Text>
+                {session.meetingURL && (
+                  <Text fontSize='xs' color='blue.500'>
+                    <a
+                      href={session.meetingURL}
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      Join Meeting
+                    </a>
+                  </Text>
+                )}
+                <Text fontSize='xs' color='gray.600'>
+                  Students: {session.students?.length || 0}
+                </Text>
               </Box>
-            )}
-
-            <HStack spacing={4} mb={4}>
-              <Badge colorScheme='green'>Likes: {schedule.likes}</Badge>
-              <Badge colorScheme='red'>Dislikes: {schedule.dislikes}</Badge>
-              <Badge colorScheme='blue'>Votes: {schedule.votes}</Badge>
-            </HStack>
-
-            <Text fontWeight='semibold' mb={2}>
-              Sessions
-            </Text>
-            <VStack align='stretch' spacing={3}>
-              {schedule.sessions.map((session) => (
-                <Box
-                  key={session._id}
-                  p={3}
-                  borderLeft='4px solid'
-                  borderLeftColor={getSlotColor(session.assignedSlot)}
-                  bg='gray.50'
-                  borderRadius='md'
-                >
-                  <Text fontWeight='bold' fontSize='sm'>
-                    {session.tableName} ({session.courseId})
-                  </Text>
-                  <Text fontSize='xs' color='gray.600'>
-                    Instructor: {session.instructorId}
-                  </Text>
-                  <Text fontSize='xs' color='gray.600'>
-                    {formatTime(session.startTime)} -{" "}
-                    {formatTime(session.endTime)}
-                  </Text>
-                  {session.meetingURL && (
-                    <Text fontSize='xs' color='blue.500'>
-                      <a
-                        href={session.meetingURL}
-                        target='_blank'
-                        rel='noreferrer'
-                      >
-                        Join Meeting
-                      </a>
-                    </Text>
-                  )}
-                  <Text fontSize='xs' color='gray.600'>
-                    Students: {session.students?.length || 0}
-                  </Text>
-                </Box>
-              ))}
-            </VStack>
-          </Box>
-        )}
-      </Box>
+            ))}
+          </VStack>
+        </Box>
+      )}
     </Container>
   );
 };

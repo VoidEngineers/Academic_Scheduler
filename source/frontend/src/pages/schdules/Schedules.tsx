@@ -174,7 +174,7 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
       <Stack spacing={4}>
         <HStack justify='space-between'>
           <Heading as='h2' size='md'>
-            {schedule.title}
+            POST {schedule?.id}
           </Heading>
           <Text fontSize='sm' color='gray.500'>
             Posted just now
@@ -212,19 +212,10 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
             </Text>
           </HStack>
           <HStack spacing={2}>
-            {/* <Text fontSize='md' color='gray.500'>
-              Total Votes {schedule.votes}
-            </Text> */}
             <Stat>
               <StatHelpText fontWeight='bold'>Votes</StatHelpText>
               <HStack mr={2}>
-                <StatNumber>
-                  {/* {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(8456.4)} */}
-                  {schedule.votes}
-                </StatNumber>
+                <StatNumber>{schedule.votes}</StatNumber>
                 <Badge colorScheme='green' gap='0'>
                   <ChevronUpIcon />
                   {parseFloat(
