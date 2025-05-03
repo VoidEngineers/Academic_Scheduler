@@ -126,23 +126,18 @@ const ScheduleView: React.FC = () => {
   };
 
   const handleDeleteClick = async (scheduleId: string) => {
-    if (
-      window.confirm(
-        Are you sure you want to delete the schedule "${scheduleId}"?
-      )
-    ) {
-      try {
-        const response = await fetch(
-          http://localhost:8083/schedules/delete/${scheduleId},
-          {
-            method: "DELETE",
-            credentials: "include",
-          }
-        );
+    if (window.confirm(`Are you sure you want to delete the schedule "${scheduleId}"?`)) {
 
-        if (!response.ok) {
-          throw new Error("Failed to delete schedule");
-        }
+    try {
+      console.log('idddddddddd',scheduleId);
+      const response = await fetch(`http://localhost:8082/schedules/delete/${scheduleId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete schedule');
+      }
 
         setSchedules(
           schedules.filter((schedule) => schedule.tableId !== scheduleId)
@@ -174,17 +169,14 @@ const ScheduleView: React.FC = () => {
   const handleSaveChanges = async () => {
     if (editingSchedule) {
       try {
-        const response = await fetch(
-          http://localhost:8083/schedules/update/${editingSchedule.scheduleId},
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(editingSchedule),
-          }
-        );
+        const response = await fetch(`http://localhost:8082/schedules/update/${editingSchedule.scheduleId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify(editingSchedule),
+        });
 
         if (!response.ok) {
           throw new Error("Failed to update schedule");
