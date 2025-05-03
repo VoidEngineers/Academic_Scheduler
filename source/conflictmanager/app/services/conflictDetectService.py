@@ -2,15 +2,11 @@ from flask import jsonify
 from datetime import datetime, timedelta  # Add timedelta here
 import json
 import os
-from botocore.exceptions import ClientError
-import boto3
-import requests
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import schedule
 from ortools.sat.python import cp_model
-import itertools
 import networkx as nx
 from app import app
 from dotenv import load_dotenv
