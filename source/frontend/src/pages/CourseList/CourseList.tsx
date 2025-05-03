@@ -3,7 +3,6 @@ import './CourseList.css';
 import UpdateCourseForm from '../CourseUpdate/UpdateCourseForm';
 import { useNavigate } from 'react-router-dom';
 
-
 interface Course {
   courseId: string;
   courseName: string;
@@ -17,6 +16,7 @@ const CourseList: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // State for search term
 
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const CourseList: React.FC = () => {
   const fetchCourses = async () => {
     try {
       const response = await fetch('http://localhost:8082/api/courses', {
-        credentials: 'include'
+        credentials: 'include',
       });
       if (!response.ok) {
         throw new Error('Failed to fetch courses');
@@ -55,7 +55,7 @@ const CourseList: React.FC = () => {
       try {
         const response = await fetch(`http://localhost:8082/api/courses/delete/${courseId}`, {
           method: 'DELETE',
-          credentials: 'include'
+          credentials: 'include',
         });
         if (!response.ok) {
           throw new Error('Failed to delete course');
@@ -68,13 +68,42 @@ const CourseList: React.FC = () => {
   };
 
   const handleAddCourse = () => {
-    navigate("/admin/courses/form");
+    navigate('/admin/courses/form');
   };
+
+  // Handle search term change
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Filter courses based on the search term
+  const filteredCourses = courses.filter(course =>
+    course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="course-list-container">
       <div className="course-list-header">
         <h2>Course List</h2>
+
+        {/* Search input field */}
+        <input
+          type="text"
+          placeholder="Search by course name"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          style={{
+            padding: '10px',
+            margin: '10px 0',
+            width: '100%',
+            maxWidth: '400px',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            fontSize: '16px',
+            boxSizing: 'border-box',
+          }}
+        />
+        
         <button
           className="add-course-button"
           onClick={handleAddCourse}
@@ -93,7 +122,7 @@ const CourseList: React.FC = () => {
       )}
 
       <div className="course-list">
-        {courses.map((course) => (
+        {filteredCourses.map((course) => (
           <div key={course.courseId} className="course-card">
             <div className="course-header">
               <h3 className="course-name">{course.courseName}</h3>
