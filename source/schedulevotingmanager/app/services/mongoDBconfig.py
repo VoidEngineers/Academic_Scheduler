@@ -1,3 +1,4 @@
+import bson
 from app import app 
 import os
 
@@ -59,7 +60,7 @@ def get_all_schedules_from_db():
 
 def get_all_optimal_schedules_from_db():
     try:
-        schedules = db.optimalSolutions.find()
+        schedules = db.optimalSolution.find()
         app.logger.info(f"Schedules : {schedules}")
         # Convert cursor to list and handle ObjectId serialization
         schedule_list = []

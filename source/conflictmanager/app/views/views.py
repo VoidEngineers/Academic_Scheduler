@@ -1,8 +1,6 @@
 from flask import Flask, jsonify
-import flask
 from app import app
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import re
 import json
 
 from app.services.testService import test_service 
