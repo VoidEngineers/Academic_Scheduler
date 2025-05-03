@@ -8,10 +8,51 @@ import {
   HStack,
   Icon,
   Container,
+  VStack,
+  Badge,
+  Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
+// Define the session type based on your data structure
+interface Session {
+  _id: string;
+  tableId: string;
+  tableName: string;
+  courseId: string;
+  instructorId: string;
+  startTime: number; // Unix timestamp
+  endTime: number; // Unix timestamp
+  duration: string;
+  capacity: number;
+  assignedSlot: number;
+  meetingURL?: string;
+  students?: Array<{ userId: string; userEmail: string }>;
+}
+
+// Update the schedule type
+interface Schedule {
+  _id: string;
+  schedule_id: string;
+  sessions: Session[];
+  title: string;
+  description: string;
+  votes: number;
+  likes: number;
+  dislikes: number;
+  comments: string[];
+  imageUrl?: string;
+}
+
 interface ChakraCalendarProps {
+  schedule: Schedule; // Updated type
   selectedDate: Date | null;
   onSelect: (date: Date) => void;
   disabledDates?: Date[];
@@ -19,6 +60,7 @@ interface ChakraCalendarProps {
 }
 
 const ChakraCalendar = ({
+  schedule,
   selectedDate,
   onSelect,
   disabledDates = [],
@@ -59,6 +101,38 @@ const ChakraCalendar = ({
   );
   const daysInMonth = lastDayOfMonth.getDate();
   const firstDayWeekday = firstDayOfMonth.getDay();
+
+  // Helper function to get sessions for a specific date
+  const getSessionsForDate = (date: Date | null): Session[] => {
+    if (!date || !schedule || !schedule.sessions) return [];
+
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const startOfDayTimestamp = startOfDay.getTime() / 1000;
+    const endOfDayTimestamp = endOfDay.getTime() / 1000;
+
+    return schedule.sessions.filter((session) => {
+      // Check if the session's time range overlaps with the day
+      return (
+        (session.startTime >= startOfDayTimestamp &&
+          session.startTime <= endOfDayTimestamp) ||
+        (session.endTime >= startOfDayTimestamp &&
+          session.endTime <= endOfDayTimestamp) ||
+        (session.startTime <= startOfDayTimestamp &&
+          session.endTime >= endOfDayTimestamp)
+      );
+    });
+  };
+
+  // Function to format timestamp to readable time
+  const formatTime = (timestamp: number): string => {
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
 
   // Generate days array for rendering
   const days = useMemo(() => {
@@ -113,8 +187,27 @@ const ChakraCalendar = ({
     return date.toDateString() === selectedDate.toDateString();
   };
 
+  // Get sessions count for a date (for displaying badge)
+  const getSessionsCount = (date: Date | null): number => {
+    if (!date) return 0;
+    return getSessionsForDate(date).length;
+  };
+
+  // Get slot color based on assignedSlot
+  const getSlotColor = (assignedSlot: number): string => {
+    const colors = [
+      "green.500",
+      "blue.500",
+      "purple.500",
+      "orange.500",
+      "cyan.500",
+      "pink.500",
+    ];
+    return colors[assignedSlot % colors.length];
+  };
+
   return (
-    <Container maxW='container.sm' py={4}>
+    <Container maxW='container.lg' py={4}>
       <Box
         bg='white'
         p={4}
@@ -124,75 +217,96 @@ const ChakraCalendar = ({
         borderColor='gray.200'
       >
         {/* Header: Month/Year and Navigation */}
-        <HStack justify='space-between' mb={4}>
-          <Button
-            size='sm'
-            variant='ghost'
-            onClick={goToPreviousMonth}
-            aria-label='Previous month'
+        {schedule && (
+          <Box
+            mt={8}
+            p={4}
+            bg='white'
+            rounded='lg'
+            shadow='md'
+            borderWidth='1px'
           >
-            <Icon as={ChevronLeftIcon} />
-          </Button>
-          <Text fontSize='lg' fontWeight='bold' color='blue.600'>
-            {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-          </Text>
-          <Button
-            size='sm'
-            variant='ghost'
-            onClick={goToNextMonth}
-            aria-label='Next month'
-          >
-            <Icon as={ChevronRightIcon} />
-          </Button>
-        </HStack>
+            <Text fontSize='2xl' fontWeight='bold' mb={2}>
+              {schedule.title}
+            </Text>
+            <Text fontSize='sm' color='gray.600' mb={4}>
+              {schedule.description}
+            </Text>
 
-        {/* Days Grid */}
-        <Grid templateColumns='repeat(7, 1fr)' gap={1}>
-          {/* Weekday Headers */}
-          {daysInWeek.map((day) => (
-            <GridItem key={day} textAlign='center'>
-              <Text fontSize='sm' fontWeight='medium' color='gray.500'>
-                {day}
-              </Text>
-            </GridItem>
-          ))}
+            {schedule.imageUrl && (
+              <Box mb={4}>
+                <img
+                  src={schedule.imageUrl}
+                  alt='Schedule Visual'
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+              </Box>
+            )}
 
-          {/* Days */}
-          {days.map((day, index) => (
-            <GridItem key={index} textAlign='center'>
-              {day ? (
-                <Button
-                  size='sm'
-                  variant='ghost'
-                  onClick={() => !isDateDisabled(day) && onSelect(day)}
-                  isDisabled={isDateDisabled(day)}
-                  bg={
-                    isSelected(day)
-                      ? "blue.500"
-                      : isToday(day)
-                      ? "yellow.100"
-                      : "transparent"
-                  }
-                  color={
-                    isSelected(day)
-                      ? "white"
-                      : isDateDisabled(day)
-                      ? "gray.300"
-                      : "gray.800"
-                  }
-                  _hover={{
-                    bg: isSelected(day) ? "blue.600" : "blue.50",
-                  }}
-                  rounded='md'
+            <HStack spacing={4} mb={4}>
+              <Badge colorScheme='green'>Likes: {schedule.likes}</Badge>
+              <Badge colorScheme='red'>Dislikes: {schedule.dislikes}</Badge>
+              <Badge colorScheme='blue'>Votes: {schedule.votes}</Badge>
+            </HStack>
+
+            <Text fontWeight='semibold' mb={2}>
+              Sessions
+            </Text>
+            <VStack align='stretch' spacing={3}>
+              {schedule.sessions.map((session) => (
+                <Box
+                  key={session._id}
+                  p={3}
+                  borderLeft='4px solid'
+                  borderLeftColor={getSlotColor(session.assignedSlot)}
+                  bg='gray.50'
+                  borderRadius='md'
                 >
-                  {day.getDate()}
-                </Button>
-              ) : (
-                <Box h='32px' /> // Empty cell
-              )}
-            </GridItem>
-          ))}
-        </Grid>
+                  <Text fontWeight='bold' fontSize='sm'>
+                    {session.tableName} ({session.courseId})
+                  </Text>
+                  <Text fontSize='xs' color='gray.600'>
+                    Instructor: {session.instructorId}
+                  </Text>
+                  <Text fontSize='xs' color='gray.600'>
+                    {formatTime(session.startTime)} -{" "}
+                    {formatTime(session.endTime)}
+                  </Text>
+                  {session.meetingURL && (
+                    <Text fontSize='xs' color='blue.500'>
+                      <a
+                        href={session.meetingURL}
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        Join Meeting
+                      </a>
+                    </Text>
+                  )}
+                  <Text fontSize='xs' color='gray.600'>
+                    Students: {session.students?.length || 0}
+                  </Text>
+                </Box>
+              ))}
+            </VStack>
+
+            {/* Optional: Show comments */}
+            {schedule.comments && schedule.comments.length > 0 && (
+              <>
+                <Text fontWeight='semibold' mt={6} mb={2}>
+                  Comments
+                </Text>
+                <VStack align='start' spacing={2}>
+                  {schedule.comments.map((comment, i) => (
+                    <Box key={i} bg='gray.100' p={2} rounded='md'>
+                      <Text fontSize='xs'>{comment}</Text>
+                    </Box>
+                  ))}
+                </VStack>
+              </>
+            )}
+          </Box>
+        )}
       </Box>
     </Container>
   );

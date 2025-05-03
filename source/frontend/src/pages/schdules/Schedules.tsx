@@ -15,6 +15,9 @@ import {
   Divider,
   SimpleGrid,
   useToast,
+  Badge,
+  // FormatNumber,
+  Stat,
 } from "@chakra-ui/react";
 import { ChevronUpIcon, ChevronDownIcon, ChatIcon } from "@chakra-ui/icons";
 import ChakraCalendar from "./OptimalCalendar";
@@ -174,6 +177,7 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
           </Text>
         </HStack>
         <ChakraCalendar
+          schedule={schedule}
           selectedDate={new Date()}
           onSelect={(date) => console.log("Selected date:", date)}
         />
@@ -207,6 +211,23 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
             <Text fontSize='md' color='gray.500'>
               Total Votes {schedule.votes}
             </Text>
+            {/* <Stat.Root>
+              <Stat.Label>Unique </Stat.Label>
+              <HStack>
+                <Stat.ValueText>
+                  <FormatNumber
+                    value={8456.4}
+                    style='currency'
+                    currency='USD'
+                  />
+                </Stat.ValueText>
+                <Badge colorPalette='green' gap='0'>
+                  <Stat.UpIndicator />
+                  12%
+                </Badge>
+              </HStack>
+              <Stat.HelpText>since last month</Stat.HelpText>
+            </Stat.Root> */}
           </HStack>
         </HStack>
         <Box>
