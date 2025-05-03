@@ -72,7 +72,7 @@ const ScheduleView: React.FC = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch("http://localhost:8083/api/courses", {
+      const response = await fetch("http://localhost:8082/api/courses", {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -307,7 +307,8 @@ const ScheduleView: React.FC = () => {
             borderRadius="lg"
           >
             <Text fontSize="2xl" mb={1}>
-              {schedule.tableName}{" - "}
+              {schedule.tableName}
+              {" - "}
               {courses.find((course) => course.courseId === schedule.courseId)
                 ?.courseName || "Unknown Course"}
             </Text>
@@ -390,16 +391,24 @@ const ScheduleView: React.FC = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Course ID</FormLabel>
-                <Input
+                <FormLabel>Course</FormLabel>
+                <Select
+                  placeholder="Select course"
                   value={editingSchedule?.courseId || ""}
                   onChange={(e) =>
                     setEditingSchedule((prev) =>
                       prev ? { ...prev, courseId: e.target.value } : null
                     )
                   }
-                />
+                >
+                  {courses.map((course) => (
+                    <option key={course.courseId} value={course.courseId}>
+                      {course.courseId} - {course.courseName}
+                    </option>
+                  ))}
+                </Select>
               </FormControl>
+
               <FormControl>
                 <FormLabel>Instructor ID</FormLabel>
                 <Input

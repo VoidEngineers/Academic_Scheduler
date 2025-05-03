@@ -28,7 +28,7 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8083/api/courses/update/${course.courseId}`, {
+      const response = await fetch(`http://localhost:8082/api/courses/update/${course.courseId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

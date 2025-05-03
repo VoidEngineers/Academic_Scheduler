@@ -99,7 +99,7 @@ const CourseForm: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch('http://localhost:8083/api/courses/create', {
+        const response = await fetch('http://localhost:8082/api/courses/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
