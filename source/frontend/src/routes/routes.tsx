@@ -21,6 +21,10 @@ const CourseDetails = lazy(() => import("../pages/CourseDetails/CourseDetails"))
 const Calendar = lazy(() => import("../pages/schdules/Calander"));
 const UserManagement = lazy(() => import("../pages/userManagement/user"));
 const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
+const AllScheduleView = lazy(() => import("../pages/schdules/AllScheduleView"));
+
+
+
 const EnrolledCourses = lazy(() =>
   import("../pages/user/EnrolledCourses").then((module) => ({
     default: module.EnrolledCourses,
@@ -43,7 +47,6 @@ const UserProfile = lazy(() =>
 //   cardBg: string;
 //   headerBorderColor: string;
 // }
-
 // Route with AdminNav type
 type RouteWithAdminNav = RouteObject & {
   needsAdminNav?: boolean;
@@ -68,6 +71,11 @@ const routes: RouteWithAdminNav[] = [
   {
     path: "/admin/view-schedule",
     element: <ScheduleView />,
+    needsAdminNav: true,
+  },
+  {
+    path: "/admin/view-all-schedule",
+    element: <AllScheduleView />,
     needsAdminNav: true,
   },
   {
@@ -130,6 +138,15 @@ const routes: RouteWithAdminNav[] = [
     path: "/conflict-manager",
     element: <div>Conflict Manager</div>,
   },
+
+
+
+
+
+
+
+
+  
   // 404 route
   {
     path: "*",
