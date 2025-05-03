@@ -35,6 +35,7 @@ export const useUserManagement = () => {
     try {
       const data = await userService.getAll();
       console.log('Fetched users:', data); // Debug the API response
+      // console.log('Fetcheddddddddddd:', data.map(user => user.email)); // Logs all emails
       setUsers(data);
       setFilteredUsers(data); // Initialize filtered users with all users
       setError(null);
@@ -86,11 +87,13 @@ useEffect(() => {
       if (!user) return false;
       
       // Only check properties that exist
-      const nameMatch = user.name ? user.name.toLowerCase().includes(lowerCaseSearch) : false;
+      // Only check properties that exist on the User type
       const emailMatch = user.email ? user.email.toLowerCase().includes(lowerCaseSearch) : false;
       const idMatch = user.id ? user.id.toLowerCase().includes(lowerCaseSearch) : false;
+      // If you need to match by name, ensure you use the correct property from your User type
+      // For example, it might be fullName, username, or displayName instead of name
 
-      return nameMatch || emailMatch || idMatch;
+      return emailMatch || idMatch;
     });
   }
 

@@ -50,9 +50,25 @@ const UserManagement: React.FC = () => {
       />
 
       <UserList
-        users={users}
+        users={users.map(user => ({
+          userId: user.id || '',
+          userName: user.name || '',
+          userEmail: user.email || '',
+          password: '',
+          countryCode: user.countryCode || '',
+          courses: user.courses || [],
+          ...user
+        }))}
         isLoading={isLoading}
-        onEditUser={handlers.onEditClick}
+        onEditUser={(userFormValues) => {
+          const userWithRequiredProps = {
+            id: userFormValues.userId,
+            name: userFormValues.userName,
+            email: userFormValues.userEmail,
+            ...userFormValues
+          };
+          handlers.onEditClick(userWithRequiredProps);
+        }}
         onDeleteUser={handlers.onDeleteClick}
         onAddCourse={handlers.onAddCourse}
         onRemoveCourse={handlers.onRemoveCourse}

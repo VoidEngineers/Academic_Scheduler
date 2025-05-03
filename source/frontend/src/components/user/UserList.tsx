@@ -14,12 +14,12 @@ import {
   Spinner
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-import { User } from '../../types/user';
+import { UserFormValues } from '../../types/user';
 
 interface UserListProps {
-  users: User[];
+  users: UserFormValues[];
   isLoading: boolean;
-  onEditUser: (user: User) => void;
+  onEditUser: (user: UserFormValues) => void;
   onDeleteUser: (userId: string) => void;
   onAddCourse: (userId: string, courseId: string) => void;
   onRemoveCourse: (userId: string, courseId: string) => void;
@@ -60,9 +60,10 @@ export const UserList: React.FC<UserListProps> = ({
         </Thead>
         <Tbody>
           {users.map(user => (
-            <Tr key={user.id}>
-              <Td>{user.name}</Td>
-              <Td>{user.email}</Td>
+            <Tr key={user.userId}>
+              <Td>{user.userName}</Td>  
+              <Td>{user.userEmail || 'N/A'}</Td>
+
               <Td>
                 <Badge colorScheme={
                   user.userRole === 'ADMIN' ? 'red' :
@@ -77,17 +78,17 @@ export const UserList: React.FC<UserListProps> = ({
                     <Flex wrap="wrap" gap={1}>
                       {user.courses.map(course => (
                         <Badge
-                          key={typeof course === 'string' ? course : course.id}
+                          key={typeof course === 'string' ? course : (course as {id: string}).id}
                           colorScheme="purple"
                           mr={1}
                         >
-                          {typeof course === 'string' ? course : course.code || course.name || course.id}
+                          {typeof course === 'string' ? course : (course as {code?: string, name?: string, id: string}).code || (course as {code?: string, name?: string, id: string}).name || (course as {id: string}).id}
                           <IconButton
                             aria-label="Remove course"
                             icon={<DeleteIcon />}
                             size="xs"
                             ml={1}
-                            onClick={() => onRemoveCourse(user.id, typeof course === 'string' ? course : course.id)}
+                            onClick={() => onRemoveCourse(user.userId, typeof course === 'string' ? course : (course as {id: string}).id)}
                           />
                         </Badge>
                       ))}
@@ -101,7 +102,7 @@ export const UserList: React.FC<UserListProps> = ({
                     size="xs"
                     mt={2}
                     colorScheme="teal"
-                    onClick={() => onAddCourse(user.id, '')}
+                    onClick={() => onAddCourse(user.userId, '')}
                   />
                 </Flex>
               </Td>
@@ -118,7 +119,7 @@ export const UserList: React.FC<UserListProps> = ({
                     icon={<DeleteIcon />}
                     size="sm"
                     colorScheme="red"
-                    onClick={() => onDeleteUser(user.id)}
+                    onClick={() => onDeleteUser(user.userId)}
                   />
                 </Flex>
               </Td>
