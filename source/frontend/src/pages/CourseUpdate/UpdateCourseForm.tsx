@@ -28,7 +28,7 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8083/api/courses/update/${course.courseId}`, {
+      const response = await fetch(`http://localhost:8082/api/courses/update/${course.courseId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -95,16 +95,21 @@ const UpdateCourseForm: React.FC<UpdateCourseFormProps> = ({ course, onClose }) 
         </div>
 
         <div className="form-group">
-          <label htmlFor="category">Category:</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          />
-        </div>
+  <label htmlFor="category">Category:</label>
+  <select
+    id="category"
+    name="category"
+    value={formData.category}
+    onChange={handleChange}
+    required
+  >
+    <option value="IT">IT</option>
+    <option value="Sinhala">Sinhala</option>
+    <option value="Science">Science</option>
+    <option value="English">English</option>
+  </select>
+</div>
+
 
         <div className="form-group">
           <label htmlFor="courseDescription">Description:</label>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/ScheduleView.css";
+import '../../styles/ScheduleView.css';
 import { useNavigate } from "react-router-dom";
 import {
   Select,
@@ -129,7 +129,6 @@ const ScheduleView: React.FC = () => {
     if (window.confirm(`Are you sure you want to delete the schedule "${scheduleId}"?`)) {
 
     try {
-      console.log('idddddddddd',scheduleId);
       const response = await fetch(`http://localhost:8082/schedules/delete/${scheduleId}`, {
         method: 'DELETE',
         credentials: 'include'
@@ -245,45 +244,11 @@ const ScheduleView: React.FC = () => {
 
   return (
     <Box minH="100vh" bg="white" p={4}>
-      <HStack spacing={4} align="start" mb={4}>
-        {/* Search by Table Name */}
-        <Input
-          className="search"
-          placeholder="Search schedules by table name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          bg="gray.50"
-          borderColor="gray.300"
-          _hover={{ borderColor: "gray.500" }}
-          _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
-          maxW="400px"
-        />
-
-        {/* Search by Course ID */}
-        <Select
-          placeholder="Search by course"
-          value={selectedCourseId}
-          onChange={(e) => setSelectedCourseId(e.target.value)}
-          maxW="400px"
-          bg="gray.50"
-          borderColor="gray.300"
-          _hover={{ borderColor: "gray.500" }}
-          _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
-        >
-          {courses.map((course) => (
-            <option key={course.courseId} value={course.courseId}>
-              {course.courseName}
-            </option>
-          ))}
-        </Select>
-      </HStack>
+     
 
       <br />
-      <button onClick={handleAddSchedules} className="manage-schedules-button">
-        Schedule New Lecture
-      </button>
       <Text fontSize="4xl" color="black" textAlign="center" mb={8}>
-        Schedule Management
+        All Schedules
       </Text>
       {filteredSchedules.length === 0 ? (
         <Text fontSize="xl" color="gray.500" textAlign="center" mt={8}>
@@ -315,7 +280,6 @@ const ScheduleView: React.FC = () => {
                   <Th>Duration</Th>
                   <Th>Capacity</Th>
                   <Th>Meeting URL</Th>
-                  <Th>Actions</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -341,23 +305,7 @@ const ScheduleView: React.FC = () => {
                       Join Meeting
                     </Button>
                   </Td>
-                  <Td>
-                    <Button
-                      colorScheme="blue"
-                      size="sm"
-                      mr={2}
-                      onClick={() => handleEditClick(schedule)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      size="sm"
-                      onClick={() => handleDeleteClick(schedule.scheduleId)}
-                    >
-                      Delete
-                    </Button>
-                  </Td>
+
                 </Tr>
               </Tbody>
             </Table>

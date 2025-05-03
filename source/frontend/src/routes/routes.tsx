@@ -22,6 +22,10 @@ const CourseDetails = lazy(() => import("../pages/CourseDetails/CourseDetails"))
 const Calendar = lazy(() => import("../pages/schdules/Calander"));
 const UserManagement = lazy(() => import("../pages/userManagement/user"));
 const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
+const AllScheduleView = lazy(() => import("../pages/schdules/AllScheduleView"));
+
+
+
 const EnrolledCourses = lazy(() =>
   import("../pages/user/EnrolledCourses").then((module) => ({
     default: module.EnrolledCourses,
@@ -32,6 +36,19 @@ const UserProfile = lazy(() =>
     default: module.UserProfile,
   }))
 );
+
+
+// Admin Nav props type
+// interface AdminNavProps {
+//   isOpen: boolean;
+//   onOpen: () => void;
+//   onClose: () => void;
+//   drawerBg: string;
+//   menuActiveBg: string;
+//   menuHoverBg: string;
+//   cardBg: string;
+//   headerBorderColor: string;
+// }
 
 // Route with AdminNav type
 type RouteWithAdminNav = RouteObject & {
@@ -81,8 +98,25 @@ const routes: RouteWithAdminNav[] = [
     element: <ScheduleView />,
     needsAdminNav: true,
   },
+
   
   // Course management
+
+  {
+    path: "/admin/view-all-schedule",
+    element: <AllScheduleView />,
+    needsAdminNav: true,
+  },
+  {
+    path: "/Admin",
+    element: <Admin />,
+  },
+  {
+    path: "/admin-login",
+    element: <AdminLogin />,
+  },
+  // Course routes
+
   {
     path: "/admin/courses/form",
     element: <CourseForm />,
@@ -128,8 +162,20 @@ const routes: RouteWithAdminNav[] = [
     path: "/schedule",
     element: <Schedules />,
   },
-  
-  // Removed duplicate route for "/admin" that pointed to ScheduleView
+
+  // Conflict manager API
+  {
+    path: "/conflict-manager",
+    element: <div>Conflict Manager</div>,
+  },
+
+
+
+
+
+
+
+
   
   // 404 route
   {
