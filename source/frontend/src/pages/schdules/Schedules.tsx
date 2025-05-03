@@ -16,12 +16,18 @@ import {
   SimpleGrid,
   useToast,
   Badge,
-  // FormatNumber,
   Stat,
   StatHelpText,
   StatNumber,
+  IconButton,
 } from "@chakra-ui/react";
-import { ChevronUpIcon, ChevronDownIcon, ChatIcon } from "@chakra-ui/icons";
+import {
+  ChevronUpIcon,
+  ChevronDownIcon,
+  ChatIcon,
+  DeleteIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import ChakraCalendar from "./OptimalCalendar";
 
 // Add these utility functions at the top of your file
@@ -162,6 +168,24 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
     }
   };
 
+  const handleEditComment = (
+    scheduleId: string,
+    commentIndex: number,
+    comment: string
+  ) => {
+    console.log(
+      `Edit comment: ${comment} at index ${commentIndex} for schedule ${scheduleId}`
+    );
+    // Add your edit logic here
+  };
+
+  const handleDeleteComment = (scheduleId: string, commentIndex: number) => {
+    console.log(
+      `Delete comment at index ${commentIndex} for schedule ${scheduleId}`
+    );
+    // Add your delete logic here
+  };
+
   return (
     <Box
       p={4}
@@ -276,9 +300,31 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
           <List spacing={2}>
             {schedule.comments.map((comment, index) => (
               <ListItem key={index}>
-                <HStack>
-                  <ChatIcon color='gray.500' />
-                  <Text>{comment}</Text>
+                <HStack spacing={3} justify='space-between'>
+                  <HStack>
+                    <ChatIcon color='gray.500' />
+                    <Text>{comment}</Text>
+                  </HStack>
+                  <HStack spacing={2}>
+                    <IconButton
+                      aria-label='Edit comment'
+                      icon={<EditIcon />}
+                      size='sm'
+                      colorScheme='blue'
+                      variant='ghost'
+                      onClick={() =>
+                        handleEditComment(schedule._id, index, comment)
+                      }
+                    />
+                    <IconButton
+                      aria-label='Delete comment'
+                      icon={<DeleteIcon />}
+                      size='sm'
+                      colorScheme='red'
+                      variant='ghost'
+                      onClick={() => handleDeleteComment(schedule._id, index)}
+                    />
+                  </HStack>
                 </HStack>
               </ListItem>
             ))}
