@@ -172,7 +172,7 @@ export const LectureScheduler = () => {
 
       console.log("Sending data:", JSON.stringify(scheduleData, null, 2));
 
-      const response = await fetch("http://localhost:8082/schedules/add", {
+      const response = await fetch("http://localhost:8083/schedules/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
