@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schedule Voting Client</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+            
+            socket.on('connect', () => {
+                console.log('Connected to server');
+                document.getElementById('status').textContent = 'Connected';
+            });
+            
+            socket.on('disconnect', () => {
+                console.log('Disconnected from server');
+                document.getElementById('status').textContent = 'Disconnected';
+            });
+            
+            socket.on('status', (data) => {
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML += `<p>${data.message}</p>`;
+            });
+            
+            socket.on('vote_update', (data) => {
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML += `<p><strong>${data.username}</strong>: voted ${data.vote}</p>`;
+            });
+            
+            document.getElementById('joinBtn').addEventListener('click', () => {
+                const username = document.getElementById('username').value;
+                const room = document.getElementById('room').value;
+                socket.emit('join', { username, room });
+            });
+            
+            document.getElementById('voteForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const room = document.getElementById('room').value;
+                const vote = document.querySelector('input[name="vote"]:checked').value;
+                
+                socket.emit('vote', { username, room, vote });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Schedule Voting Client</h1>
+    <p>Status: <span id="status">Disconnected</span></p>
+    
+    <div>
+        <input type="text" id="username" placeholder="Username">
+        <input type="text" id="room" placeholder="Room ID">
+        <button id="joinBtn">Join Room</button>
+    </div>
+    
+    <form id="voteForm">
+        <h3>Cast your vote:</h3>
+        <input type="radio" id="approve" name="vote" value="approve">
+        <label for="approve">Approve</label><br>
+        <input type="radio" id="reject" name="vote" value="reject">
+        <label for="reject">Reject</label><br>
+        <button type="submit">Submit Vote</button>
+    </form>
+    
+    <div id="messages"></div>
+</body>
+</html>
