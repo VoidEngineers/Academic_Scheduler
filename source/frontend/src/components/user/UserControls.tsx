@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Flex,
   Input,
-  InputGroup,
-  InputLeftElement,
   Select,
   Button,
-  Box,
+  InputGroup,
+  InputRightElement
 } from '@chakra-ui/react';
-import { SearchIcon, AddIcon } from '@chakra-ui/icons';
+import { AddIcon, SearchIcon } from '@chakra-ui/icons';
 
 interface UserControlsProps {
   searchTerm: string;
@@ -16,6 +15,7 @@ interface UserControlsProps {
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRoleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onAddClick: () => void;
+  onSearch?: (searchTerm: string) => void; // Add explicit search function
 }
 
 export const UserControls: React.FC<UserControlsProps> = ({
@@ -24,45 +24,80 @@ export const UserControls: React.FC<UserControlsProps> = ({
   onSearchChange,
   onRoleChange,
   onAddClick,
+  onSearch
 }) => {
-  const roles = ['All Roles', 'Student', 'Lecturer', 'Instructor', 'Admin'];
+  const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
+
+  // Handle local search term changes
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalSearchTerm(e.target.value);
+    if (!onSearch) {
+      // If no explicit search function, use the continuous filtering
+      onSearchChange(e);
+    }
+  };
+
+  // Handle search button click
+  const handleSearchClick = () => {
+    if (onSearch) {
+      onSearch(localSearchTerm);
+    } else {
+      // Fallback to the input change handler with a synthetic event
+      const syntheticEvent = {
+        target: { value: localSearchTerm }
+      } as React.ChangeEvent<HTMLInputElement>;
+      onSearchChange(syntheticEvent);
+    }
+  };
+
+  // Handle pressing Enter in the search field
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearchClick();
+    }
+  };
 
   return (
-    <Box mb={6}>
-      <Flex direction={{ base: 'column', md: 'row' }} gap={4} mb={4}>
-        <InputGroup maxW={{ base: '100%', md: '300px' }}>
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />
-          </InputLeftElement>
-          <Input
-            placeholder="Search users..."
-            value={searchTerm}
-            onChange={onSearchChange}
-          />
-        </InputGroup>
-
-        <Select
-          maxW={{ base: '100%', md: '200px' }}
-          value={selectedRole}
-          onChange={onRoleChange}
-          placeholder="Filter by role"
-        >
-          {roles.map(role => (
-            <option key={role} value={role}>
-              {role}
-            </option>
-          ))}
-        </Select>
-
-        <Button
-          leftIcon={<AddIcon />}
-          colorScheme="blue"
-          onClick={onAddClick}
-          ml={{ base: 0, md: 'auto' }}
-        >
-          Add User
-        </Button>
-      </Flex>
-    </Box>
+    <Flex mb={5} gap={4}>
+      <InputGroup width="300px">
+        <Input
+          placeholder="Search users..."
+          value={localSearchTerm}
+          onChange={handleSearchInputChange}
+          onKeyDown={handleKeyDown}
+        />
+        <InputRightElement>
+          <Button
+            h="1.75rem"
+            size="sm"
+            onClick={handleSearchClick}
+            aria-label="Search"
+          >
+            <SearchIcon />
+          </Button>
+        </InputRightElement>
+      </InputGroup>
+      
+      <Select
+        placeholder="Filter by role"
+        value={selectedRole}
+        onChange={onRoleChange}
+        width="200px"
+      >
+        <option value="">All Roles</option>
+        <option value="ADMIN">Admin</option>
+        <option value="LECTURER">Lecturer</option>
+        <option value="STUDENT">Student</option>
+      </Select>
+      
+      <Button 
+        leftIcon={<AddIcon />}
+        colorScheme="blue"
+        onClick={onAddClick}
+        ml="auto"
+      >
+        Add User
+      </Button>
+    </Flex>
   );
 };

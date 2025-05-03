@@ -6,43 +6,23 @@ import {
   Tr,
   Th,
   Td,
-  IconButton,
   Badge,
+  IconButton,
+  Flex,
   Box,
   Text,
-  Spinner,
-  Flex,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Select,
-  Button,
+  Spinner
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  userRole: string;
-  courses?: string[];
-}
-
-interface Course {
-  id: string;
-  name: string;
-}
+import { UserFormValues } from '../../types/user';
 
 interface UserListProps {
-  users: User[];
+  users: UserFormValues[];
   isLoading: boolean;
-  onEditUser: (user: User) => void;
+  onEditUser: (user: UserFormValues) => void;
   onDeleteUser: (userId: string) => void;
-  onAddCourse?: (userId: string, courseId: string) => void;
-  onRemoveCourse?: (userId: string, courseId: string) => void;
-  availableCourses?: Course[];
+  onAddCourse: (userId: string, courseId: string) => void;
+  onRemoveCourse: (userId: string, courseId: string) => void;
 }
 
 export const UserList: React.FC<UserListProps> = ({
@@ -51,38 +31,20 @@ export const UserList: React.FC<UserListProps> = ({
   onEditUser,
   onDeleteUser,
   onAddCourse,
-  onRemoveCourse,
-  availableCourses = [],
+  onRemoveCourse
 }) => {
   if (isLoading) {
     return (
-      <Flex justify="center" align="center" minH="200px">
+      <Box textAlign="center" py={10}>
         <Spinner size="xl" />
-      </Flex>
-    );
-  }
-
-  if (users.length === 0) {
-    return (
-      <Box textAlign="center" p={5} color="gray.500">
-        <Text>No users found</Text>
+        <Text mt={4}>Loading users...</Text>
       </Box>
     );
   }
 
-  const getRoleBadgeColor = (role: string) => {
-    switch (role.toLowerCase()) {
-      case 'admin':
-        return 'red';
-      case 'lecturer':
-      case 'instructor':
-        return 'purple';
-      case 'student':
-        return 'green';
-      default:
-        return 'gray';
-    }
-  };
+  if (users.length === 0) {
+    return <Box p={5}>No users found.</Box>;
+  }
 
   return (
     <Box overflowX="auto">
@@ -92,115 +54,76 @@ export const UserList: React.FC<UserListProps> = ({
             <Th>Name</Th>
             <Th>Email</Th>
             <Th>Role</Th>
+            <Th>Courses</Th>
             <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
           {users.map(user => (
-            <React.Fragment key={user.id}>
-              <Tr>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-                <Td>
-                  <Badge colorScheme={getRoleBadgeColor(user.userRole)}>
-                    {user.userRole}
-                  </Badge>
-                </Td>
-                <Td>
-                  <Flex gap={2}>
-                    <IconButton
-                      aria-label="Edit user"
-                      icon={<EditIcon />}
-                      size="sm"
-                      onClick={() => onEditUser(user)}
-                    />
-                    <IconButton
-                      aria-label="Delete user"
-                      icon={<DeleteIcon />}
-                      size="sm"
-                      colorScheme="red"
-                      onClick={() => onDeleteUser(user.id)}
-                    />
-                  </Flex>
-                </Td>
-              </Tr>
-              
-              {/* Course management section */}
-              {(user.userRole === 'Student' || user.userRole === 'Lecturer' || user.userRole === 'Instructor') && 
-                onAddCourse && onRemoveCourse && (
-                <Tr>
-                  <Td colSpan={4} p={0}>
-                    <Accordion allowToggle>
-                      <AccordionItem border="none">
-                        <AccordionButton py={2}>
-                          <Box flex="1" textAlign="left">
-                            Manage Courses
-                          </Box>
-                          <AccordionIcon />
-                        </AccordionButton>
-                        <AccordionPanel pb={4}>
-                          <Box>
-                            <Text fontWeight="bold" mb={2}>
-                              Enrolled Courses
-                            </Text>
-                            {user.courses && user.courses.length > 0 ? (
-                              <Box mb={4}>
-                                {user.courses.map(courseId => {
-                                  const course = availableCourses.find(c => c.id === courseId);
-                                  return (
-                                    <Flex key={courseId} justify="space-between" mb={2}>
-                                      <Text>{course ? course.name : courseId}</Text>
-                                      <Button
-                                        size="xs"
-                                        colorScheme="red"
-                                        onClick={() => onRemoveCourse(user.id, courseId)}
-                                      >
-                                        Remove
-                                      </Button>
-                                    </Flex>
-                                  );
-                                })}
-                              </Box>
-                            ) : (
-                              <Text mb={4} fontSize="sm" color="gray.500">
-                                No courses assigned
-                              </Text>
-                            )}
+            <Tr key={user.userId}>
+              <Td>{user.userName}</Td>  
+              <Td>{user.userEmail || 'N/A'}</Td>
 
-                            <Box>
-                              <Text fontWeight="bold" mb={2}>
-                                Add Course
-                              </Text>
-                              <Flex>
-                                <Select
-                                  placeholder="Select course"
-                                  size="sm"
-                                  mr={2}
-                                  onChange={(e) => {
-                                    if (e.target.value) {
-                                      onAddCourse(user.id, e.target.value);
-                                      e.target.value = '';
-                                    }
-                                  }}
-                                >
-                                  {availableCourses
-                                    .filter(course => !user.courses?.includes(course.id))
-                                    .map(course => (
-                                      <option key={course.id} value={course.id}>
-                                        {course.name}
-                                      </option>
-                                    ))}
-                                </Select>
-                              </Flex>
-                            </Box>
-                          </Box>
-                        </AccordionPanel>
-                      </AccordionItem>
-                    </Accordion>
-                  </Td>
-                </Tr>
-              )}
-            </React.Fragment>
+              <Td>
+                <Badge colorScheme={
+                  user.userRole === 'ADMIN' ? 'red' :
+                    user.userRole === 'LECTURER' ? 'green' : 'blue'
+                }>
+                  {user.userRole}
+                </Badge>
+              </Td>
+              <Td>
+                <Flex direction="column">
+                  {user.courses && user.courses.length > 0 ? (
+                    <Flex wrap="wrap" gap={1}>
+                      {user.courses.map(course => (
+                        <Badge
+                          key={typeof course === 'string' ? course : (course as {id: string}).id}
+                          colorScheme="purple"
+                          mr={1}
+                        >
+                          {typeof course === 'string' ? course : (course as {code?: string, name?: string, id: string}).code || (course as {code?: string, name?: string, id: string}).name || (course as {id: string}).id}
+                          <IconButton
+                            aria-label="Remove course"
+                            icon={<DeleteIcon />}
+                            size="xs"
+                            ml={1}
+                            onClick={() => onRemoveCourse(user.userId, typeof course === 'string' ? course : (course as {id: string}).id)}
+                          />
+                        </Badge>
+                      ))}
+                    </Flex>
+                  ) : (
+                    <Text fontSize="sm" color="gray.500">No courses</Text>
+                  )}
+                  <IconButton
+                    aria-label="Add course"
+                    icon={<span>+</span>}
+                    size="xs"
+                    mt={2}
+                    colorScheme="teal"
+                    onClick={() => onAddCourse(user.userId, '')}
+                  />
+                </Flex>
+              </Td>
+              <Td>
+                <Flex gap={2}>
+                  <IconButton
+                    aria-label="Edit user"
+                    icon={<EditIcon />}
+                    size="sm"
+                    onClick={() => onEditUser(user)}
+                  />
+                  <IconButton
+                    aria-label="Delete user"
+                    icon={<DeleteIcon />}
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => onDeleteUser(user.userId)}
+                  />
+                </Flex>
+              </Td>
+            </Tr>
           ))}
         </Tbody>
       </Table>
