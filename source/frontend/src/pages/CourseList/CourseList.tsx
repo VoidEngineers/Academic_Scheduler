@@ -34,7 +34,7 @@ const CourseList: React.FC = () => {
 
 const fetchCourses = async () => {
   try {
-    const response = await fetch('http://localhost:8083/api/courses', {
+    const response = await fetch('http://localhost:8082/api/courses', {
       credentials: 'include'
     });
     if (!response.ok) {
@@ -64,7 +64,7 @@ const fetchCourses = async () => {
       // Filter out the deleted course
     
     try {
-      const response = await fetch(`http://localhost:8083/api/courses/delete/${courseId}`, {
+      const response = await fetch(`http://localhost:8082/api/courses/delete/${courseId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
