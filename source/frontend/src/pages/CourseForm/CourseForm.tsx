@@ -111,7 +111,7 @@ const CourseForm: React.FC = () => {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(Error: ${response.status} - ${JSON.stringify(errorData)});
+          throw new Error(`Error: ${response.status} - ${JSON.stringify(errorData)}`);
         }
 
         alert('Course added successfully!');
@@ -215,7 +215,7 @@ const CourseForm: React.FC = () => {
                   style={{
                     width: '100%',
                     padding: '8px',
-                    border: 1px solid ${errors[name as keyof FormErrors] ? 'red' : '#ccc'},
+                    border: `1px solid ${errors[name as keyof FormErrors] ? 'red' : '#ccc'}`,
                     borderRadius: '5px'
                   }}
                   required
@@ -242,7 +242,7 @@ const CourseForm: React.FC = () => {
             style={{
               width: '100%',
               padding: '8px',
-              border: 1px solid ${errors.category ? 'red' : '#ccc'},
+              border: `1px solid ${errors.category ? 'red' : '#ccc'}`,
               borderRadius: '5px',
               backgroundColor: 'white'
             }}
@@ -272,7 +272,7 @@ const CourseForm: React.FC = () => {
             style={{
               width: '100%',
               padding: '8px',
-              border: 1px solid ${errors.courseDescription ? 'red' : '#ccc'},
+              border: `1px solid ${errors.courseDescription ? 'red' : '#ccc'}`,
               borderRadius: '5px',
               minHeight: '80px'
             }}
