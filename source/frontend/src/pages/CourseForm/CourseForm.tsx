@@ -156,15 +156,28 @@ const CourseForm: React.FC = () => {
       height: '100vh',
       flexDirection: 'column'
     }}>
-<button
-  onClick={handleAddSchedules}
-  className="manage-schedules-button"
-  style={{ alignItems: 'center', marginLeft:'-900px' }}
->
+
+<button 
+       onClick={handleAddSchedules}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#6a6c6d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginTop: '60px',
+            marginLeft:'-900px' 
+          }}
+        >
   Manage Courses 
 </button>
 
-      <Text fontSize='30px' color='black' textAlign='center'>Add New Course</Text>
+
+
+      <Text fontSize='30px' color='black' textAlign='center'  fontWeight="bold">Add New Course</Text>
+
+
       <form 
         onSubmit={handleSubmit} 
         style={{
