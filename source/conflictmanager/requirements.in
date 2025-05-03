@@ -9,3 +9,7 @@ pymongo[srv]
 Flask-PyMongo
 google-generativeai
 protobuf
+apscheduler
+python-dotenv
+gunicorn[gevent]==22.0.0
+flask-cors

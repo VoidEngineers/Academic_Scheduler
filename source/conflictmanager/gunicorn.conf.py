@@ -16,7 +16,11 @@
 #       range.
 #
 
-bind = '0.0.0.0:5000'
+import os
+
+PORT = os.environ.get('PORT', 5000)
+
+bind = f"0.0.0.0:{PORT}"
 
 #
 # Worker processes
@@ -62,13 +66,11 @@ bind = '0.0.0.0:5000'
 #       A positive integer. Generally set in the 1-5 seconds range.
 #
 
-import multiprocessing
-
 workers = 1
 # workers = multiprocessing.cpu_count() * 2 + 1
-worker_class = 'sync'
+worker_class = 'gevent'
 worker_connections = 1000
-timeout = 30
+timeout = 120
 keepalive = 2
 
 #

@@ -111,7 +111,7 @@ const CourseForm: React.FC = () => {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(`Error: ${response.status} - ${JSON.stringify(errorData)}`);
+          throw new Error(Error: ${response.status} - ${JSON.stringify(errorData)});
         }
 
         alert('Course added successfully!');
@@ -156,15 +156,28 @@ const CourseForm: React.FC = () => {
       height: '100vh',
       flexDirection: 'column'
     }}>
-<button
-  onClick={handleAddSchedules}
-  className="manage-schedules-button"
-  style={{ alignItems: 'center', marginLeft:'-900px' }}
->
+
+<button 
+       onClick={handleAddSchedules}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#6a6c6d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginTop: '60px',
+            marginLeft:'-900px' 
+          }}
+        >
   Manage Courses 
 </button>
 
-      <Text fontSize='30px' color='black' textAlign='center'>Add New Course</Text>
+
+
+      <Text fontSize='30px' color='black' textAlign='center'  fontWeight="bold">Add New Course</Text>
+
+
       <form 
         onSubmit={handleSubmit} 
         style={{
@@ -202,7 +215,7 @@ const CourseForm: React.FC = () => {
                   style={{
                     width: '100%',
                     padding: '8px',
-                    border: `1px solid ${errors[name as keyof FormErrors] ? 'red' : '#ccc'}`,
+                    border: 1px solid ${errors[name as keyof FormErrors] ? 'red' : '#ccc'},
                     borderRadius: '5px'
                   }}
                   required
@@ -229,7 +242,7 @@ const CourseForm: React.FC = () => {
             style={{
               width: '100%',
               padding: '8px',
-              border: `1px solid ${errors.category ? 'red' : '#ccc'}`,
+              border: 1px solid ${errors.category ? 'red' : '#ccc'},
               borderRadius: '5px',
               backgroundColor: 'white'
             }}
@@ -259,7 +272,7 @@ const CourseForm: React.FC = () => {
             style={{
               width: '100%',
               padding: '8px',
-              border: `1px solid ${errors.courseDescription ? 'red' : '#ccc'}`,
+              border: 1px solid ${errors.courseDescription ? 'red' : '#ccc'},
               borderRadius: '5px',
               minHeight: '80px'
             }}
