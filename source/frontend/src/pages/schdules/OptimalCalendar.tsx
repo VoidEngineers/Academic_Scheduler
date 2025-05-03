@@ -289,22 +289,6 @@ const ChakraCalendar = ({
                 </Box>
               ))}
             </VStack>
-
-            {/* Optional: Show comments */}
-            {schedule.comments && schedule.comments.length > 0 && (
-              <>
-                <Text fontWeight='semibold' mt={6} mb={2}>
-                  Comments
-                </Text>
-                <VStack align='start' spacing={2}>
-                  {schedule.comments.map((comment, i) => (
-                    <Box key={i} bg='gray.100' p={2} rounded='md'>
-                      <Text fontSize='xs'>{comment}</Text>
-                    </Box>
-                  ))}
-                </VStack>
-              </>
-            )}
           </Box>
         )}
       </Box>

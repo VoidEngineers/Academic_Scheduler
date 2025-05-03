@@ -18,6 +18,8 @@ import {
   Badge,
   // FormatNumber,
   Stat,
+  StatHelpText,
+  StatNumber,
 } from "@chakra-ui/react";
 import { ChevronUpIcon, ChevronDownIcon, ChatIcon } from "@chakra-ui/icons";
 import ChakraCalendar from "./OptimalCalendar";
@@ -150,11 +152,13 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
   userVote,
 }) => {
   const [commentText, setCommentText] = useState("");
+  const [isCommentEmpty, setIsCommentEmpty] = useState(false);
 
   const handleCommentSubmit = () => {
     if (commentText.trim()) {
       onComment(commentText.trim());
       setCommentText("");
+      setIsCommentEmpty(false);
     }
   };
 
@@ -208,26 +212,32 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
             </Text>
           </HStack>
           <HStack spacing={2}>
-            <Text fontSize='md' color='gray.500'>
+            {/* <Text fontSize='md' color='gray.500'>
               Total Votes {schedule.votes}
-            </Text>
-            {/* <Stat.Root>
-              <Stat.Label>Unique </Stat.Label>
-              <HStack>
-                <Stat.ValueText>
-                  <FormatNumber
-                    value={8456.4}
-                    style='currency'
-                    currency='USD'
-                  />
-                </Stat.ValueText>
-                <Badge colorPalette='green' gap='0'>
-                  <Stat.UpIndicator />
-                  12%
+            </Text> */}
+            <Stat>
+              <StatHelpText fontWeight='bold'>Votes</StatHelpText>
+              <HStack mr={2}>
+                <StatNumber>
+                  {/* {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(8456.4)} */}
+                  {schedule.votes}
+                </StatNumber>
+                <Badge colorScheme='green' gap='0'>
+                  <ChevronUpIcon />
+                  {parseFloat(
+                    (
+                      (schedule.votes / (schedule.likes + schedule.dislikes)) *
+                      100
+                    ).toFixed(2)
+                  )}
+                  %
                 </Badge>
               </HStack>
-              <Stat.HelpText>since last month</Stat.HelpText>
-            </Stat.Root> */}
+              <StatHelpText>since last month</StatHelpText>
+            </Stat>
           </HStack>
         </HStack>
         <Box>
@@ -240,15 +250,38 @@ const SchedulePost: React.FC<SchedulePostProps> = ({
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && commentText.trim()) {
-                  handleCommentSubmit();
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (commentText.trim()) {
+                    handleCommentSubmit();
+                  } else {
+                    // Show validation feedback
+                    setIsCommentEmpty(true);
+                  }
                 }
               }}
+              isInvalid={isCommentEmpty}
+              errorBorderColor='crimson'
             />
-            <Button colorScheme='blue' onClick={handleCommentSubmit}>
+            <Button
+              colorScheme='blue'
+              onClick={() => {
+                if (commentText.trim()) {
+                  handleCommentSubmit();
+                } else {
+                  // Show validation feedback
+                  setIsCommentEmpty(true);
+                }
+              }}
+            >
               Send
             </Button>
           </HStack>
+          {isCommentEmpty && (
+            <Text color='red.500' fontSize='sm' mt={1} width='100%'>
+              Comment cannot be empty
+            </Text>
+          )}
           <List spacing={2}>
             {schedule.comments.map((comment, index) => (
               <ListItem key={index}>
