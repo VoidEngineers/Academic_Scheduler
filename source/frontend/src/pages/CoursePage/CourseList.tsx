@@ -17,6 +17,7 @@ const CourseList: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // State to store search term
 
   const navigate = useNavigate();
 
@@ -50,28 +51,55 @@ const CourseList: React.FC = () => {
   };
 
   // Function to extract YouTube video ID and create thumbnail URL
-const getVideoThumbnail = (url: string) => {
+  const getVideoThumbnail = (url: string) => {
     console.log('URL:', url); // Debugging the video URL input
-  
+
     const youtubeRegex =
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+|(?:v|e(?:mbed)?)\/([^\/\n\s]+)))|(?:youtu\.be\/([^\/\n\s]+))/;
-  
+
     const match = url.match(youtubeRegex);
     if (match) {
       const videoId = match[1] || match[2];
       console.log('Extracted Video ID:', videoId); // Debugging the extracted video ID
       return `https://img.youtube.com/vi/${videoId}/0.jpg`; // YouTube thumbnail URL
     }
-    
+
     console.error('Invalid YouTube URL format:', url); // Log invalid URL format
     return ''; // Return empty if not a YouTube link
   };
-  
+
+  // Handle search input change
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Filter courses based on search term
+  const filteredCourses = courses.filter((course) =>
+    course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="course-list-container">
       <div className="course-list-header">
         <h2>Discover Courses!</h2>
+
+        {/* Search input field with inline CSS */}
+        <input
+          type="text"
+          placeholder="Search by course name"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          style={{
+            padding: '10px',
+            margin: '10px 0',
+            width: '100%',
+            maxWidth: '400px',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            fontSize: '16px',
+            boxSizing: 'border-box', // Ensures padding doesn't affect width
+          }}
+        />
       </div>
 
       {showUpdateForm && (
@@ -84,7 +112,7 @@ const getVideoThumbnail = (url: string) => {
       )}
 
       <div className="course-list">
-        {courses.map((course) => (
+        {filteredCourses.map((course) => (
           <div key={course.courseId} className="course-card">
             <div className="course-header">
               <h3 className="course-name">{course.courseName}</h3>
@@ -100,7 +128,6 @@ const getVideoThumbnail = (url: string) => {
               <p>
                 <strong>LIC:</strong> {course.lic}
               </p>
-          
             </div>
 
             {/* Displaying the video thumbnail if videoUrl exists */}
