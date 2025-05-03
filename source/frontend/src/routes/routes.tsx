@@ -23,7 +23,7 @@ const Calendar = lazy(() => import("../pages/schdules/Calander"));
 const UserManagement = lazy(() => import("../pages/userManagement/user"));
 const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
 const AllScheduleView = lazy(() => import("../pages/schdules/AllScheduleView"));
-
+const CoursesPage = lazy(() => import("../pages/CoursePage/CourseList"));
 
 
 const EnrolledCourses = lazy(() =>
@@ -168,10 +168,10 @@ const routes: RouteWithAdminNav[] = [
     path: "/conflict-manager",
     element: <div>Conflict Manager</div>,
   },
-
-
-
-
+  {
+    path: "/allcourses",
+    element: <CoursesPage />,
+  },
 
 
 
