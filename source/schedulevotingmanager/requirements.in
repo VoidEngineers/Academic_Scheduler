@@ -8,3 +8,6 @@ pymongo==4.6.1
 redis==5.0.1
 python-dotenv
 apscheduler
+gunicorn[gevent]==22.0.0
+gunicorn[eventlet]
+flask-cors
