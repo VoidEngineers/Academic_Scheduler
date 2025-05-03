@@ -134,6 +134,7 @@ const Admin: React.FC = () => {
                 _hover={{ bg: menuHoverBg }} 
                 py={6} 
                 borderRadius={0}
+                onClick={() => navigate("/admin/view-all-schedule")}
               >
                 Conflict Management
               </Button>

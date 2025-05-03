@@ -109,6 +109,7 @@ const AdminNav: React.FC<AdminNavProps> = ({
                 _hover={{ bg: menuHoverBg }}
                 py={6}
                 borderRadius={0}
+                onClick={() => navigate("/admin/view-schedule")}
               >
                 Conflict Management
               </Button>
