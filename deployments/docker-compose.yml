@@ -1,17 +1,4 @@
 services:
-  # postgres:
-  #   image: postgres:latest
-  #   container_name: postgres-db
-  #   restart: always
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     POSTGRES_USER: admin
-  #     POSTGRES_PASSWORD: admin
-  #     POSTGRES_DB: test
-  #   volumes:
-  #     - ~/pgdata:/var/lib/postgresql/data # Persistent data directory
-
   conflictmanager:
     restart: always
     build:
@@ -19,9 +6,6 @@ services:
       context: ../source/conflictmanager
     # Need to create a .env.docker-compose file in the source/zbxhostcollector directory to be used as an environment file equivalent to the .env file for production
     env_file: ../source/conflictmanager/.env
-    # Mount the aws cli configuration directory of host to the container to allow the container to access the AWS credentials
-    # volumes:
-    #   - ~/.aws/:/root/.aws:ro
     # expose the port 5000 of the container to the port 5001 of the host
     ports:
       - "5001:5000"
@@ -33,9 +17,6 @@ services:
       context: ../source/schedulevotingmanager
     # Need to create a .env.docker-compose file in the source/zbxhostcollector directory to be used as an environment file equivalent to the .env file for production
     env_file: ../source/schedulevotingmanager/.env
-    # Mount the aws cli configuration directory of host to the container to allow the container to access the AWS credentials
-    # volumes:
-    #   - ~/.aws/:/root/.aws:ro
     # expose the port 5000 of the container to the port 5001 of the host
     ports:
       - "5002:5000"
@@ -47,9 +28,6 @@ services:
       context: ../source/frontend
     # Need to create a .env.docker-compose file in the source/zbxhostcollector directory to be used as an environment file equivalent to the .env file for production
     # env_file: ../../source/frontend/.env
-    # Mount the aws cli configuration directory of host to the container to allow the container to access the AWS credentials
-    # volumes:
-    #   - ~/.aws/:/root/.aws:ro
     # expose the port 5000 of the container to the port 5001 of the host
     ports:
       - "8001:5173"
