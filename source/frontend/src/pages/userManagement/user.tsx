@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Alert, AlertIcon, AlertTitle, AlertDescription, Button } from '@chakra-ui/react';
 import { UserList } from '../../components/user/UserList';
 import { UserControls } from '../../components/user/UserControls';
-import { useUserManagement } from '../../hooks/useUserManagement';
 import { UserFormModal } from '../../components/user/UserFormModal';
-import { DeleteConfirmModal } from '../../components/user/DeleteConfimModal'; 
+import { DeleteConfirmModal } from '../../components/user/DeleteConfimModal';
+import { useUserManagement } from '../../hooks/useUserManagement';
 
 const UserManagement: React.FC = () => {
   const {
@@ -18,25 +18,57 @@ const UserManagement: React.FC = () => {
   } = useUserManagement();
 
   if (error) {
-    return <Box p={5}>Error loading users: {error}</Box>;
+    return (
+      <Alert status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">
+        <AlertIcon boxSize="40px" mr={0} />
+        <AlertTitle mt={4} mb={1} fontSize="lg">
+          Error Loading Users
+        </AlertTitle>
+        <AlertDescription maxWidth="sm">
+          {error}
+          <Box mt={4}>
+            <Button onClick={() => window.location.reload()}>
+              Try Again
+            </Button>
+          </Box>
+        </AlertDescription>
+      </Alert>
+    );
   }
 
   return (
     <Box p={5}>
       <Heading mb={6}>User Management</Heading>
-      
-      <UserControls 
+
+      <UserControls
         searchTerm={filters.searchTerm}
         selectedRole={filters.selectedRole}
         onSearchChange={handlers.onSearchChange}
+        onSearch={handlers.onSearch} 
         onRoleChange={handlers.onRoleChange}
         onAddClick={handlers.onAddClick}
       />
-      
-      <UserList 
-        users={users}
+
+      <UserList
+        users={users.map(user => ({
+          userId: user.id || '',
+          userName: user.name || '',
+          userEmail: user.email || '',
+          password: '',
+          countryCode: user.countryCode || '',
+          courses: user.courses || [],
+          ...user
+        }))}
         isLoading={isLoading}
-        onEditUser={handlers.onEditClick}
+        onEditUser={(userFormValues) => {
+          const userWithRequiredProps = {
+            id: userFormValues.userId,
+            name: userFormValues.userName,
+            email: userFormValues.userEmail,
+            ...userFormValues
+          };
+          handlers.onEditClick(userWithRequiredProps);
+        }}
         onDeleteUser={handlers.onDeleteClick}
         onAddCourse={handlers.onAddCourse}
         onRemoveCourse={handlers.onRemoveCourse}
@@ -47,12 +79,12 @@ const UserManagement: React.FC = () => {
           user={currentUser}
           isOpen={modalStates.isFormOpen}
           onClose={handlers.onFormClose}
-          onSubmit={(values) => handlers.onFormSubmit(values as any)} // * remove this any
+          onSubmit={handlers.onFormSubmit}
         />
       )}
 
       {modalStates.isDeleteOpen && (
-        <DeleteConfirmModal 
+        <DeleteConfirmModal
           isOpen={modalStates.isDeleteOpen}
           onClose={handlers.onDeleteClose}
           onConfirm={handlers.onDeleteConfirm}

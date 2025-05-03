@@ -1,6 +1,5 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-// import Schedules from "../pages/schdules/Schedules";
 
 // Lazy load components
 const OnBoarding = lazy(() => import("../pages/onBoarding/onBoarding"));
@@ -15,6 +14,8 @@ const LectureScheduler = lazy(() =>
 const Schedules = lazy(() => import("../pages/schdules/Schedules"));
 const ScheduleView = lazy(() => import("../pages/ScheduleView"));
 const AdminLogin = lazy(() => import("../pages/auth/AdminLogin"));
+const StudentLogin = lazy(() => import("../pages/auth/StudentLogin"));
+const StaffLogin = lazy(() => import("../pages/auth/StaffLogin"));
 const CourseForm = lazy(() => import("../pages/CourseForm/CourseForm"));
 const CourseList = lazy(() => import("../pages/CourseList/CourseList"));
 const CourseDetails = lazy(() => import("../pages/CourseDetails/CourseDetails"));
@@ -36,6 +37,7 @@ const UserProfile = lazy(() =>
   }))
 );
 
+
 // Admin Nav props type
 // interface AdminNavProps {
 //   isOpen: boolean;
@@ -47,6 +49,7 @@ const UserProfile = lazy(() =>
 //   cardBg: string;
 //   headerBorderColor: string;
 // }
+
 // Route with AdminNav type
 type RouteWithAdminNav = RouteObject & {
   needsAdminNav?: boolean;
@@ -54,6 +57,7 @@ type RouteWithAdminNav = RouteObject & {
 
 // Define routes
 const routes: RouteWithAdminNav[] = [
+  // Public routes
   {
     path: "/",
     element: <OnBoarding />,
@@ -62,6 +66,27 @@ const routes: RouteWithAdminNav[] = [
     path: "/home",
     element: <Home />,
   },
+  
+  // Authentication routes
+  {
+    path: "/admin-login",
+    element: <AdminLogin />,
+  },
+  {
+    path: "/Staff-login", // Fixed capitalization for consistency
+    element: <StaffLogin />, // Use proper component
+  },
+  {
+    path: "/student-login",
+    element: <StudentLogin />,
+  },
+  
+  // Admin dashboard
+  {
+    path: "/admin",
+    element: <Admin />,
+  },
+  
   // Admin routes with nav
   {
     path: "/admin/schedule",
@@ -73,6 +98,10 @@ const routes: RouteWithAdminNav[] = [
     element: <ScheduleView />,
     needsAdminNav: true,
   },
+
+  
+  // Course management
+
   {
     path: "/admin/view-all-schedule",
     element: <AllScheduleView />,
@@ -87,6 +116,7 @@ const routes: RouteWithAdminNav[] = [
     element: <AdminLogin />,
   },
   // Course routes
+
   {
     path: "/admin/courses/form",
     element: <CourseForm />,
@@ -101,13 +131,15 @@ const routes: RouteWithAdminNav[] = [
     path: "/courses/:courseId",
     element: <CourseDetails />,
   },
+  
   // User management
   {
     path: "/admin/user",
     element: <UserManagement />,
     needsAdminNav: true,
   },
-  // User routes
+  
+  // User profile routes
   {
     path: "/user-profile",
     element: <UserProfile />,
@@ -120,11 +152,8 @@ const routes: RouteWithAdminNav[] = [
     path: "/enrolled-courses",
     element: <EnrolledCourses />,
   },
-  {
-    path: "/admin",
-    element: <ScheduleView />,
-    needsAdminNav: true,
-  },
+  
+  // Schedule and calendar
   {
     path: "/calendar",
     element: <Calendar />,
@@ -133,6 +162,7 @@ const routes: RouteWithAdminNav[] = [
     path: "/schedule",
     element: <Schedules />,
   },
+
   // Conflict manager API
   {
     path: "/conflict-manager",

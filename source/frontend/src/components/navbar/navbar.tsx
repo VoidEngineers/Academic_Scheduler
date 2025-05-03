@@ -102,12 +102,12 @@ const Navbar: React.FC<NavbarProps> = ({
             Student
           </MenuItem>
           <MenuItem 
-            onClick={() => navigate('/instructor-login')}
+            onClick={() => navigate('/Staff-login')}
             _hover={{ bg: 'gray.50' }}
             py={3}
             px={4}
           >
-            Instructor
+            Staff
           </MenuItem>
           <MenuItem 
             onClick={() => navigate('/admin-login')}
