@@ -99,7 +99,7 @@ const ScheduleView: React.FC = () => {
 
   const fetchSchedules = async () => {
     try {
-      const response = await fetch("http://localhost:8082/schedules/all", {
+      const response = await fetch("http://localhost:8083/schedules/all", {
         credentials: "include",
       });
       if (!response.ok) {
@@ -133,7 +133,7 @@ const ScheduleView: React.FC = () => {
     ) {
       try {
         const response = await fetch(
-          `http://localhost:8082/schedules/delete/${scheduleId}`,
+          `http://localhost:8083/schedules/delete/${scheduleId}`,
           {
             method: "DELETE",
             credentials: "include",
@@ -175,7 +175,7 @@ const ScheduleView: React.FC = () => {
     if (editingSchedule) {
       try {
         const response = await fetch(
-          `http://localhost:8082/schedules/update/${editingSchedule.scheduleId}`,
+          `http://localhost:8083/schedules/update/${editingSchedule.scheduleId}`,
           {
             method: "PUT",
             headers: {
