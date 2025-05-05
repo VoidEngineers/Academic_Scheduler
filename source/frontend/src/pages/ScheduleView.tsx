@@ -126,18 +126,24 @@ const ScheduleView: React.FC = () => {
   };
 
   const handleDeleteClick = async (scheduleId: string) => {
-    if (window.confirm(`Are you sure you want to delete the schedule "${scheduleId}"?`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the schedule "${scheduleId}"?`
+      )
+    ) {
+      try {
+        console.log("idddddddddd", scheduleId);
+        const response = await fetch(
+          `http://localhost:8083/schedules/delete/${scheduleId}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          }
+        );
 
-    try {
-      console.log('idddddddddd',scheduleId);
-      const response = await fetch(`http://localhost:8082/schedules/delete/${scheduleId}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to delete schedule');
-      }
+        if (!response.ok) {
+          throw new Error("Failed to delete schedule");
+        }
 
         setSchedules(
           schedules.filter((schedule) => schedule.tableId !== scheduleId)
@@ -169,14 +175,17 @@ const ScheduleView: React.FC = () => {
   const handleSaveChanges = async () => {
     if (editingSchedule) {
       try {
-        const response = await fetch(`http://localhost:8082/schedules/update/${editingSchedule.scheduleId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify(editingSchedule),
-        });
+        const response = await fetch(
+          `http://localhost:8083/schedules/update/${editingSchedule.scheduleId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(editingSchedule),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to update schedule");
@@ -218,13 +227,13 @@ const ScheduleView: React.FC = () => {
   if (isLoading) {
     return (
       <Box
-        minH="100vh"
-        bg="white"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
+        minH='100vh'
+        bg='white'
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
       >
-        <Text fontSize="xl">Loading schedules...</Text>
+        <Text fontSize='xl'>Loading schedules...</Text>
       </Box>
     );
   }
@@ -244,29 +253,29 @@ const ScheduleView: React.FC = () => {
   });
 
   return (
-    <Box minH="100vh" bg="white" p={4}>
-      <HStack spacing={4} align="start" mb={4}>
+    <Box minH='100vh' bg='white' p={4}>
+      <HStack spacing={4} align='start' mb={4}>
         {/* Search by Table Name */}
         <Input
-          className="search"
-          placeholder="Search schedules by table name"
+          className='search'
+          placeholder='Search schedules by table name'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          bg="gray.50"
-          borderColor="gray.300"
+          bg='gray.50'
+          borderColor='gray.300'
           _hover={{ borderColor: "gray.500" }}
           _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
-          maxW="400px"
+          maxW='400px'
         />
 
         {/* Search by Course ID */}
         <Select
-          placeholder="Search by course"
+          placeholder='Search by course'
           value={selectedCourseId}
           onChange={(e) => setSelectedCourseId(e.target.value)}
-          maxW="400px"
-          bg="gray.50"
-          borderColor="gray.300"
+          maxW='400px'
+          bg='gray.50'
+          borderColor='gray.300'
           _hover={{ borderColor: "gray.500" }}
           _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
         >
@@ -279,14 +288,14 @@ const ScheduleView: React.FC = () => {
       </HStack>
 
       <br />
-      <button onClick={handleAddSchedules} className="manage-schedules-button">
+      <button onClick={handleAddSchedules} className='manage-schedules-button'>
         Schedule New Lecture
       </button>
-      <Text fontSize="4xl" color="black" textAlign="center" mb={8}>
+      <Text fontSize='4xl' color='black' textAlign='center' mb={8}>
         Schedule Management
       </Text>
       {filteredSchedules.length === 0 ? (
-        <Text fontSize="xl" color="gray.500" textAlign="center" mt={8}>
+        <Text fontSize='xl' color='gray.500' textAlign='center' mt={8}>
           No schedules found matching the search criteria.
         </Text>
       ) : (
@@ -295,17 +304,17 @@ const ScheduleView: React.FC = () => {
             key={schedule.tableId}
             mb={8}
             p={4}
-            borderWidth="1px"
-            borderRadius="lg"
+            borderWidth='1px'
+            borderRadius='lg'
           >
-            <Text fontSize="2xl" mb={1}>
+            <Text fontSize='2xl' mb={1}>
               {schedule.tableName}
               {" - "}
               {courses.find((course) => course.courseId === schedule.courseId)
                 ?.courseName || "Unknown Course"}
             </Text>
 
-            <Table variant="simple">
+            <Table variant='simple'>
               <Thead>
                 <Tr>
                   <Th>Schedule ID</Th>
@@ -331,28 +340,28 @@ const ScheduleView: React.FC = () => {
                   <Td>{schedule.capacity}</Td>
                   <Td>
                     <Button
-                      as="a"
+                      as='a'
                       href={schedule.meetingURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      colorScheme="blue"
-                      size="sm"
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      colorScheme='blue'
+                      size='sm'
                     >
                       Join Meeting
                     </Button>
                   </Td>
                   <Td>
                     <Button
-                      colorScheme="blue"
-                      size="sm"
+                      colorScheme='blue'
+                      size='sm'
                       mr={2}
                       onClick={() => handleEditClick(schedule)}
                     >
                       Edit
                     </Button>
                     <Button
-                      colorScheme="red"
-                      size="sm"
+                      colorScheme='red'
+                      size='sm'
                       onClick={() => handleDeleteClick(schedule.scheduleId)}
                     >
                       Delete
@@ -385,7 +394,7 @@ const ScheduleView: React.FC = () => {
               <FormControl>
                 <FormLabel>Course</FormLabel>
                 <Select
-                  placeholder="Select course"
+                  placeholder='Select course'
                   value={editingSchedule?.courseId || ""}
                   onChange={(e) =>
                     setEditingSchedule((prev) =>
@@ -415,7 +424,7 @@ const ScheduleView: React.FC = () => {
               <FormControl>
                 <FormLabel>Meeting URL</FormLabel>
                 <Input
-                  type="url"
+                  type='url'
                   value={editingSchedule?.meetingURL || ""}
                   onChange={(e) =>
                     setEditingSchedule((prev) =>
@@ -427,7 +436,7 @@ const ScheduleView: React.FC = () => {
               <FormControl>
                 <FormLabel>Capacity</FormLabel>
                 <Input
-                  type="number"
+                  type='number'
                   value={editingSchedule?.capacity || 0}
                   onChange={(e) =>
                     setEditingSchedule((prev) =>
@@ -441,10 +450,10 @@ const ScheduleView: React.FC = () => {
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={handleCloseDialog}>
+            <Button variant='ghost' mr={3} onClick={handleCloseDialog}>
               Cancel
             </Button>
-            <Button colorScheme="blue" onClick={handleSaveChanges}>
+            <Button colorScheme='blue' onClick={handleSaveChanges}>
               Save Changes
             </Button>
           </ModalFooter>

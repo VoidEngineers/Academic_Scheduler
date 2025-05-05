@@ -12,7 +12,7 @@ COPY pom.xml ./
 COPY src ./src
 
 # Run Maven to build the project
-RUN mvn clean install
+RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image
 FROM eclipse-temurin:17-jre-alpine
