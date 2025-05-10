@@ -23,7 +23,7 @@ const Calendar = lazy(() => import("../pages/schdules/Calander"));
 const UserManagement = lazy(() => import("../pages/userManagement/user"));
 const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
 const AllScheduleView = lazy(() => import("../pages/schdules/AllScheduleView"));
-
+const CoursesPage = lazy(() => import("../pages/CoursePage/CourseList"));
 
 
 const EnrolledCourses = lazy(() =>
@@ -36,6 +36,19 @@ const UserProfile = lazy(() =>
     default: module.UserProfile,
   }))
 );
+
+
+// Admin Nav props type
+// interface AdminNavProps {
+//   isOpen: boolean;
+//   onOpen: () => void;
+//   onClose: () => void;
+//   drawerBg: string;
+//   menuActiveBg: string;
+//   menuHoverBg: string;
+//   cardBg: string;
+//   headerBorderColor: string;
+// }
 
 
 // Route with AdminNav type
@@ -55,6 +68,9 @@ const routes: RouteWithAdminNav[] = [
     element: <Home />,
   },
 
+  
+  // Authentication routes
+
   {
     path: "/admin-login",
     element: <AdminLogin />,
@@ -62,6 +78,10 @@ const routes: RouteWithAdminNav[] = [
   {
     path: "/Staff-login",
     element: <StaffLogin />,
+
+    path: "/Staff-login", // Fixed capitalization for consistency
+    element: <StaffLogin />, // Use proper component
+
   },
   {
     path: "/student-login",
@@ -85,7 +105,6 @@ const routes: RouteWithAdminNav[] = [
     element: <ScheduleView />,
     needsAdminNav: true,
   },
-
 
   {
     path: "/admin/view-all-schedule",
@@ -116,7 +135,6 @@ const routes: RouteWithAdminNav[] = [
     path: "/courses/:courseId",
     element: <CourseDetails />,
   },
-
   // User management
   {
     path: "/admin/user",
@@ -148,11 +166,21 @@ const routes: RouteWithAdminNav[] = [
     element: <Schedules />,
   },
 
-
   {
     path: "/conflict-manager",
     element: <div>Conflict Manager</div>,
   },
+
+  {
+    path: "/allcourses",
+    element: <CoursesPage />,
+  },
+
+
+
+
+  
+  // 404 route
 
   {
     path: "*",

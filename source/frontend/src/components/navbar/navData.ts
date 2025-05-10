@@ -3,23 +3,7 @@ import { NavItem } from './types';
 export const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Courses',
-    children: [
-      {
-        label: 'Computer Science',
-        subLabel: 'Programming, data structures, algorithms',
-        href: '/courses/computer-science',
-      },
-      {
-        label: 'Mathematics',
-        subLabel: 'Algebra, calculus, statistics',
-        href: '/courses/mathematics',
-      },
-      {
-        label: 'Physics',
-        subLabel: 'Mechanics, electromagnetism, quantum',
-        href: '/courses/physics',
-      },
-    ],
+   href:'/allcourses',
   },
   {
     label: 'Schedule',
