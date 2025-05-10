@@ -21,6 +21,22 @@ services:
     ports:
       - "5002:5000"
 
+  usermanager:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ../source/usermanager
+    environment:
+      - spring.data.mongodb.uri=mongodb+srv://it22278944:nL6kiAUrqQwBWtmC@itpm-project.k7b3m.mongodb.net/timesyncdb-dev?retryWrites=true&w=majority&appName=ITPM-PROJECT
+      - app.cors.allowed-origins=http://localhost:5173,http://localhost:3000,http://localhost:5174,http://frontend:5173,http://localhost:8001
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   frontend:
     restart: always
     build:
@@ -31,6 +47,10 @@ services:
     # expose the port 5000 of the container to the port 5001 of the host
     ports:
       - "8001:5173"
+    depends_on:
+      - usermanager
+      - conflictmanager
+      - schedulevotingmanager
 
   # https://medium.com/@denis.verkhovsky/sonarqube-with-docker-compose-complete-tutorial-2aaa8d0771d4
 
