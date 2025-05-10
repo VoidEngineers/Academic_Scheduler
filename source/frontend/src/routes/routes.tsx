@@ -50,6 +50,7 @@ const UserProfile = lazy(() =>
 //   headerBorderColor: string;
 // }
 
+
 // Route with AdminNav type
 type RouteWithAdminNav = RouteObject & {
   needsAdminNav?: boolean;
@@ -66,27 +67,33 @@ const routes: RouteWithAdminNav[] = [
     path: "/home",
     element: <Home />,
   },
+
   
   // Authentication routes
+
   {
     path: "/admin-login",
     element: <AdminLogin />,
   },
   {
+    path: "/Staff-login",
+    element: <StaffLogin />,
+
     path: "/Staff-login", // Fixed capitalization for consistency
     element: <StaffLogin />, // Use proper component
+
   },
   {
     path: "/student-login",
     element: <StudentLogin />,
   },
-  
+
   // Admin dashboard
   {
     path: "/admin",
     element: <Admin />,
   },
-  
+
   // Admin routes with nav
   {
     path: "/admin/schedule",
@@ -98,9 +105,6 @@ const routes: RouteWithAdminNav[] = [
     element: <ScheduleView />,
     needsAdminNav: true,
   },
-
-  
-  // Course management
 
   {
     path: "/admin/view-all-schedule",
@@ -131,14 +135,13 @@ const routes: RouteWithAdminNav[] = [
     path: "/courses/:courseId",
     element: <CourseDetails />,
   },
-  
   // User management
   {
     path: "/admin/user",
     element: <UserManagement />,
     needsAdminNav: true,
   },
-  
+
   // User profile routes
   {
     path: "/user-profile",
@@ -152,7 +155,7 @@ const routes: RouteWithAdminNav[] = [
     path: "/enrolled-courses",
     element: <EnrolledCourses />,
   },
-  
+
   // Schedule and calendar
   {
     path: "/calendar",
@@ -163,11 +166,11 @@ const routes: RouteWithAdminNav[] = [
     element: <Schedules />,
   },
 
-  // Conflict manager API
   {
     path: "/conflict-manager",
     element: <div>Conflict Manager</div>,
   },
+
   {
     path: "/allcourses",
     element: <CoursesPage />,
@@ -178,6 +181,7 @@ const routes: RouteWithAdminNav[] = [
 
   
   // 404 route
+
   {
     path: "*",
     element: <Error404 />,
