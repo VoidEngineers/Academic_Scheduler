@@ -1,13 +1,8 @@
-import React from 'react';
-import UserChart from '../charts/userChart/userChart';
-import CourseChart from '../charts/courseChart/courseChart';
-import LecturerChart from '../charts/lecturerChart/lecturerChart';
-import { Container, Title, ChartContainer } from '../../styles/dashboardStyles';
-import { ContentContainer } from '../../styles/onBoardingStyle';
+import { UserChart, CourseChart, LecturerChart, Container, Title, ChartContainer, ContentContainer, Flex } from './index';
 
 const Dashboard: React.FC = () => {
   return (
-    <div>
+    <Flex>
       <ContentContainer>
         <Container>
           <Title>Admin Dashboard</Title>
@@ -18,7 +13,7 @@ const Dashboard: React.FC = () => {
           </ChartContainer>
         </Container>
       </ContentContainer>
-    </div>
+    </Flex>
   );
 };
 
