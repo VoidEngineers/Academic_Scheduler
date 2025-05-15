@@ -1,6 +1,6 @@
 import React from "react";
-import Section1 from "../../components/home/Sections/Section1";
-import Section2 from "../../components/home/Sections/Section2";
+import Section1 from "../../components/home/Section_1/Section1";
+import Section2 from "../../components/home/Section_2/Section2";
 
 const Home: React.FC = () => {
   return (
