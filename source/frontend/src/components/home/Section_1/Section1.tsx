@@ -15,13 +15,35 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { ChevronRightIcon, HamburgerIcon } from "@chakra-ui/icons";
-
-interface CourseCardProps {
-  title: string;
-  subtitle: string;
-  duration: string;
-  thumbnail?: string;
-}
+import type { CourseCardProps } from './types';
+import {
+  containerStyles,
+  headerFlexStyles,
+  avatarStyles,
+  welcomeHeadingStyles,
+  roleTextStyles,
+  editButtonStyles,
+  streakCardStyles,
+  streakHeadingStyles,
+  streakDescriptionStyles,
+  streakCountStyles,
+  streakLabelStyles,
+  circularProgressStyles,
+  progressLabelTextStyles,
+  courseSectionStyles,
+  courseTitleFlexStyles,
+  courseSectionHeadingStyles,
+  myLearningButtonStyles,
+  courseGridStyles,
+  courseCardStyles,
+  thumbnailBoxStyles,
+  thumbnailImageStyles,
+  playButtonStyles,
+  courseTitleStyles,
+  courseSubtitleStyles,
+  courseDurationStyles,
+  menuButtonStyles
+} from './styles';
 
 const CourseCard: React.FC<CourseCardProps> = ({
   title,
@@ -29,55 +51,39 @@ const CourseCard: React.FC<CourseCardProps> = ({
   duration,
   thumbnail,
 }) => (
-  <Card borderRadius='xl' mb={4}>
+  <Card {...courseCardStyles}>
     <CardBody>
       <Flex>
-        <Box
-          position='relative'
-          width='120px'
-          height='80px'
-          bg='gray.100'
-          borderRadius='md'
-          mr={4}
-        >
+        <Box {...thumbnailBoxStyles}>
           {thumbnail && (
             <Box
               as='img'
               src={thumbnail}
               alt={title}
-              width='100%'
-              height='100%'
-              objectFit='cover'
-              borderRadius='md'
+              {...thumbnailImageStyles}
             />
           )}
           <IconButton
             aria-label='Play course'
             icon={<ChevronRightIcon />}
-            position='absolute'
-            top='50%'
-            left='50%'
-            transform='translate(-50%, -50%)'
-            bg='white'
-            _hover={{ bg: "white" }}
+            {...playButtonStyles}
           />
         </Box>
         <Box flex={1}>
           <Flex justify='space-between' align='flex-start'>
-            <Text fontWeight='bold' fontSize='md'>
+            <Text {...courseTitleStyles}>
               {title}
             </Text>
             <IconButton
               aria-label='More options'
               icon={<HamburgerIcon />}
-              size='sm'
-              variant='ghost'
+              {...menuButtonStyles}
             />
           </Flex>
-          <Text color='gray.600' fontSize='sm'>
+          <Text {...courseSubtitleStyles}>
             {subtitle}
           </Text>
-          <Text color='gray.500' fontSize='xs'>
+          <Text {...courseDurationStyles}>
             {duration}
           </Text>
         </Box>
@@ -101,30 +107,22 @@ const Section1: React.FC = () => {
   };
 
   return (
-    <Box maxW='1200px' mx='auto' p={6}>
+    <Box {...containerStyles}>
       {/* Header Section */}
-      <Flex align='center' mb={8}>
+      <Flex {...headerFlexStyles}>
         <Avatar
-          size='lg'
           name={mockUser.name}
-          bg='blackAlpha.900'
-          color='white'
-          mr={4}
+          {...avatarStyles}
         >
           {mockUser.avatar}
         </Avatar>
         <Box>
-          <Heading as='h1' size='lg'>
+          <Heading {...welcomeHeadingStyles}>
             Welcome back, {mockUser.name}
           </Heading>
-          <Text color='gray.600' fontSize='lg'>
+          <Text {...roleTextStyles}>
             {mockUser.role}
-            <Button
-              variant='link'
-              color='blue.500'
-              ml={2}
-              textDecoration='underline'
-            >
+            <Button {...editButtonStyles}>
               Edit occupation and interests
             </Button>
           </Text>
@@ -132,39 +130,34 @@ const Section1: React.FC = () => {
       </Flex>
 
       {/* Streak Section */}
-      <Card borderRadius='xl' mb={6}>
+      <Card {...streakCardStyles}>
         <CardBody>
           <Flex justify='space-between' align='center'>
             <Box>
-              <Heading as='h2' size='md'>
+              <Heading {...streakHeadingStyles}>
                 Start a new streak
               </Heading>
-              <Text color='gray.600'>
+              <Text {...streakDescriptionStyles}>
                 Add some learning time to your calendar each week.
               </Text>
             </Box>
             <Flex align='center' gap={8}>
               <Stack align='center'>
-                <Text fontSize='3xl' fontWeight='bold'>
+                <Text {...streakCountStyles}>
                   {stats.streak}
                 </Text>
-                <Text color='gray.600' fontSize='sm'>
+                <Text {...streakLabelStyles}>
                   Current streak
                 </Text>
               </Stack>
               <Box position='relative'>
-                <CircularProgress
-                  value={70}
-                  size='80px'
-                  thickness='4px'
-                  color='purple.500'
-                >
+                <CircularProgress {...circularProgressStyles}>
                   <CircularProgressLabel>
                     <Stack spacing={0} textAlign='center'>
-                      <Text fontSize='xs' color='gray.600'>
+                      <Text {...progressLabelTextStyles}>
                         {stats.courseMinutes}/30
                       </Text>
-                      <Text fontSize='xs' color='gray.600'>
+                      <Text {...progressLabelTextStyles}>
                         {stats.visits}/1
                       </Text>
                     </Stack>
@@ -177,17 +170,17 @@ const Section1: React.FC = () => {
       </Card>
 
       {/* Courses Section */}
-      <Box mt={8}>
-        <Flex justify='space-between' align='center' mb={4}>
-          <Heading as='h2' size='md'>
+      <Box {...courseSectionStyles}>
+        <Flex {...courseTitleFlexStyles}>
+          <Heading {...courseSectionHeadingStyles}>
             Pick up where you left off
           </Heading>
-          <Button variant='link' color='blue.500'>
+          <Button {...myLearningButtonStyles}>
             My learning
           </Button>
         </Flex>
 
-        <SimpleGrid columns={1} spacing={4}>
+        <SimpleGrid {...courseGridStyles}>
           <CourseCard
             title='Fuzzy Match Step in PDI'
             subtitle='Lecture • 11m'

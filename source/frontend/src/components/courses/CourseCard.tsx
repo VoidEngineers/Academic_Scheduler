@@ -1,24 +1,21 @@
-import React from "react";
-import {
-  Box,
-  Image,
-  Text,
-  Progress,
-  HStack,
-  VStack,
-  Badge,
-  Flex,
-} from "@chakra-ui/react";
+import React, { useMemo } from "react";
 import { FiStar } from "react-icons/fi";
-
-interface CourseCardProps {
-  title: string;
-  image: string;
-  rating: number;
-  completedLessons: number;
-  totalLessons: number;
-  isFree?: boolean;
-}
+import {
+  CardContainer,
+  ImageContainer,
+  CourseImage,
+  FreeBadge,
+  ContentContainer,
+  CourseTitle,
+  RatingContainer,
+  RatingText,
+  ProgressContainer,
+  ProgressLabel,
+  ProgressLabelText,
+  ProgressValue,
+  CourseProgress
+} from "./styles";
+import { CourseCardProps } from "./types";
 
 export const CourseCard: React.FC<CourseCardProps> = ({
   title,
@@ -28,59 +25,36 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   totalLessons,
   isFree = false,
 }) => {
-  const progress = (completedLessons / totalLessons) * 100;
+  const progress = useMemo(() => 
+    (completedLessons / totalLessons) * 100, 
+    [completedLessons, totalLessons]
+  );
 
   return (
-    <Box
-      bg='white'
-      borderRadius='lg'
-      overflow='hidden'
-      shadow='sm'
-      transition='all 0.2s'
-      _hover={{ shadow: "md" }}
-    >
-      <Box position='relative'>
-        <Image src={image} alt={title} w='full' h='200px' objectFit='cover' />
-        {isFree && (
-          <Badge
-            position='absolute'
-            top={4}
-            right={4}
-            colorScheme='red'
-            fontSize='sm'
-            px={3}
-            py={1}
-          >
-            FREE
-          </Badge>
-        )}
-      </Box>
+    <CardContainer>
+      <ImageContainer>
+        <CourseImage src={image} alt={title} />
+        {isFree && <FreeBadge>FREE</FreeBadge>}
+      </ImageContainer>
 
-      <VStack p={6} align='stretch' spacing={4}>
-        <Text fontSize='xl' fontWeight='bold' noOfLines={2}>
-          {title}
-        </Text>
+      <ContentContainer>
+        <CourseTitle>{title}</CourseTitle>
 
-        <HStack spacing={2}>
+        <RatingContainer>
           <FiStar style={{ color: "#F6E05E" }} />
-          <Text color='gray.600'>{rating.toFixed(2)}</Text>
-        </HStack>
+          <RatingText>{rating.toFixed(2)}</RatingText>
+        </RatingContainer>
 
-        <Box>
-          <Flex justify='space-between' mb={2}>
-            <Text color='gray.600'>Completed Lessons:</Text>
-            <Text fontWeight='bold'>
+        <ProgressContainer>
+          <ProgressLabel>
+            <ProgressLabelText>Completed Lessons:</ProgressLabelText>
+            <ProgressValue>
               {completedLessons} of {totalLessons}
-            </Text>
-          </Flex>
-          <Progress
-            value={progress}
-            size='sm'
-            colorScheme='blue'
-            borderRadius='full'
-          />
-        </Box>
-      </VStack>
-    </Box>
+            </ProgressValue>
+          </ProgressLabel>
+          <CourseProgress value={progress} />
+        </ProgressContainer>
+      </ContentContainer>
+    </CardContainer>
   );
 };

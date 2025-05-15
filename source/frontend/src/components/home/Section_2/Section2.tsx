@@ -15,15 +15,14 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon, StarIcon } from "@chakra-ui/icons";
 import ChakraCarousel from "../../common/ChakraCarousel";
-
-interface CourseCardProps {
-  title: string;
-  instructor: string;
-  rating: number;
-  totalRatings: string;
-  imageUrl: string;
-  onClick?: () => void;
-}
+import type { CourseCardProps } from './types';
+import {
+  containerStyles,
+  layoutStyles,
+  certificationStyles,
+  pathCardStyles,
+  courseStyles,
+} from '.';
 
 const CourseCard: React.FC<CourseCardProps> = ({
   title,
@@ -33,36 +32,28 @@ const CourseCard: React.FC<CourseCardProps> = ({
   imageUrl,
   onClick,
 }) => (
-  <Card
-    borderRadius='lg'
-    overflow='hidden'
-    h='100%'
-    m={1}
-    cursor='pointer'
-    onClick={onClick}
-    _hover={{ transform: "scale(1.02)", transition: "transform 0.2s" }}
-  >
-    <Image src={imageUrl} alt={title} height='160px' objectFit='cover' />
+  <Card {...courseStyles.courseCardStyles} onClick={onClick}>
+    <Image src={imageUrl} alt={title} {...courseStyles.courseImageStyles} />
     <CardBody>
-      <Stack spacing={2}>
-        <Heading size='md' noOfLines={2}>
+      <Stack {...courseStyles.courseInfoStackStyles}>
+        <Heading {...courseStyles.courseTitleStyles}>
           {title}
         </Heading>
-        <Text color='gray.600'>{instructor}</Text>
-        <HStack>
-          <Text fontWeight='bold'>{rating}</Text>
-          <HStack spacing={1}>
+        <Text {...courseStyles.instructorTextStyles}>{instructor}</Text>
+        <HStack {...courseStyles.ratingStackStyles}>
+          <Text {...courseStyles.ratingTextStyles}>{rating}</Text>
+          <HStack {...courseStyles.starStackStyles}>
             {Array(5)
               .fill("")
               .map((_, i) => (
                 <Icon
                   key={i}
                   as={StarIcon}
-                  color={i < Math.floor(rating) ? "yellow.400" : "gray.300"}
+                  {...courseStyles.starIconStyles(rating, i)}
                 />
               ))}
           </HStack>
-          <Text color='gray.600'>{totalRatings}</Text>
+          <Text {...courseStyles.totalRatingsTextStyles}>{totalRatings}</Text>
         </HStack>
       </Stack>
     </CardBody>
@@ -124,54 +115,53 @@ const Section2: React.FC = () => {
   ];
 
   return (
-    <Box maxW='1200px' mx='auto' p={6}>
+    <Box {...containerStyles}>
       {/* Certification Section */}
-      <Box mb={8}>
-        <Heading as='h2' size='lg' mb={4}>
+      <Box {...layoutStyles.sectionStyles}>
+        <Heading {...layoutStyles.mainHeadingStyles}>
           What to learn next
         </Heading>
-        <Flex align='center' mb={4}>
-          <Text fontSize='lg' fontWeight='semibold'>
+        <Flex {...certificationStyles.certificationTitleStyles}>
+          <Text {...certificationStyles.certificationTextStyles}>
             Work toward your certification goal
           </Text>
-          <Button variant='link' color='purple.500' ml={2}>
+          <Button {...certificationStyles.editButtonStyles}>
             Edit certification interests
           </Button>
         </Flex>
 
-        <Box bg='purple.50' p={6} borderRadius='lg' mb={6}>
-          <Heading as='h3' size='md' mb={2}>
+        <Box {...certificationStyles.pathInfoBoxStyles}>
+          <Heading {...layoutStyles.subHeadingStyles}>
             Udemy paths
           </Heading>
-          <Text mb={4}>
+          <Text {...certificationStyles.pathInfoTextStyles}>
             Udemy paths are a selection of courses, lectures, labs, and
             assessments curated by our content specialists. They provide the
             instruction and practice you need to prepare for a certification
             exam.
           </Text>
           <Button
-            variant='link'
-            color='purple.500'
+            {...certificationStyles.viewAllButtonStyles}
             onClick={handleViewAllClick}
           >
             View all
           </Button>
         </Box>
 
-        <Card mb={8} cursor='pointer' _hover={{ shadow: "md" }}>
+        <Card {...pathCardStyles.pathCardStyles}>
           <CardBody>
-            <Flex align='center' justify='space-between'>
+            <Flex {...pathCardStyles.pathCardFlexStyles}>
               <Flex align='center'>
-                <Box bg='purple.100' p={4} borderRadius='full' mr={4}>
-                  <Icon as={ChevronRightIcon} boxSize={6} color='purple.500' />
+                <Box {...pathCardStyles.pathIconBoxStyles}>
+                  <Icon as={ChevronRightIcon} {...pathCardStyles.pathIconStyles} />
                 </Box>
-                <Box>
-                  <Text color='gray.600'>Udemy path</Text>
-                  <Heading size='md'>Cisco CCNA 200-301 Certification</Heading>
-                  <Text color='gray.600'>Curated for CCNA</Text>
+                <Box {...pathCardStyles.pathCardTextBoxStyles}>
+                  <Text {...pathCardStyles.pathTypeTextStyles}>Udemy path</Text>
+                  <Heading {...pathCardStyles.pathTitleStyles}>Cisco CCNA 200-301 Certification</Heading>
+                  <Text {...pathCardStyles.pathSubtitleStyles}>Curated for CCNA</Text>
                 </Box>
               </Flex>
-              <ChevronRightIcon boxSize={6} color='gray.400' />
+              <ChevronRightIcon {...pathCardStyles.chevronIconStyles} />
             </Flex>
           </CardBody>
         </Card>
@@ -179,11 +169,11 @@ const Section2: React.FC = () => {
 
       {/* Recommended Courses Section */}
       <Box>
-        <Heading as='h2' size='lg' mb={6}>
+        <Heading {...layoutStyles.mainHeadingStyles}>
           Recommended courses for you
         </Heading>
 
-        <Box mt={10}>
+        <Box {...courseStyles.carouselContainerStyles}>
           <ChakraCarousel gap={4}>
             {recommendedCourses.map((course, index) => (
               <CourseCard

@@ -1,42 +1,44 @@
-import React from 'react';
 import {
+  CloseIcon,
+  HamburgerIcon,
+} from '@chakra-ui/icons';
+import {
+  Box,
+  Button,
   Collapse,
-  useColorModeValue,
-  useDisclosure,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-  Button,
-  Box
+  MenuList,
+  useColorModeValue,
+  useDisclosure
 } from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
-} from '@chakra-ui/icons';
+import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+
 
 // Import styled components
 import {
-  NavbarContainer,
-  NavbarFlex,
-  MobileMenuFlex,
-  NavToggleButton,
+  DesktopNavContainer,
   LogoContainer,
   LogoText,
-  DesktopNavContainer,
+  MobileMenuFlex,
+  NavbarContainer,
+  NavbarFlex,
+  NavToggleButton,
   RightSection
 } from '../../styles/navBarStyle';
 
 // Import subcomponents
-import DesktopNav from './deskopNav';
-import MobileNav from './mobileNav';
 import SearchBar from '../../components/serachBar/searchBar';
+import DesktopNav from './desktopNav/DeskopNavItem';
+import MobileNav from './mobileNav/mobileNav';
 import UserMenu from './userMenu';
 
 // Import types and data
-import { NavbarProps } from './types';
 import { NAV_ITEMS } from './navData';
+import { NavbarProps } from './types';
 
 const Navbar: React.FC<NavbarProps> = ({
   logo = "Academic Scheduler",
@@ -47,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { isOpen, onToggle } = useDisclosure();
   const navigate = useNavigate();
-  
+
   const bgColor = useColorModeValue('purple.500', 'gray');
   const textColor = useColorModeValue('gray.800', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
@@ -93,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({
           minW="140px"
           overflow="hidden"
         >
-          <MenuItem 
+          <MenuItem
             onClick={() => navigate('/student-login')}
             _hover={{ bg: 'gray.50' }}
             py={3}
@@ -101,7 +103,7 @@ const Navbar: React.FC<NavbarProps> = ({
           >
             Student
           </MenuItem>
-          <MenuItem 
+          <MenuItem
             onClick={() => navigate('/Staff-login')}
             _hover={{ bg: 'gray.50' }}
             py={3}
@@ -109,7 +111,7 @@ const Navbar: React.FC<NavbarProps> = ({
           >
             Staff
           </MenuItem>
-          <MenuItem 
+          <MenuItem
             onClick={() => navigate('/admin-login')}
             _hover={{ bg: 'gray.50' }}
             py={3}
@@ -147,14 +149,14 @@ const Navbar: React.FC<NavbarProps> = ({
           </LogoText>
 
           <DesktopNavContainer>
-            <DesktopNav navItems={navItems} />
+            <DesktopNav navItem={{ label: "Menu", children: navItems }} />
           </DesktopNavContainer>
         </LogoContainer>
 
         <RightSection>
           <SearchBar />
           {!isLoggedIn && <SignInMenu />}
-          <UserMenu 
+          <UserMenu
             isLoggedIn={isLoggedIn}
             userName={userName}
             userAvatar={userAvatar}

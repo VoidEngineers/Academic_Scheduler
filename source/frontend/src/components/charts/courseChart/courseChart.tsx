@@ -1,8 +1,4 @@
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Card } from '../../../styles/courseChartStyles';
-
+import { Pie, ChartJS, ArcElement, Tooltip, Legend, Card } from './index';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CourseChart: React.FC = () => {
