@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/yourusername/Academic_Scheduler.git
+    repoURL: https://github.com/ravin00/Academic_Scheduler.git
     targetRevision: main
     path: k8s
   destination:
