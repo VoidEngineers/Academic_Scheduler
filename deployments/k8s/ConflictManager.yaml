@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conflictmanager
+  labels:
+    app: conflictmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: conflictmanager
+  template:
+    metadata:
+      labels:
+        app: conflictmanager
+    spec:
+      containers:
+      - name: conflictmanager
+        image: ${DOCKER_REGISTRY}/conflictmanager:${VERSION}
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        env:
+        - name: MONGO_DB_URI
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: uri
+        - name: FLASK_ENV
+          value: production
