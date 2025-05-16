@@ -1,11 +1,11 @@
-import React from "react";
 import { useColorModeValue } from "@chakra-ui/react";
-import Navbar from "../../components/navbar/navbar";
+import React from "react";
 import Footer from "../../components/footer/footer";
-import { NAV_ITEMS } from "../../components/navbar/navData";
+import Navbar from "../../components/navbar/mainNavbar/navbar";
+import { NAV_ITEMS } from "../../components/navbar/mainNavbar/navData";
 import {
-  MainContainer,
-  ContentWrapper
+  ContentWrapper,
+  MainContainer
 } from "../../styles/mainLayoutStyle";
 
 import { MainLayoutProps } from "./types";
@@ -33,7 +33,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
       <ContentWrapper>{children}</ContentWrapper>
 
-      <Footer 
+      <Footer
         bgColor={bgColor}
         textColor={textColor}
         borderColor={borderColor}

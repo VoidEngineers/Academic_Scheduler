@@ -2,7 +2,7 @@ import React from 'react';
 import { InputGroup, InputLeftElement, useColorModeValue } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { MainNav, SearchBox, SearchInput } from './styles';
-import MobileNavItem from './MobileNavItem';
+import MobileNavItem from './mobileNavItem'
 import type { MobileNavProps } from './types';
 
 const MobileNav: React.FC<MobileNavProps> = ({ navItems }) => {

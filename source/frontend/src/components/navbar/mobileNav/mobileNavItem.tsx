@@ -1,14 +1,14 @@
-import React from 'react';
-import { Collapse, Link, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import { Collapse, Link, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { NavItem } from '../types';
+import { NavItem } from '../mainNavbar/types';
 import {
-  NavItemStack,
+  ChildrenStack,
   NavItemFlex,
-  NavItemText,
   NavItemIcon,
-  ChildrenStack
+  NavItemStack,
+  NavItemText
 } from './styles';
 
 interface MobileNavItemProps {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavItem } from '../types';
-import { NavItemsContainer } from './styles';
+import { NavItem } from '../mainNavbar/types';
 import DesktopNavItem from './DeskopNavItem';
+import { NavItemsContainer } from './styles';
 
 interface DesktopNavProps {
   navItems: NavItem[];
