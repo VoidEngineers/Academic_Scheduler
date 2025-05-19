@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build and push Docker images
+        run: |
+          # Login to your Docker registry
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          
+          # Build and push each service image
+          docker build -t yourregistry/conflictmanager:${{ github.sha }} ./source/conflictmanager
+          docker push yourregistry/conflictmanager:${{ github.sha }}
+          
+          # Repeat for other services
+      
+      - name: Update Kubernetes manifests
+        run: |
+          # Update image tags in manifests
+          sed -i "s|image: yourregistry/conflictmanager:latest|image: yourregistry/conflictmanager:${{ github.sha }}|g" k8s/conflictmanager.yaml
+          # Repeat for other services
+          
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add k8s/
+          git commit -m "Update image tags [skip ci]" || echo "No changes"
+          git push
