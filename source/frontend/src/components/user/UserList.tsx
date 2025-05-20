@@ -62,7 +62,7 @@ export const UserList: React.FC<UserListProps> = ({
           {users.map(user => (
             <Tr key={user.userId}>
               <Td>{user.userName}</Td>  
-              <Td>{user.userEmail || 'N/A'}</Td>
+             <Td>{user.userEmail || 'N/A'}</Td>
 
               <Td>
                 <Badge colorScheme={

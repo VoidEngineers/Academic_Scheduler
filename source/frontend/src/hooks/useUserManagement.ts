@@ -1,7 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useToast } from '@chakra-ui/react';
-import { User, UserFormValues } from '../types/user';
+import { User } from '../types/user';
 import { userService } from '../services/userService';
+
+// Define the UserFormValues interface based on User properties needed for form submission
+interface UserFormValues {
+  userEmail?: string;
+  email?: string;
+  userRole?: string;
+  password?: string;
+}
 
 export const useUserManagement = () => {
   // State for users and loading status
@@ -62,43 +70,45 @@ export const useUserManagement = () => {
 
   // Filter users when filters or user list changes
   // Filter users when filters or user list changes
-useEffect(() => {
-  if (!users || !Array.isArray(users)) {
-    setFilteredUsers([]);
-    return;
-  }
+  useEffect(() => {
+    if (!users || !Array.isArray(users)) {
+      setFilteredUsers([]);
+      return;
+    }
 
-  // Start with all users
-  let result = [...users];
+    // Start with all users
+    let result = [...users];
 
-  // Apply role filter first - this ensures role filtering works consistently
-  if (selectedRole) {
-    result = result.filter(user => {
-      // Handle possible null/undefined userRole and case insensitivity
-      if (!user || !user.userRole) return false;
-      return user.userRole.toUpperCase() === selectedRole.toUpperCase();
-    });
-  }
+    // Apply role filter first - this ensures role filtering works consistently
+    if (selectedRole) {
+      result = result.filter(user => {
+        // Handle possible null/undefined userRole and case insensitivity
+        if (!user || !user.userRole) return false;
+        return user.userRole.toUpperCase() === selectedRole.toUpperCase();
+      });
+    }
 
-  // Then apply search term filter (if there's a search term)
-  if (searchTerm) {
-    const lowerCaseSearch = searchTerm.toLowerCase();
-    result = result.filter(user => {
-      if (!user) return false;
-      
-      // Only check properties that exist
-      // Only check properties that exist on the User type
-      const emailMatch = user.email ? user.email.toLowerCase().includes(lowerCaseSearch) : false;
-      const idMatch = user.id ? user.id.toLowerCase().includes(lowerCaseSearch) : false;
-      // If you need to match by name, ensure you use the correct property from your User type
-      // For example, it might be fullName, username, or displayName instead of name
+    // Then apply search term filter (if there's a search term)
+    if (searchTerm) {
+      const lowerCaseSearch = searchTerm.toLowerCase();
+      result = result.filter(user => {
+        if (!user) return false;
 
-      return emailMatch || idMatch;
-    });
-  }
+        // Only check properties that exist
+        // Only check properties that exist on the User type
+        const userEmailValue = user.userEmail || user.email;
+        const emailMatch = userEmailValue ? 
+          userEmailValue.toLowerCase().includes(lowerCaseSearch) : false;
+        const idMatch = user.id ? user.id.toLowerCase().includes(lowerCaseSearch) : false;
+        // If you need to match by name, ensure you use the correct property from your User type
+        // For example, it might be fullName, username, or displayName instead of name
 
-  setFilteredUsers(result);
-}, [users, searchTerm, selectedRole]);
+        return emailMatch || idMatch;
+      });
+    }
+
+    setFilteredUsers(result);
+  }, [users, searchTerm, selectedRole]);
 
   // Handler for search input change - used for continuous filtering
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
