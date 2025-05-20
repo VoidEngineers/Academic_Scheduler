@@ -53,8 +53,8 @@ public class UserService {
                 userToUpdate.setUserName(user.getUserName());
             }
             
-            if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-                userToUpdate.setEmail(user.getEmail());
+            if (user.getUserEmail() != null && !user.getUserEmail().isEmpty()) {
+                userToUpdate.setUserEmail(user.getUserEmail());
             }
             
             if (user.getCountryCode() != null) {
@@ -139,7 +139,7 @@ public class UserService {
             
             Lecturer lecturer = new Lecturer();
             lecturer.setUserId(user.getUserId());
-            lecturer.setUserEmail(user.getEmail());
+            lecturer.setUserEmail(user.getUserEmail());
             lecturer.setAssignedCourses(new ArrayList<>());
             lecturer.setLic(false);
             lecturer.setWorkingHours("");
