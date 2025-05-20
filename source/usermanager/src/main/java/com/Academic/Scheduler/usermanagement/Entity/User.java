@@ -58,12 +58,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getEmail() {   // Changed from getUserEmail() to getEmail()
+    public String getUserEmail() {   // Changed from getUserEmail() to getEmail()
         return userEmail;
     }
 
-    public void setEmail(String email) {   // Changed from setUserEmail() to setEmail()
-        this.userEmail = email;
+    public void setUserEmail(String userEmail) {   // Changed from setUserEmail() to setEmail()
+        this.userEmail = userEmail;
     }
 
     public String getUserRole() {

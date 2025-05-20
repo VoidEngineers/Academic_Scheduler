@@ -1,18 +1,11 @@
-export type User =  {
+export type User = {
   id: string;
-  name: string;
-  email: string;
-  userRole: string;
-  countryCode?: string;
-  courses?: string[];
-}
-
-export type UserFormValues = {
   userId: string;
   userName: string;
-  userEmail: string;
+  userEmail: string; // Make sure this matches the backend
+  email?: string;    // Keep this as a backup for backward compatibility
   userRole: string;
   countryCode: string;
-  password: string;
-  courses: string[];
-}
+  courses: (string | { id: string; name?: string; code?: string })[];
+  password?: string;
+};
