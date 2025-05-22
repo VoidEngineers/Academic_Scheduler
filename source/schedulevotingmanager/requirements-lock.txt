@@ -29,7 +29,7 @@ flask==3.0.2
     #   flask-pymongo
     #   flask-session
     #   flask-socketio
-flask-cors==4.0.0
+flask-cors==6.0.0
     # via -r requirements.in
 flask-pymongo==3.0.1
     # via -r requirements.in
@@ -74,7 +74,9 @@ simple-websocket==1.1.0
 tzlocal==5.3.1
     # via apscheduler
 werkzeug==3.0.4
-    # via flask
+    # via
+    #   flask
+    #   flask-cors
 wsproto==1.2.0
     # via simple-websocket
 zope-event==5.0
