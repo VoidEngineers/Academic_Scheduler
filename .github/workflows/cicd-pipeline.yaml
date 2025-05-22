@@ -26,21 +26,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      # Build and push all service images
+      # Build and push all service images with explicit Dockerfile paths
       - name: Build and push conflict manager image
         uses: docker/build-push-action@v4
         with:
           context: ./source/conflictmanager
+          file: ./source/conflictmanager/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/conflictmanager:${{ github.sha }},${{ secrets.DOCKERHUB_USERNAME }}/conflictmanager:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/conflictmanager:latest
           cache-to: type=inline
       
-      # Add similar blocks for other services
       - name: Build and push user manager image
         uses: docker/build-push-action@v4
         with:
           context: ./source/usermanager
+          file: ./source/usermanager/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/usermanager:${{ github.sha }},${{ secrets.DOCKERHUB_USERNAME }}/usermanager:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/usermanager:latest
@@ -50,6 +51,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./source/frontend
+          file: ./source/frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.sha }},${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
