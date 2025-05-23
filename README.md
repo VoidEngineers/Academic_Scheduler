@@ -1,16 +1,15 @@
-Academic Scheduler
-A comprehensive scheduling platform tailored for academic institutions. It streamlines course management, timetable generation, and resource allocation to optimize administrative workflows and enhance user experience.
+🎓 Academic Scheduler
+Academic Scheduler is a comprehensive scheduling platform tailored for academic institutions. It streamlines course management, timetable generation, and resource allocation to optimize administrative workflows and enhance user experience.
 
-Project Structure
-This project follows a modular monorepo architecture, consisting of:
+📁 Project Structure
+This monorepo follows a modular architecture and consists of:
 
-frontend – React 19 application built with TypeScript and Vite
+Module	Description
+frontend	React 19 application using TypeScript and Vite
+backend	Spring Boot application with MongoDB integration
+infrastructure	Terraform configurations for AWS deployment and NGINX setup
 
-backend – Spring Boot application in Java with MongoDB integration
-
-infrastructure – Terraform configurations for AWS deployment and NGINX setup
-
-Tech Stack
+🛠️ Tech Stack
 Frontend
 Framework: React 19
 
@@ -32,7 +31,7 @@ Framework: Spring Boot
 Database: MongoDB
 
 Infrastructure
-Infrastructure as Code (IaC): Terraform
+IaC: Terraform
 
 Cloud Provider: AWS
 
@@ -42,19 +41,23 @@ Containerization: Docker
 
 Web Server: NGINX
 
-Getting Started
-Prerequisites
+🚀 Getting Started
+✅ Prerequisites
 Ensure the following tools are installed:
 
-Node.js v20 or higher
+Node.js v20+
 
-pnpm v8 or higher
+pnpm v8+
 
-Docker and Docker Compose
+Docker & Docker Compose
 
 Terraform
 
-Frontend Setup
+Java 17+
+
+Maven
+
+📦 Frontend Setup
 bash
 Copy
 Edit
@@ -64,20 +67,24 @@ cd frontend
 # Install dependencies
 pnpm install
 
-# Start development server
+# Start the development server
 pnpm run dev
-Backend Setup
+🧠 Backend Setup
 bash
 Copy
 Edit
 # Navigate to the backend directory
 cd backend
 
-# Run the Spring Boot application (via your IDE or terminal)
+# Run the Spring Boot application
 ./mvnw spring-boot:run
-Or use Docker Compose for local environment setup.
+Or using Docker Compose:
 
-Infrastructure Deployment (AWS)
+bash
+Copy
+Edit
+docker-compose up --build
+☁️ Infrastructure Deployment (AWS)
 bash
 Copy
 Edit
@@ -87,13 +94,35 @@ cd infrastructure
 # Initialize and apply Terraform configuration
 terraform init
 terraform apply
-Note: Ensure AWS credentials are configured in your environment.
+Note: Ensure your AWS credentials are properly configured in your environment.
 
-License
+🧪 Running Tests
+Frontend: pnpm test
+
+Backend: ./mvnw test
+
+🤝 Contributing
+We welcome contributions! Please:
+
+Follow the Conventional Commits specification.
+
+Submit pull requests to the appropriate feature or dev branch.
+
+Ensure all commits are tested and documented.
+
+📄 License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-Contributing
-Contributions are welcome. Please follow the conventional commit format and submit pull requests to the appropriate branch.
+📬 Contact
+For support, bug reports, or feature requests, please open an issue or contact the maintainer.
 
-Contact
-For support or feature requests, please contact the maintainer or open an issue.
+Would you like help adding badges (build status, license, etc.) or a project diagram as well?
+
+
+
+
+
+
+
+
+
