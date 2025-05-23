@@ -116,8 +116,6 @@ This project is licensed under the MIT License. See the LICENSE file for details
 📬 Contact
 For support, bug reports, or feature requests, please open an issue or contact the maintainer.
 
-Would you like help adding badges (build status, license, etc.) or a project diagram as well?
-
 
 
 
