@@ -1,0 +1,72 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: academic-scheduler-ingress
+  labels:
+    app: academic-scheduler
+    environment: staging
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - staging.academic-scheduler.com
+      secretName: staging-tls-secret
+  rules:
+    - host: staging.academic-scheduler.com
+      http:
+        paths:
+          # Frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 5173
+          
+          # API endpoints
+          - path: /api/conflicts
+            pathType: Prefix
+            backend:
+              service:
+                name: conflictmanager
+                port:
+                  number: 5000
+          
+          - path: /api/voting
+            pathType: Prefix
+            backend:
+              service:
+                name: schedulevotingmanager
+                port:
+                  number: 5000
+          
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: usermanager
+                port:
+                  number: 8082
+          
+          - path: /api/courses
+            pathType: Prefix
+            backend:
+              service:
+                name: coursemanager
+                port:
+                  number: 8081
+          
+          - path: /api/schedules
+            pathType: Prefix
+            backend:
+              service:
+                name: schedulemanager
+                port:
+                  number: 8083

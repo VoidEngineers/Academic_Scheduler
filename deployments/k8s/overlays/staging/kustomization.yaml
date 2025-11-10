@@ -1,0 +1,150 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: academic-scheduler-staging
+
+resources:
+  - ../../base
+  - namespace.yaml
+  - ingress-staging.yaml
+  - hpa.yaml
+
+configMapGenerator:
+  - name: app-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=staging
+      - SPRING_PROFILE=staging
+      - LOG_LEVEL=INFO
+      - API_URL=https://staging.academic-scheduler.com
+      - ENABLE_DEBUG=false
+
+patches:
+  # Set replicas for staging
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+  
+  # Medium resource limits for staging
+  - target:
+      kind: Deployment
+      name: conflictmanager
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "256Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "200m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "500m"
+  
+  - target:
+      kind: Deployment
+      name: schedulevotingmanager
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "256Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "200m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "500m"
+  
+  - target:
+      kind: Deployment
+      name: usermanager
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "300m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1000m"
+  
+  - target:
+      kind: Deployment
+      name: coursemanager
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "300m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1000m"
+  
+  - target:
+      kind: Deployment
+      name: schedulemanager
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "300m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1000m"
+  
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "256Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "200m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "500m"
+
+commonLabels:
+  environment: staging
+  version: staging-latest
+
+images:
+  - name: conflictmanager
+    newTag: staging-latest
+  - name: schedulevotingmanager
+    newTag: staging-latest
+  - name: usermanager
+    newTag: staging-latest
+  - name: coursemanager
+    newTag: staging-latest
+  - name: schedulemanager
+    newTag: staging-latest
+  - name: frontend
+    newTag: staging-latest
