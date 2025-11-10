@@ -1,0 +1,66 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: academic-scheduler-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: academic-scheduler.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+          
+          - path: /api/conflicts
+            pathType: Prefix
+            backend:
+              service:
+                name: conflictmanager
+                port:
+                  number: 5000
+          
+          - path: /api/voting
+            pathType: Prefix
+            backend:
+              service:
+                name: schedulevotingmanager
+                port:
+                  number: 5000
+          
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: usermanager
+                port:
+                  number: 8082
+          
+          - path: /api/courses
+            pathType: Prefix
+            backend:
+              service:
+                name: coursemanager
+                port:
+                  number: 8082
+          
+          - path: /api/schedules
+            pathType: Prefix
+            backend:
+              service:
+                name: schedulemanager
+                port:
+                  number: 8083
+  # Uncomment for TLS
+  # tls:
+  #   - hosts:
+  #       - academic-scheduler.local
+  #     secretName: academic-scheduler-tls
