@@ -1,0 +1,49 @@
+# ServiceMonitor is a CRD from Prometheus Operator
+# If using Prometheus Operator, uncomment these configurations
+
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: java-services
+#   labels:
+#     app: microservices
+# spec:
+#   selector:
+#     matchLabels:
+#       tier: backend
+#   endpoints:
+#     - port: http
+#       path: /actuator/prometheus
+#       interval: 30s
+
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: python-services
+#   labels:
+#     app: microservices
+# spec:
+#   selector:
+#     matchLabels:
+#       tier: backend
+#   endpoints:
+#     - port: http
+#       path: /metrics
+#       interval: 30s
+
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: redis
+#   labels:
+#     app: redis
+# spec:
+#   selector:
+#     matchLabels:
+#       app: redis
+#   endpoints:
+#     - port: redis
+#       interval: 30s
