@@ -15,7 +15,7 @@ COPY src ./src
 RUN mvn clean install
 
 # Stage 2: Create the final image
-FROM eclipse-temurin:17-jre-alpine
+FROM amazoncorretto:17-alpine
 
 # Set the working directory
 WORKDIR /app
