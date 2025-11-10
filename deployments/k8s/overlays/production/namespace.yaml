@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: academic-scheduler-prod
+  labels:
+    name: academic-scheduler-prod
+    environment: production

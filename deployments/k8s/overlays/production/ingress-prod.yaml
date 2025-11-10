@@ -1,0 +1,87 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: academic-scheduler-ingress
+  labels:
+    app: academic-scheduler
+    environment: production
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "200"
+    nginx.ingress.kubernetes.io/limit-rps: "50"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - academic-scheduler.com
+        - www.academic-scheduler.com
+      secretName: production-tls-secret
+  rules:
+    - host: academic-scheduler.com
+      http:
+        paths:
+          # Frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 5173
+          
+          # API endpoints
+          - path: /api/conflicts
+            pathType: Prefix
+            backend:
+              service:
+                name: conflictmanager
+                port:
+                  number: 5000
+          
+          - path: /api/voting
+            pathType: Prefix
+            backend:
+              service:
+                name: schedulevotingmanager
+                port:
+                  number: 5000
+          
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: usermanager
+                port:
+                  number: 8082
+          
+          - path: /api/courses
+            pathType: Prefix
+            backend:
+              service:
+                name: coursemanager
+                port:
+                  number: 8081
+          
+          - path: /api/schedules
+            pathType: Prefix
+            backend:
+              service:
+                name: schedulemanager
+                port:
+                  number: 8083
+    
+    - host: www.academic-scheduler.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 5173
