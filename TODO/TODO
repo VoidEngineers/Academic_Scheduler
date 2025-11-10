@@ -1,0 +1,89 @@
+deployments/k8s/
+├── README.md                           # K8s deployment guide
+├── kustomization.yaml                  # Main kustomization file
+├── namespace.yaml                      # Namespace definition
+├── argocd-app.yaml                    # ArgoCD application (existing)
+│
+├── base/                              # Base configurations
+│   ├── kustomization.yaml
+│   ├── namespace.yaml
+│   └── ingress.yaml
+│
+├── overlays/                          # Environment-specific configs
+│   ├── development/
+│   │   ├── kustomization.yaml
+│   │   └── configmap-dev.yaml
+│   ├── staging/
+│   │   └── kustomization.yaml
+│   └── production/
+│       └── kustomization.yaml
+│
+├── services/                          # All microservice manifests
+│   ├── conflictmanager/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   ├── schedulevotingmanager/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   ├── usermanager/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   ├── coursemanager/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   ├── schedulemanager/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   └── frontend/
+│       ├── deployment.yaml
+│       ├── service.yaml
+│       └── configmap.yaml
+│
+├── infrastructure/                    # Infrastructure components
+│   ├── redis/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── pvc.yaml
+│   ├── mongodb/
+│   │   ├── statefulset.yaml
+│   │   ├── service.yaml
+│   │   ├── pvc.yaml
+│   │   └── secret.yaml
+│   ├── postgres/
+│   │   ├── statefulset.yaml
+│   │   ├── service.yaml
+│   │   ├── pvc.yaml
+│   │   └── secret.yaml
+│   └── nginx-ingress/
+│       ├── deployment.yaml
+│       └── service.yaml
+│
+├── monitoring/                        # Monitoring stack
+│   ├── prometheus/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   ├── configmap.yaml
+│   │   └── pvc.yaml
+│   ├── grafana/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   ├── configmap.yaml
+│   │   └── pvc.yaml
+│   └── servicemonitor/
+│       └── servicemonitor.yaml
+│
+├── secrets/                           # Sealed secrets or external secrets
+│   ├── database-secrets.yaml
+│   ├── api-keys-secrets.yaml
+│   └── README.md
+│
+└── scripts/                           # Deployment scripts
+    ├── deploy.sh
+    ├── rollback.sh
+    ├── scale.sh
+    └── logs.sh

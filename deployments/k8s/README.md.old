@@ -1,0 +1,282 @@
+# Kubernetes Deployment Guide
+
+## Prerequisites
+
+1. **Kubernetes Cluster** (one of the following):
+   - Minikube
+   - Docker Desktop with Kubernetes enabled
+   - Kind (Kubernetes in Docker)
+   - Cloud provider (GKE, EKS, AKS)
+
+2. **Tools**:
+   - `kubectl` (v1.28+)
+   - `helm` (optional, for monitoring)
+   - Docker (for building images)
+
+## Folder Structure
+
+```
+k8s/
+├── namespace.yaml                 # Namespace definition
+├── kustomization.yaml            # Main kustomization
+├── base/
+│   └── ingress.yaml              # Ingress configuration
+├── services/                      # All microservice manifests
+│   ├── conflictmanager/
+│   ├── schedulevotingmanager/
+│   ├── usermanager/
+│   ├── coursemanager/
+│   ├── schedulemanager/
+│   └── frontend/
+├── infrastructure/                # Infrastructure components
+│   ├── redis/
+│   ├── mongodb/
+│   └── postgres/
+├── secrets/                       # Secret configurations
+└── scripts/                       # Deployment scripts
+```
+
+## Quick Start
+
+### 1. Build Docker Images
+
+```bash
+# From project root
+cd source
+
+# Build all services
+docker build -t conflictmanager:latest ./conflictmanager
+docker build -t schedulevotingmanager:latest ./schedulevotingmanager
+docker build -t usermanager:latest ./usermanager
+docker build -t coursemanager:latest ./coursemanager
+docker build -t schedulemanager:latest ./schedulemanager
+docker build -t frontend:latest ./frontend
+```
+
+### 2. Configure Secrets
+
+Edit `secrets/database-secrets.yaml` and update:
+- MongoDB credentials
+- PostgreSQL credentials
+- API keys (Gemini API key)
+
+```bash
+kubectl apply -f secrets/database-secrets.yaml
+```
+
+### 3. Deploy Using Script
+
+```bash
+cd deployments/k8s
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh
+```
+
+### 4. Manual Deployment
+
+```bash
+# Create namespace
+kubectl apply -f namespace.yaml
+
+# Deploy infrastructure
+kubectl apply -f infrastructure/
+
+# Deploy services
+kubectl apply -f services/
+
+# Deploy ingress
+kubectl apply -f base/ingress.yaml
+```
+
+### 5. Using Kustomize
+
+```bash
+kubectl apply -k .
+```
+
+## Access the Application
+
+### Option 1: Port Forwarding (Development)
+
+```bash
+# Frontend
+kubectl port-forward svc/frontend 8080:80 -n academic-scheduler
+
+# Access at http://localhost:8080
+```
+
+### Option 2: Ingress (Recommended)
+
+```bash
+# Add to /etc/hosts
+echo "127.0.0.1 academic-scheduler.local" | sudo tee -a /etc/hosts
+
+# Port forward ingress controller
+kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8080:80
+
+# Access at http://academic-scheduler.local:8080
+```
+
+### Option 3: LoadBalancer (Cloud)
+
+If running on cloud provider, the ingress will automatically get an external IP.
+
+```bash
+kubectl get ingress -n academic-scheduler
+```
+
+## Monitoring
+
+### Access Prometheus
+
+```bash
+kubectl port-forward svc/prometheus 9090:9090 -n academic-scheduler
+# Open http://localhost:9090
+```
+
+### Access Grafana
+
+```bash
+kubectl port-forward svc/grafana 3000:3000 -n academic-scheduler
+# Open http://localhost:3000
+# Default credentials: admin/admin
+```
+
+## Useful Commands
+
+### View Logs
+
+```bash
+# All pods
+kubectl logs -f deployment/conflictmanager -n academic-scheduler
+
+# Specific pod
+kubectl logs -f <pod-name> -n academic-scheduler
+
+# All containers in a pod
+kubectl logs -f <pod-name> --all-containers -n academic-scheduler
+```
+
+### Check Pod Status
+
+```bash
+kubectl get pods -n academic-scheduler
+kubectl describe pod <pod-name> -n academic-scheduler
+```
+
+### Check Services
+
+```bash
+kubectl get svc -n academic-scheduler
+```
+
+### Scale Deployments
+
+```bash
+kubectl scale deployment conflictmanager --replicas=3 -n academic-scheduler
+```
+
+### Update Deployment
+
+```bash
+# Set new image
+kubectl set image deployment/usermanager usermanager=usermanager:v2 -n academic-scheduler
+
+# Restart deployment
+kubectl rollout restart deployment/usermanager -n academic-scheduler
+
+# Check rollout status
+kubectl rollout status deployment/usermanager -n academic-scheduler
+```
+
+### Rollback Deployment
+
+```bash
+kubectl rollout undo deployment/usermanager -n academic-scheduler
+```
+
+### Execute Commands in Pod
+
+```bash
+kubectl exec -it <pod-name> -n academic-scheduler -- /bin/bash
+```
+
+## Troubleshooting
+
+### Pods not starting
+
+```bash
+# Check events
+kubectl get events -n academic-scheduler --sort-by='.lastTimestamp'
+
+# Describe pod
+kubectl describe pod <pod-name> -n academic-scheduler
+
+# Check logs
+kubectl logs <pod-name> -n academic-scheduler
+```
+
+### Database Connection Issues
+
+```bash
+# Check if databases are running
+kubectl get pods -l app=mongodb -n academic-scheduler
+kubectl get pods -l app=postgres -n academic-scheduler
+kubectl get pods -l app=redis -n academic-scheduler
+
+# Test connectivity
+kubectl run -it --rm debug --image=busybox --restart=Never -n academic-scheduler -- sh
+# Inside the pod:
+# nslookup mongodb
+# nslookup postgres
+# nslookup redis
+```
+
+### Image Pull Errors
+
+```bash
+# If using local images with Minikube
+eval $(minikube docker-env)
+# Then rebuild images
+
+# If using Kind
+kind load docker-image conflictmanager:latest
+kind load docker-image usermanager:latest
+# ... etc
+```
+
+## Clean Up
+
+### Delete Everything
+
+```bash
+kubectl delete namespace academic-scheduler
+```
+
+### Delete Specific Resources
+
+```bash
+kubectl delete deployment conflictmanager -n academic-scheduler
+kubectl delete svc conflictmanager -n academic-scheduler
+```
+
+## Production Considerations
+
+1. **Use Helm Charts** for easier management
+2. **Implement HPA** (Horizontal Pod Autoscaler)
+3. **Use Secrets Management** (Sealed Secrets, External Secrets Operator)
+4. **Add Network Policies** for security
+5. **Implement Resource Quotas**
+6. **Use PodDisruptionBudgets**
+7. **Add Backup Solutions** for databases
+8. **Implement Service Mesh** (Istio/Linkerd) for advanced traffic management
+9. **Use GitOps** (ArgoCD/Flux) for deployments
+10. **Add Logging Stack** (ELK/Loki)
+
+## Next Steps
+
+1. Set up CI/CD pipeline
+2. Implement auto-scaling
+3. Add monitoring alerts
+4. Configure backup and disaster recovery
+5. Implement security scanning

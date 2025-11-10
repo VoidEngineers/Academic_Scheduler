@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  labels:
+    app: frontend
+data:
+  NGINX_CONFIG: |
+    server {
+      listen 5173;
+      root /usr/share/nginx/html;
+      index index.html;
+      
+      location / {
+        try_files $uri $uri/ /index.html;
+      }
+    }

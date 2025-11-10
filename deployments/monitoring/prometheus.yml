@@ -1,0 +1,81 @@
+# Prometheus Configuration for Academic Scheduler Microservices
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'academic-scheduler'
+    environment: 'production'
+
+# Alerting configuration (optional - for future use)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+
+  # Spring Boot services with Actuator
+  - job_name: 'usermanager'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['usermanager:8082']
+        labels:
+          service: 'usermanager'
+          type: 'spring-boot'
+
+  - job_name: 'coursemanager'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['coursemanager:8082']
+        labels:
+          service: 'coursemanager'
+          type: 'spring-boot'
+
+  - job_name: 'schedulemanager'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['schedulemanager:8083']
+        labels:
+          service: 'schedulemanager'
+          type: 'spring-boot'
+
+  # Flask services (if they expose metrics)
+  - job_name: 'conflictmanager'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['conflictmanager:5000']
+        labels:
+          service: 'conflictmanager'
+          type: 'flask'
+
+  - job_name: 'schedulevotingmanager'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['schedulevotingmanager:5000']
+        labels:
+          service: 'schedulevotingmanager'
+          type: 'flask'
+
+  # Redis monitoring
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+        labels:
+          service: 'redis'
+          type: 'cache'
+
+  # Nginx monitoring (if nginx-prometheus-exporter is added)
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-gateway:80']
+        labels:
+          service: 'api-gateway'
+          type: 'nginx'

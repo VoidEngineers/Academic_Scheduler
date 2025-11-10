@@ -5,8 +5,8 @@ COPY pom.xml ./
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jre-alpine
+FROM amazoncorretto:17-alpine
 WORKDIR /app
-COPY --from=build /usr/src/app/target/usermanager-*.jar usermanager.jar
+COPY --from=build /usr/src/app/target/usermanagement-*.jar usermanager.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "usermanager.jar"]

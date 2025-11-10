@@ -1,0 +1,59 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: conflictmanager-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: conflictmanager
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: schedulevotingmanager-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: schedulevotingmanager
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: usermanager-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: usermanager
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: coursemanager-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: coursemanager
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: schedulemanager-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: schedulemanager
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: frontend-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: frontend

@@ -1,10 +1,15 @@
-FROM python:3.12-alpine
+FROM python:3.12-slim
 
 # Set the timezone to EST
 ENV TZ="Asia/Kolkata"
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+
+# Install build dependencies if needed
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
