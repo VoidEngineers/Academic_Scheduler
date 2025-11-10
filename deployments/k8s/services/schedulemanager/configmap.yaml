@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: schedulemanager-config
+  labels:
+    app: schedulemanager
+data:
+  JAVA_OPTS: "-Xms256m -Xmx768m"
+  LOG_LEVEL: "INFO"
